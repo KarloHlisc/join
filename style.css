@@ -22,14 +22,35 @@ a {
   text-decoration: none;
 }
 
-#aside-bar, section{
-    height: 100%;
+  #aside-bar, section{
+                display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
     width: 230px;
     background-color: var(--aside-bar-color);
   background:rgba(42, 54, 71, 1) ;
+  color: white;
   }
 
-.aside-menu > button{
+  .aside-logo{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 30px;
+  }
+
+  .aside-menu{
+    display: flex;
+  flex-direction: column;
+  background: transparent;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  flex: 1;
+  }
+ button{
   background: none;
   color: inherit;
   border: none;
@@ -37,4 +58,11 @@ a {
   font: inherit;
   cursor: pointer;
   outline: inherit;
+}
+.aside-footer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+    gap: 10px;
 }
