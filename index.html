@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="./css/standard.css" />
+    <link rel="stylesheet" href="./css/login.css" />
     <script src="script.js"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
@@ -38,6 +38,18 @@
             id="password"
             required
           />
+          <button
+            type="button"
+            id="toggleBtn"
+            class="toggle-password toggle-password-hidden"
+            onclick="togglePasswordVisibility()"
+          >
+            <img
+              src="./assets/img/visibility.png"
+              alt="eye_icon"
+              id="eye-icon"
+            />
+          </button>
           <div class="button-container">
             <button type="submit" id="login-button">Log in</button>
             <button id="guest-button">Guest Log in</button>

@@ -2,7 +2,7 @@ header {
   width: 80%;
   max-width: 1888px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -93,13 +93,6 @@ input {
   background-size: 24px 24px;
 }
 
-#email:focus,
-#email:not(:placeholder-shown) {
-  background-image: none;
-  padding-left: 10px;
-  transition: all 0.2s ease;
-}
-
 #password {
   padding: 0 15px;
   font-size: 16px;
@@ -109,6 +102,17 @@ input {
   background-repeat: no-repeat;
   background-position: 380px center;
   background-size: 24px 24px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 33.5%;
+  top: 63.5%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border: none;
 }
 
 #password:focus,
@@ -133,7 +137,8 @@ input {
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 8px;
-  width: 91px;
+  width: 110px;
+  font-size: 21px;
 }
 
 #guest-button {
@@ -146,4 +151,15 @@ input {
   border-radius: 8px;
   width: 177px;
   height: 48px;
+  font-size: 21px;
+}
+
+footer {
+  text-align: center;
+  margin: 20px auto;
+}
+
+footer a {
+  color: #b8b8b9;
+  padding: 0 15px;
 }
