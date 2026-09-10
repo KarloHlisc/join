@@ -4,6 +4,7 @@ const baseUrl =
 
 function init() {
   getData();
+  togglePasswordBtn(false);
 }
 
 async function getData() {
