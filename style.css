@@ -27,15 +27,18 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 35px;
   height: 49px;
+  width: 279px;
 }
 
 #signup-button {
   background-color: #091931;
   color: #f8f9fa;
+  font-weight: bold;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
+  width: 91px;
 }
