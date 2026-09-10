@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
     <script src="script.js"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
@@ -27,7 +28,26 @@
       </div>
     </header>
     <main>
-      <form action=""></form>
+      <div class="form-container">
+        <h1>Log in</h1>
+        <form>
+          <input type="text" placeholder="Email" id="email" required />
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            required
+          />
+          <div class="button-container">
+            <button type="submit" id="login-button">Log in</button>
+            <button id="guest-button">Guest Log in</button>
+          </div>
+        </form>
+      </div>
     </main>
+    <footer>
+      <a href="">Privacy Policy</a>
+      <a href="">Legal notice</a>
+    </footer>
   </body>
 </html>

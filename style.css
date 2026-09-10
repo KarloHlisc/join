@@ -1,44 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
 body {
   max-width: 1920px;
+  height: 100%;
   margin: auto;
   font-family: inter, sans-serif;
   line-height: 1.4;
   font-size: 16px;
 }
 
-header {
-  background-color: #f8f9fa;
-  width: 80%;
-  height: 121.97px;
-  max-width: 1888px;
-  margin: 0 auto;
-  padding: 20px 0;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.header-logo {
-  width: 100px;
-  height: 100%;
-}
-
-.sign-up-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 35px;
-  height: 49px;
-  width: 279px;
-}
-
-#signup-button {
-  background-color: #091931;
-  color: #f8f9fa;
-  font-weight: bold;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  width: 91px;
+a {
+  text-decoration: none;
 }
