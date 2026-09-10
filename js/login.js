@@ -1,23 +1,30 @@
 "use strict";
 
+// Password visibility toggle
+function togglePasswordBtn(show) {
+  const visibility = document.getElementById("toggleBtn");
+  visibility.style.display = show ? "block" : "none";
+}
+
 function togglePasswordVisibility() {
   const passwordInput = document.getElementById("password");
-  const toggleButton = document.getElementById("togglePassword");
+  const eyeIcon = document.getElementById("eye-icon");
 
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    toggleButton.textContent = "Hide";
+    eyeIcon.src = "./assets/img/visibility.png";
   } else {
     passwordInput.type = "password";
-    toggleButton.textContent = "Show";
+    eyeIcon.src = "./assets/img/visibility_off.png";
   }
 }
 
-function togglePasswordBtn(show) {
-  const visibility = document.getElementById("toggleBtn");
-  if (show) {
-    visibility.style.display = "block";
-  } else {
-    visibility.style.display = "none";
+function setupPasswordToggle() {
+  const passwordInput = document.getElementById("password");
+
+  if (passwordInput) {
+    passwordInput.addEventListener("input", function () {
+      togglePasswordBtn(passwordInput.value.length > 0);
+    });
   }
 }

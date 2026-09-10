@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../css/signup.css" />
+    <script src="../js/login.js"></script>
+    <script src="../script.js"></script>
+    <title>Join</title>
+    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="init()">
+    <header>
+      <img
+        class="header-logo"
+        src="../assets/img/join_img_mid.png"
+        alt="header_logo"
+      />
+      </div>
+    </header>
+    <main>
+      <div class="form-container">
+        <h1>Sign up</h1>
+        <form>
+          <input type="text" placeholder="Name" id="name" required />
+          <input type="text" placeholder="Email" id="email" required />
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            id="password"
+            required
+          />
+          <button
+            style="display: none"
+            type="button"
+            id="toggleBtn"
+            class="toggle-password"
+            onclick="togglePasswordVisibility()"
+          >
+            <img
+              src="./assets/img/visibility.png"
+              alt="eye_icon"
+              id="eye-icon"
+            />
+          </button>
+          <div class="button-container">
+            <button type="submit" id="login-button">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <a href="">Privacy Policy</a>
+      <a href="">Legal notice</a>
+    </footer>
+  </body>
+</html>

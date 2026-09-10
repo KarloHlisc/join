@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/login.css" />
+    <script src="./js/login.js"></script>
     <script src="script.js"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
@@ -24,7 +25,12 @@
       />
       <div class="sign-up-container">
         <p>Not a Join user?</p>
-        <button id="signup-button">Sign up</button>
+        <button
+          id="signup-button"
+          onclick="location.href = './html/signup.html'"
+        >
+          Sign up
+        </button>
       </div>
     </header>
     <main>
@@ -39,9 +45,10 @@
             required
           />
           <button
+            style="display: none"
             type="button"
             id="toggleBtn"
-            class="toggle-password toggle-password-hidden"
+            class="toggle-password"
             onclick="togglePasswordVisibility()"
           >
             <img
