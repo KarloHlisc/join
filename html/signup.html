@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/signup.css" />
-    <script src="../js/login.js"></script>
+    <script src="../js/signup.js"></script>
     <script src="../script.js"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
@@ -27,39 +27,31 @@
     </header>
     <main>
       <div class="form-container">
+        <button class="btn-back-to-login" onclick="location.href = '../index.html'"> <img src="../assets/img/arrow-left-line.png" alt="arrow-btn"></button>
         <h1>Sign up</h1>
-        <form>
-          <input type="text" placeholder="Name" id="name" required />
-          <input type="text" placeholder="Email" id="email" required />
-          <input
-            type="password"
-            placeholder="Password"
-            id="password"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            id="password"
-            required
-          />
-          <button
-            style="display: none"
-            type="button"
-            id="toggleBtn"
-            class="toggle-password"
-            onclick="togglePasswordVisibility()"
-          >
-            <img
-              src="./assets/img/visibility.png"
-              alt="eye_icon"
-              id="eye-icon"
-            />
-          </button>
-          <div class="button-container">
-            <button type="submit" id="login-button">Sign Up</button>
-          </div>
-        </form>
+<form>
+  <input type="text" placeholder="Name" id="name" required />
+  <input type="text" placeholder="Email" id="email" required />
+  <div class="input-wrapper">
+    <input type="password" placeholder="Password" id="password" required />
+    <button type="button" style="display: none;" class="toggle-password-btn" onclick="togglePasswordVisibility('password', 'eye-icon-pass')">
+      <img src="../assets/img/visibility.png" alt="eye_icon" id="eye-icon-pass" />
+    </button>
+  </div>
+  <div class="input-wrapper">
+    <input type="password" placeholder="Confirm Password" id="confirm-password" required />
+    <button type="button" style="display: none;" class="toggle-password-btn" onclick="togglePasswordVisibility('confirm-password', 'eye-icon-confirm')">
+      <img src="../assets/img/visibility.png" alt="eye_icon" id="eye-icon-confirm" />
+    </button>
+</div>
+  <div id="checkbox-container">
+    <input type="checkbox" id="checkbox" name="Privacy-policy" required>
+    <label for="checkbox">i accept the <a href="../html/policy.html"> Privacy policy</a></label>
+  </div>
+  <div class="button-container">
+    <button type="submit" id="signup-button">Sign Up</button>
+  </div>
+</form>
       </div>
     </main>
     <footer>
