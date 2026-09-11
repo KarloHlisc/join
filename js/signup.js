@@ -16,10 +16,10 @@ function togglePasswordVisibility(id, eyeIconId) {
 
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
-    eyeIcon.src = "../assets/img/visibility.png";
+    eyeIcon.src = "../assets/img/visibility_off.png";
   } else {
     passwordInput.type = "password";
-    eyeIcon.src = "../assets/img/visibility_off.png";
+    eyeIcon.src = "../assets/img/visibility.png";
   }
 }
 

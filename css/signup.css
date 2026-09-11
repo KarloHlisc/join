@@ -152,7 +152,13 @@ input {
   height: 24px;
   width: 24px;
 }
+label {
+  color: #686868;
+}
 
+a{
+  color: #124658;
+}
 #signup-button {
   background-color: #091931;
   color: #f8f9fa;

@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/login.css" />
     <script src="./js/login.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
+    <script src="./js/config.js" type="module"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +17,7 @@
       rel="stylesheet"
     />
   </head>
-  <body onload="init()">
+  <body>
     <header>
       <img
         class="header-logo"
@@ -36,37 +37,39 @@
     <main>
       <div class="form-container">
         <h1>Log in</h1>
-        <form>
+        <form id="login-form">
           <input type="text" placeholder="Email" id="email" required />
-          <input
-            type="password"
-            placeholder="Password"
-            id="password"
-            required
-          />
-          <button
-            style="display: none"
-            type="button"
-            id="toggleBtn"
-            class="toggle-password"
-            onclick="togglePasswordVisibility()"
-          >
-            <img
-              src="./assets/img/visibility.png"
-              alt="eye_icon"
-              id="eye-icon"
+          <div class="input-wrapper">
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              required
             />
-          </button>
+            <button
+              type="button"
+              style="display: none"
+              class="toggle-password-btn"
+              onclick="togglePasswordVisibility('password', 'eye-icon-pass')"
+            >
+              <img
+                src="./assets/img/visibility.png"
+                alt="eye_icon"
+                id="eye-icon-pass"
+              />
+            </button>
+          </div>
           <div class="button-container">
             <button type="submit" id="login-button">Log in</button>
-            <button id="guest-button">Guest Log in</button>
+            <button type="button" id="guest-button">Guest Log in</button>
           </div>
         </form>
+        <div id="errorMessage" style="color: red"></div>
       </div>
     </main>
     <footer>
-      <a href="">Privacy Policy</a>
-      <a href="">Legal notice</a>
+      <a href="./html/policy_login.html">Privacy Policy</a>
+      <a href="./html/legal_login.html">Legal notice</a>
     </footer>
   </body>
 </html>
