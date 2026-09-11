@@ -37,26 +37,6 @@ h1::after {
   height: 100%;
 }
 
-.sign-up-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 35px;
-  height: 49px;
-  width: 279px;
-}
-
-#signup-button {
-  background-color: #091931;
-  color: #f8f9fa;
-  font-weight: bold;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  width: 91px;
-}
-
 .form-container {
   height: 630px;
   width: 598px;
@@ -67,6 +47,7 @@ h1::after {
   border: 1px solid #ccc;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  position: relative;
 }
 
 form {
@@ -77,60 +58,81 @@ form {
   margin-top: 25px;
 }
 
+.btn-back-to-login {
+  height: 32px;
+  width: 32px;
+  position: absolute;
+  top: 50px;
+  left: 45px;
+}
+
+/* Wichtig für die Höhe aller inputs */
 input {
   height: 48px;
   border-radius: 10px;
+  box-sizing: border-box; /* Verhindert, dass Padding die Höhe verändert */
 }
 
-#name {
-  padding: 0 15px;
+/* Neuer Wrapper für die Passwort-Felder */
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#name,
+#email,
+#password,
+#confirm-password {
+  padding: 0 45px 0 15px; /* Rechts mehr Padding, damit Text nicht unter dem Icon verschwindet */
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  background-image: url("./assets/img/mail.png");
+  border-radius: 10px; /* An dein allgemeines Input-Design angepasst */
   background-repeat: no-repeat;
-  background-position: 380px center;
+  background-position: calc(100% - 15px) center; /* Icon rechts dynamisch ausrichten */
   background-size: 24px 24px;
 }
 
+#name,
 #email {
-  padding: 0 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-image: url("./assets/img/mail.png");
-  background-repeat: no-repeat;
-  background-position: 380px center;
-  background-size: 24px 24px;
+  background-image: url("../assets/img/mail.png"); /* Nutzt du für Name auch das Mail-Icon? */
 }
 
-#password {
-  padding: 0 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-image: url("./assets/img/lock.png");
-  background-repeat: no-repeat;
-  background-position: 380px center;
-  background-size: 24px 24px;
+#password,
+#confirm-password {
+  background-image: url("../assets/img/lock.png");
 }
 
-.toggle-password {
+#password:focus,
+#password:not(:placeholder-shown),
+#confirm-password:focus,
+#confirm-password:not(:placeholder-shown) {
+  background-image: none;
+  padding-left: 15px;
+  transition: all 0.2s ease;
+}
+
+/* Einheitlicher Style für beide Passwort-Auge-Buttons */
+.toggle-password-btn {
   position: absolute;
-  right: 33.5%;
-  top: 63.5%;
+  right: 15px;
+  top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   width: 24px;
   height: 24px;
   border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#password:focus,
-#password:not(:placeholder-shown) {
-  background-image: none;
-  padding-left: 10px;
-  transition: all 0.2s ease;
+.toggle-password-btn img {
+  width: 100%;
+  height: 100%;
 }
 
 .button-container {
@@ -140,7 +142,18 @@ input {
   margin-top: 25px;
 }
 
-#login-button {
+#checkbox-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+#checkbox {
+  height: 24px;
+  width: 24px; /* Breite hinzugefügt für quadratische Box */
+}
+
+#signup-button {
   background-color: #091931;
   color: #f8f9fa;
   font-weight: bold;
@@ -149,19 +162,6 @@ input {
   cursor: pointer;
   border-radius: 8px;
   width: 126px;
-  font-size: 21px;
-}
-
-#guest-button {
-  background-color: #f8f9fa;
-  color: #091931;
-  border: 1px solid #091931;
-  font-weight: bold;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 8px;
-  width: 177px;
-  height: 48px;
   font-size: 21px;
 }
 
