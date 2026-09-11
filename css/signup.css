@@ -66,14 +66,14 @@ form {
   left: 45px;
 }
 
-/* Wichtig für die Höhe aller inputs */
+
 input {
   height: 48px;
   border-radius: 10px;
-  box-sizing: border-box; /* Verhindert, dass Padding die Höhe verändert */
+  box-sizing: border-box; 
 }
 
-/* Neuer Wrapper für die Passwort-Felder */
+
 .input-wrapper {
   position: relative;
   width: 100%;
@@ -85,18 +85,18 @@ input {
 #email,
 #password,
 #confirm-password {
-  padding: 0 45px 0 15px; /* Rechts mehr Padding, damit Text nicht unter dem Icon verschwindet */
+  padding: 0 45px 0 15px; 
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 10px; /* An dein allgemeines Input-Design angepasst */
+  border-radius: 10px; 
   background-repeat: no-repeat;
-  background-position: calc(100% - 15px) center; /* Icon rechts dynamisch ausrichten */
+  background-position: calc(100% - 15px) center; 
   background-size: 24px 24px;
 }
 
 #name,
 #email {
-  background-image: url("../assets/img/mail.png"); /* Nutzt du für Name auch das Mail-Icon? */
+  background-image: url("../assets/img/mail.png"); /
 }
 
 #password,
@@ -113,7 +113,7 @@ input {
   transition: all 0.2s ease;
 }
 
-/* Einheitlicher Style für beide Passwort-Auge-Buttons */
+
 .toggle-password-btn {
   position: absolute;
   right: 15px;
@@ -150,7 +150,7 @@ input {
 }
 #checkbox {
   height: 24px;
-  width: 24px; /* Breite hinzugefügt für quadratische Box */
+  width: 24px;
 }
 
 #signup-button {
