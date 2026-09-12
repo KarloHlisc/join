@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/signup.css" />
-    <script src="../js/signup.js"></script>
-    <script src="../script.js"></script>
+    <script src="../js/signup.js" type="module"></script>
+    <script src="../script.js" type="module"></script>
+    <script src="../js/config.js" type="module"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +17,7 @@
       rel="stylesheet"
     />
   </head>
-  <body onload="init()">
+  <body>
     <header>
       <img
         class="header-logo"
@@ -27,26 +28,27 @@
     </header>
     <main>
       <div class="form-container">
-        <button class="btn-back-to-login" onclick="location.href = '../index.html'"> <img src="../assets/img/arrow-left-line.png" alt="arrow-btn"></button>
+        <button class="btn-back-to-login" onclick="location.href = '../index.html'"> <img src="../assets/icons/arrow-left-line.png" alt="arrow-btn"></button>
         <h1>Sign up</h1>
-<form>
+<form id="signup-form">
   <input type="text" placeholder="Name" id="name" required />
   <input type="text" placeholder="Email" id="email" required />
   <div class="input-wrapper">
     <input type="password" placeholder="Password" id="password" required />
     <button type="button" style="display: none;" class="toggle-password-btn" onclick="togglePasswordVisibility('password', 'eye-icon-pass')">
-      <img src="../assets/img/visibility.png" alt="eye_icon" id="eye-icon-pass" />
+      <img src="../assets/icons/visibility.png" alt="eye_icon" id="eye-icon-pass" />
     </button>
   </div>
   <div class="input-wrapper">
     <input type="password" placeholder="Confirm Password" id="confirm-password" required />
     <button type="button" style="display: none;" class="toggle-password-btn" onclick="togglePasswordVisibility('confirm-password', 'eye-icon-confirm')">
-      <img src="../assets/img/visibility.png" alt="eye_icon" id="eye-icon-confirm" />
+      <img src="../assets/icons/visibility.png" alt="eye_icon" id="eye-icon-confirm" />
     </button>
 </div>
+<div id="errorMessage" style="color: red"></div>
   <div id="checkbox-container">
     <input type="checkbox" id="checkbox" name="Privacy-policy" required>
-    <label for="checkbox">i accept the <a href="../html/policy.html"> Privacy policy</a></label>
+    <label for="checkbox">i accept the <a href="../html/policy_login.html"> Privacy policy</a></label>
   </div>
   <div class="button-container">
     <button type="submit" id="signup-button">Sign Up</button>
@@ -58,5 +60,9 @@
       <a href="../html/policy_login.html">Privacy Policy</a>
       <a href="../html/legal_login.html">Legal notice</a>
     </footer>
+      <div id="modal-overlay" class="overlay"></div>
+      <div id="congrats-modal" class="modal">
+       <p>You signed up successfully.</p>
+      </div>
   </body>
 </html>
