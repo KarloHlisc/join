@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="./css/login.css" />
-    <script src="./js/login.js"></script>
     <script src="script.js" type="module"></script>
     <script src="./js/config.js" type="module"></script>
     <title>Join</title>
@@ -53,18 +52,20 @@
               onclick="togglePasswordVisibility('password', 'eye-icon-pass')"
             >
               <img
-                src="./assets/img/visibility.png"
+                src="./assets/icons/visibility.png"
                 alt="eye_icon"
                 id="eye-icon-pass"
               />
             </button>
           </div>
+          <div id="errorMessage" style="color: red"></div>
           <div class="button-container">
             <button type="submit" id="login-button">Log in</button>
-            <button type="button" id="guest-button">Guest Log in</button>
+            <button type="button" id="guest-button" onclick="logInAsGuest()">
+              Guest Log in
+            </button>
           </div>
         </form>
-        <div id="errorMessage" style="color: red"></div>
       </div>
     </main>
     <footer>
