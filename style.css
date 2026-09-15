@@ -5,12 +5,22 @@
   scroll-behavior: smooth;
 }
 
-:root{
-    --aside-bar-color:rgba(42, 54, 71, 1);
+@font-face {
+  font-family: "inter";
+  src:
+    url("./assets/fonts/Inter-Italic-VariableFont_opsz\,wght.ttf"),
+    url("./assets/fonts/Inter-VariableFont_opsz\,wght.ttf");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --aside-bar-color: rgba(42, 54, 71, 1);
 }
 
 body {
-  max-width: 1920px;
+  max-width: 1440px;
   height: 100%;
   margin: auto;
   font-family: inter, sans-serif;
@@ -22,26 +32,27 @@ a {
   text-decoration: none;
 }
 
-  #aside-bar, section{
-                display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    width: 230px;
-    background-color: var(--aside-bar-color);
-  background:rgba(42, 54, 71, 1) ;
+#aside-bar,
+section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 230px;
+  background-color: var(--aside-bar-color);
+  background: rgba(42, 54, 71, 1);
   color: white;
-  }
+}
 
-  .aside-logo{
-    display: flex;
+.aside-logo {
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding-top: 30px;
-  }
+}
 
-  .aside-menu{
-    display: flex;
+.aside-menu {
+  display: flex;
   flex-direction: column;
   background: transparent;
   text-align: center;
@@ -49,8 +60,8 @@ a {
   justify-content: center;
   border: none;
   flex: 1;
-  }
- button{
+}
+button {
   background: none;
   color: inherit;
   border: none;
@@ -59,10 +70,10 @@ a {
   cursor: pointer;
   outline: inherit;
 }
-.aside-footer{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-bottom: 30px;
-    gap: 10px;
+.aside-footer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 30px;
+  gap: 10px;
 }
