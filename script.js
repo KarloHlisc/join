@@ -20,7 +20,7 @@ async function findUser(email, password) {
 }
 
 function loginSuccess(user) {
-  sessionStorage.setItem("logedInUser", JSON.stringify(user));
+  sessionStorage.setItem("loggedInUser", JSON.stringify(user));
   window.location.href = "./html/summary.html";
 }
 
@@ -79,6 +79,20 @@ function setupPasswordToggle() {
   });
 }
 
+function userIcon() {
+  const icon = document.getElementById("user-icon");
+  const stored = sessionStorage.getItem("loggedInUser");
+  if (!icon || !stored) return;
+  const name = JSON.parse(stored).name?.trim();
+  const backgroundColor = JSON.parse(stored).backgroundColor || "#000000";
+  if (!name) return;
+  const parts = name.split(/\s+/);
+  const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
+  icon.innerHTML = ini.toUpperCase();
+  icon.style.backgroundColor = backgroundColor;
+}
+
+document.addEventListener("DOMContentLoaded", userIcon);
 window.logInAsGuest = logInAsGuest;
 window.togglePasswordVisibility = togglePasswordVisibility;
 setupPasswordToggle();

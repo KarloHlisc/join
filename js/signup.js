@@ -3,8 +3,7 @@
 import { database } from "./config.js";
 import {
   ref,
-  push,
-  set,
+  runTransaction,
   get,
   child,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
@@ -13,17 +12,37 @@ import {
 const existSignUpForm = document.getElementById("signup-form");
 const errEL = document.getElementById("errorMessage");
 
+function generateNextUserId(currentUsers) {
+  const users = currentUsers || {};
+  const nextNumber = Object.keys(users).length + 1;
+  return `userid_${String(nextNumber).padStart(2, "0")}`;
+}
+/* prettier-ignore */
 const registerUser = async (e, n, p) => {
-  const data = await get(child(ref(database), "users"));
-  const currentUsers = data.exists() ? data.val() : {};
-  const nextNumber = Object.keys(currentUsers).length + 1;
-  const customId = `userid_${String(nextNumber).padStart(2, "0")}`;
-  return set(ref(database, `users/${customId}`), {
-    email: e,
-    name: n,
-    password: p,
+  const usersRef = ref(database, "users");
+  return runTransaction(usersRef, (currentUsers) => {
+    const users = currentUsers || {};
+    const customId = generateNextUserId(users);
+    users[customId] = {email: e,name: n,password: p,backgroundColor: getRandomColor(),};
+    return users;
   });
 };
+
+function getRandomColor() {
+  let characters = "0123456789ABCDEF";
+  let color = "#";
+
+  for (let i = 0; i < 6; i++) {
+    color += characters[getRandomNumber(0, 15)];
+  }
+
+  return color;
+}
+
+function getRandomNumber(low, high) {
+  let r = Math.floor(Math.random() * (high - low + 1)) + low;
+  return r;
+}
 
 const checkEmail = async (email) => {
   const data = await get(child(ref(database), "users"));
