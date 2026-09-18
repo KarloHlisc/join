@@ -3,7 +3,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 30px;
 }
 
 #board-task-container{
@@ -15,7 +14,6 @@
 #board-content{
     display: flex;
     justify-content: space-between;
-    padding: 0 30px;
 }
 
 .tasks-style{
