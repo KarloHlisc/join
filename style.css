@@ -82,6 +82,12 @@ button {
   width: 100%;
 }
 
+#nav-policy_login:hover,
+#nav-legal_login:hover,
+#nav-policy_after_login:hover,
+#nav-legal_after_login:hover {
+  color: #124658;
+}
 .aside-menu button {
   width: 100%;
   text-align: center;
