@@ -18,11 +18,7 @@ function getLayoutHtml() {
         <div class="aside-menu">${getNavigationHtml()}</div>
         <div class="aside-footer"><button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button><button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button></div>
     </aside>
-    <header><p>Kanban Project Management Tool</p>
-            <div class="user-and-help">
-             <button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button>
-            <button id="user-icon"></button>
-            </div>
+    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button><button id="user-icon"></button></div>
     </header>`;
 }
 
