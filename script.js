@@ -79,16 +79,21 @@ function setupPasswordToggle() {
   });
 }
 
+function getInitials(name) {
+  if (!name) return "";
+  const parts = name.trim().split(/\s+/);
+  const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
+  return ini.toUpperCase();
+}
+
 function userIcon() {
-  const icon = document.getElementById("user-icon");
+  const icon = document.querySelector(".user-icon");
   const stored = sessionStorage.getItem("loggedInUser");
   if (!icon || !stored) return;
   const name = JSON.parse(stored).name?.trim();
   const backgroundColor = JSON.parse(stored).backgroundColor || "#000000";
   if (!name) return;
-  const parts = name.split(/\s+/);
-  const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
-  icon.innerHTML = ini.toUpperCase();
+  icon.innerText = getInitials(name);
   icon.style.backgroundColor = backgroundColor;
 }
 
