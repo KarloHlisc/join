@@ -6,13 +6,67 @@
     <title>Join - Board</title>
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/help.css" />
+    <link rel="stylesheet" href="../css/board.css">
     <script src="../script.js" type="module"></script>
     <script src="../js/template.js"></script>
   </head>
   <body>
     <main>
       <div id="main-container">
-        // bitte hier in dem Div das Board einfügen, danke.
+        <section id="board-header">
+          <div id="board-title-container">
+            <h2 id="board-title">
+              Board
+            </h2>
+          </div>
+          <div id="board-task-container">
+            <div id="search-task-container">
+              <input type="text" name="search-task" id="search-task" placeholder="Find Task">
+              <button id="button-search"><img src="../assets/icons/search-btn.svg" alt="button-search"></button>
+            </div>
+            <div id="add-task-btn-container">
+              <button id="add-task-btn">Add task <img src="../assets/icons/add-btn.svg" alt="add task button"></button>
+            </div>
+          </div>
+        </section>
+        <section id="board-content">
+          <section id="to-do-section">
+            <div id="to-do-title-card" class="tasks-style">
+              <h3 id="to-do-title">To do</h3>
+              <button id="add-to-do-btn"><img src="../assets/icons/button-add-task.svg" alt="button-add-task"></button>
+            </div>
+            <div id="to-do-cards-container" class="cards-container">
+              <div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div>
+            </div>
+          </section>
+          <section id="in-progress-section">
+            <div id="in-progress-card" class="tasks-style">
+              <h3 id="in-progress-title">In progress</h3>
+              <button id="add-in-progress-btn"><img src="../assets/icons/button-add-task.svg" alt="button-add-task"></button>
+            </div>
+            <div id="in-progress-cards-container" class="cards-container">
+              <div id="no-tasks-in-progress" class="no-tasks-card">No tasks In progress</div>
+            </div>
+          </section>
+          <section id="await-feedback-section">
+            <div id="await-feedback-card" class="tasks-style">
+              <h3 id="await-feedback-title">Await feedback</h3>
+              <button id="add-await-feedback-btn" class="add-btn-tasks"><img src="../assets/icons/button-add-task.svg" alt="button-add-task"></button>
+            </div>
+            <div id="await-feedback-cards-container" class="cards-container">
+              <div id="no-tasks-await-feedback" class="no-tasks-card">No tasks Await feedback</div>
+            </div>
+          </section>
+          <section id="done-section">
+            <div id="done-card" class="tasks-style">
+              <h3 id="done-title">Done</h3>
+            </div>
+            <div id="done-cards-container" class="cards-container">
+              <div id="no-tasks-done" class="no-tasks-card">No tasks Done</div>
+            </div>
+          </section>
+        </section>
+        
       </div>
       <div id="help-container"></div>
     </main>
