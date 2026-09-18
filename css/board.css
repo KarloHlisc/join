@@ -1,0 +1,48 @@
+#board-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+}
+
+#board-task-container{
+    flex-direction: row;
+    display: flex;
+    gap: 20px;
+}
+
+#board-content{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.tasks-style{
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.no-tasks-card{
+    border: dotted;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgba(104, 104, 104, 1);
+    background-color: rgba(231, 231, 231, 1);
+}
+
+.cards-container{
+    margin-top: 15px;
+}
+#add-task-btn{
+    background-color:rgba(42, 54, 71, 1) ;
+    border-radius: 5px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+}
