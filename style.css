@@ -165,6 +165,10 @@ main {
   background-color: rgba(246, 247, 248, 1);
 }
 
+#main-container{
+  margin: 50px 80px 0px 80px;
+}
+
 h1,
 h2,
 h3,
