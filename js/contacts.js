@@ -11,6 +11,11 @@ function getInitials(name) {
   const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
   return ini.toUpperCase();
 }
+function getBackgroundColour(name) {
+  const icon = document.querySelector(".user-icon");
+  const backgroundColor = name;
+  return backgroundColor;
+}
 
 function createEl(type, className, text = "") {
   const el = document.createElement(type);
@@ -22,7 +27,8 @@ function createEl(type, className, text = "") {
 function checkAndRenderHeader(name, lastLetter, container) {
   const currentLetter = name.charAt(0).toUpperCase();
   if (currentLetter !== lastLetter) {
-    const header = document.createElement("h2");
+    const header = document.createElement("span");
+    header.classList.add("current-letter");
     header.innerText = currentLetter;
     container.append(header);
     return currentLetter;
@@ -41,8 +47,8 @@ function createTextContainer(user) {
 function createAndAppendButton(user, container) {
   const button = createEl("button", "user-btn");
   const icon = createEl("div", "user-icon", getInitials(user.name));
+  icon.style.backgroundColor = getBackgroundColour(user.backgroundColor);
   const textContainer = createTextContainer(user);
-
   button.append(icon, textContainer);
   container.append(button);
 }
@@ -51,7 +57,7 @@ async function getUserList() {
   const data = await get(ref(database, "users"));
   const users = data.exists() ? Object.values(data.val()) : [];
   users.sort((a, b) => a.name.localeCompare(b.name));
-  const container = document.getElementById("main-container");
+  const container = document.getElementById("list-container");
   let lastLetter = "";
   users.forEach((user) => {
     lastLetter = checkAndRenderHeader(user.name, lastLetter, container);

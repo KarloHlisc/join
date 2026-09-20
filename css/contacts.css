@@ -1,0 +1,51 @@
+menu {
+  overflow-y: visible !important;
+}
+
+#main-container {
+  margin: 0;
+  overflow-y: hidden !important;
+  height: calc(100vh - 96px - 5px);
+  display: flex;
+}
+
+#list-container {
+  width: 424px;
+  margin: 20px;
+  overflow-y: auto;
+  height: calc(100% - 40px);
+}
+
+.user-btn {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  padding: 15px;
+  width: 80%;
+}
+
+.user-btn:hover {
+  background-color: rgb(241, 240, 240);
+}
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-name {
+  font-size: 20px;
+}
+.user-email {
+  color: #017cee;
+}
+.current-letter {
+  border-bottom: solid 1px gray;
+  width: 80%;
+  height: 58px;
+  display: block;
+  margin-left: 20px;
+  font-size: 20px;
+}
