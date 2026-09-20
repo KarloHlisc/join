@@ -64,6 +64,19 @@ async function getUserList() {
     createAndAppendButton(user, container);
   });
 }
+/*prettier-ignore*/
+function addContactButton() {
+  const container = document.getElementById("list-container");
+  container.innerHTML = `<div id="add-btn-container"><button id="add-new-contact" onclick="addNewContact()">Add new contact<img src="../assets/icons/person_add.svg" alt="add-icon" /></button></div>`
+  return container;
+}
 
+function init() {
+  addContactButton();
+  getUserList();
+}
+
+window.init = init;
+window.addContactButton = addContactButton;
 window.getUserList = getUserList;
-document.addEventListener("DOMContentLoaded", getUserList);
+document.addEventListener("DOMContentLoaded", init);

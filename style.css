@@ -14,7 +14,7 @@
 }
 
 :root {
-  --aside-bar-color: rgba(42, 54, 71, 1);
+  --aside-bar-color: #2a3647;
 }
 
 body {
@@ -23,6 +23,7 @@ body {
   font-family: "Inter", sans-serif;
   line-height: 1.4;
   font-size: 16px;
+  font-weight: 400;
   display: grid;
   grid-template-columns: 232px 1fr;
   grid-template-rows: 96px 1fr;
@@ -85,7 +86,9 @@ button {
 #nav-policy_login:hover,
 #nav-legal_login:hover,
 #nav-policy_after_login:hover,
-#nav-legal_after_login:hover {
+#nav-legal_after_login:hover,
+.help-logout:hover,
+#logout:hover {
   color: #124658;
 }
 .aside-menu button {
@@ -145,9 +148,11 @@ header p {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 40px;
   gap: 10px;
+  margin-left: auto;
 }
+
 #help-btn img:hover {
   content: url("./assets/icons/help-big.png");
 }
@@ -181,6 +186,10 @@ h5 {
   justify-content: center;
 }
 
+.header-icon {
+  border: solid 3px #2a3647;
+}
+
 ul {
   list-style-type: disc !important;
   padding-left: 30px;
@@ -191,4 +200,54 @@ ol {
   list-style-type: decimal !important;
   padding-left: 40px;
   margin-bottom: 16px;
+}
+
+#policy-after-login-container {
+  height: calc(100vh - 96px - 5px);
+  padding: 120px 80px;
+}
+
+#legal-after-login-container {
+  height: calc(100vh - 96px - 5px);
+  padding: 120px 80px;
+}
+
+#logout-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: none;
+}
+
+#logout-container.active {
+  display: block;
+}
+
+.logout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+#logout-module {
+  position: absolute;
+  right: 20px;
+  top: 96px;
+  background-color: #2a3647;
+  color: #ffffff;
+  border-radius: 20px 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  z-index: 2;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }

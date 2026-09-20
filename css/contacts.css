@@ -49,3 +49,22 @@ menu {
   margin-left: 20px;
   font-size: 20px;
 }
+#add-btn-container {
+  width: 424px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+#add-new-contact {
+  width: 80%;
+  height: 56px;
+  border-radius: 10px;
+  background-color: #2a3647;
+  color: #ffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 21px;
+  font-weight: bold;
+}

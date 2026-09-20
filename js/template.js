@@ -11,6 +11,35 @@ function getNavigationHtml() {
     `;
 }
 
+function getLogoutModule() {
+  return `
+    <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
+    <div id="logout-module">
+        <button id="help-btn" class="help help-logout" onclick="openHelpPage()">Help</button>
+        <button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button>
+        <button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button id="logout" onclick="logoutFromAccount()">Logout</button>
+    </div>
+    `;
+}
+
+function showLogoutModule() {
+  const container = document.getElementById("logout-container");
+  container.innerHTML = getLogoutModule();
+  container.classList.add("active");
+}
+
+function closeLogoutModule() {
+  const container = document.getElementById("logout-container");
+  container.classList.remove("active");
+  container.innerHTML = "";
+}
+
+function logoutFromAccount() {
+  sessionStorage.removeItem("loggedInUser");
+  window.location.href = "../index.html";
+}
+
 function getLayoutHtml() {
   return `
     <aside class="side-bar-wrapper">
@@ -18,7 +47,7 @@ function getLayoutHtml() {
         <div class="aside-menu">${getNavigationHtml()}</div>
         <div class="aside-footer"><button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button><button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button></div>
     </aside>
-    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button><button class="user-icon"></button></div>
+    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button><button class="user-icon header-icon" onclick="showLogoutModule()"></button></div><div id="logout-container"></div>
     </header>`;
 }
 
