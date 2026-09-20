@@ -1,5 +1,6 @@
 h1 {
   font-size: 61px;
+  margin: 0px;
 }
 h2 {
   font-size: 27px;
@@ -8,14 +9,13 @@ h2 {
 .help-header {
   display: flex;
   justify-content: space-between;
-}
-
-.btn-back-to-main {
-  margin-right: 40px;
+  align-items: center;
+  margin: 60px;
+  height: 61px;
 }
 
 .help-main {
-  margin-top: 20px;
+  margin: 60px;
 }
 li {
   padding-left: 20px;
