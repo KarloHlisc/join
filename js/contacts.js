@@ -4,17 +4,29 @@ import {
   ref,
   get,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+import { getAddContactModule } from "./template.js";
+
+function showAddContactModule() {
+  const container = document.getElementById("add-contact-container");
+  if (!container) return;
+  container.innerHTML = getAddContactModule();
+  setTimeout(() => {
+    container.classList.add("active");
+  }, 20);
+}
+
+function closeAddContactModule() {
+  const container = document.getElementById("add-contact-container");
+  if (!container) return;
+  container.classList.remove("active");
+  container.innerHTML = "";
+}
 
 function getInitials(name) {
   if (!name) return "";
   const parts = name.trim().split(/\s+/);
   const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
   return ini.toUpperCase();
-}
-function getBackgroundColour(name) {
-  const icon = document.querySelector(".user-icon");
-  const backgroundColor = name;
-  return backgroundColor;
 }
 
 function createEl(type, className, text = "") {
@@ -47,7 +59,7 @@ function createTextContainer(user) {
 function createAndAppendButton(user, container) {
   const button = createEl("button", "user-btn");
   const icon = createEl("div", "user-icon", getInitials(user.name));
-  icon.style.backgroundColor = getBackgroundColour(user.backgroundColor);
+  icon.style.backgroundColor = user.backgroundColor || "#000000";
   const textContainer = createTextContainer(user);
   button.append(icon, textContainer);
   container.append(button);
@@ -58,16 +70,18 @@ async function getUserList() {
   const users = data.exists() ? Object.values(data.val()) : [];
   users.sort((a, b) => a.name.localeCompare(b.name));
   const container = document.getElementById("list-container");
+  if (!container) return;
   let lastLetter = "";
   users.forEach((user) => {
     lastLetter = checkAndRenderHeader(user.name, lastLetter, container);
     createAndAppendButton(user, container);
   });
 }
-/*prettier-ignore*/
+
 function addContactButton() {
   const container = document.getElementById("list-container");
-  container.innerHTML = `<div id="add-btn-container"><button id="add-new-contact" onclick="addNewContact()">Add new contact<img src="../assets/icons/person_add.svg" alt="add-icon" /></button></div>`
+  if (!container) return container;
+  container.innerHTML = `<div id="add-btn-container"><button id="add-new-contact" onclick="showAddContactModule()">Add new contact<img src="../assets/icons/person_add.svg" alt="add-icon" /></button></div>`;
   return container;
 }
 
@@ -79,4 +93,7 @@ function init() {
 window.init = init;
 window.addContactButton = addContactButton;
 window.getUserList = getUserList;
+window.showAddContactModule = showAddContactModule;
+window.closeAddContactModule = closeAddContactModule;
+
 document.addEventListener("DOMContentLoaded", init);
