@@ -2,6 +2,10 @@ menu {
   overflow-y: visible !important;
 }
 
+h1 {
+  font-size: 61px;
+}
+
 #main-container {
   margin: 0;
   overflow-y: hidden !important;
@@ -18,16 +22,18 @@ menu {
 
 .user-btn {
   display: flex;
+  align-items: center;
   gap: 30px;
-  margin-top: 20px;
-  margin-left: 20px;
+  padding: 15px 0 15px 30px !important;
   cursor: pointer;
-  padding: 15px;
-  width: 80%;
+  width: 90%;
 }
 
 .user-btn:hover {
-  background-color: rgb(241, 240, 240);
+  background-color: #dfdfdf;
+}
+.user-icon {
+  align-items: center;
 }
 .text-container {
   display: flex;
@@ -43,20 +49,21 @@ menu {
 }
 .current-letter {
   border-bottom: solid 1px gray;
-  width: 80%;
+  width: 90%;
   height: 58px;
   display: block;
-  margin-left: 20px;
+  padding-left: 40px;
   font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 #add-btn-container {
-  width: 424px;
-  margin-left: 20px;
-  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
 }
 
 #add-new-contact {
-  width: 80%;
+  width: 90%;
   height: 56px;
   border-radius: 10px;
   background-color: #2a3647;
@@ -67,4 +74,193 @@ menu {
   gap: 8px;
   font-size: 21px;
   font-weight: bold;
+}
+
+#add-contact-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#add-contact-container.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#add-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+#add-module {
+  position: absolute;
+  width: 1212px;
+  height: 592px;
+  top: 20%;
+  background-color: #ffffff;
+  color: #ffffff;
+  border-radius: 20px;
+  display: flex;
+  align-items: flex-start;
+  z-index: 2;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  left: 50%;
+  transform: translate(100%, 0);
+  opacity: 0;
+  transition:
+    transform 0.6s ease-out,
+    opacity 0.6s ease-out;
+}
+
+#add-contact-container.active #add-module {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+#add-contact-text {
+  background-color: #2a3647;
+  height: 100%;
+  width: 467px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px;
+  gap: 1px;
+}
+
+#add-contact-text span {
+  font-size: 27px;
+}
+
+#add-contact-text span::after {
+  content: "";
+  position: absolute;
+  bottom: 185px;
+  left: 80px;
+  transform: translateX(-50%);
+  width: 7%;
+  border-bottom: 3px solid #29abe2;
+}
+
+#add-contact-text img {
+  height: 66.48px;
+  width: 55.6px;
+}
+
+#add-contact {
+  height: 100%;
+  width: auto;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+#close-contact-module {
+  position: absolute;
+  top: 48px;
+  right: 48px;
+}
+#person-icon {
+  width: 120px;
+  height: 120px;
+  background-color: #d1d1d1;
+  border: #ffffff solid 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+#person-icon img {
+  width: 64px;
+  height: 64px;
+}
+
+#form-container {
+  display: flex;
+}
+
+#add-contact-form {
+  width: 422px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+input {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+#name,
+#email,
+#phone {
+  padding: 0 45px 0 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 15px) center;
+  background-size: 24px 24px;
+}
+
+#name {
+  background-image: url("../assets/icons/person.png");
+}
+#email {
+  background-image: url("../assets/icons/mail.png");
+}
+
+#phone {
+  background-image: url("../assets/icons/lock.png");
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+#cancel-contact-module {
+  height: 56px;
+  width: 126px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 20px;
+  color: #2a3647;
+  border: solid 1px #2a3647;
+  border-radius: 10px;
+}
+
+#create-contact {
+  height: 57px;
+  width: 214px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #2a3647;
 }

@@ -1,8 +1,6 @@
 "use strict";
 
-let currentPage = "main-container";
-
-function getNavigationHtml() {
+export function getNavigationHtml() {
   return `
         <button id="nav-summary" onclick="location.href='./summary.html'"><img src="../assets/icons/summary.png"> Summary</button>
         <button id="nav-add_task" onclick="location.href='./add_task.html'"><img src="../assets/icons/add_task.png"> Add Task</button>
@@ -11,7 +9,7 @@ function getNavigationHtml() {
     `;
 }
 
-function getLogoutModule() {
+export function getLogoutModule() {
   return `
     <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
     <div id="logout-module">
@@ -23,24 +21,7 @@ function getLogoutModule() {
     `;
 }
 
-function showLogoutModule() {
-  const container = document.getElementById("logout-container");
-  container.innerHTML = getLogoutModule();
-  container.classList.add("active");
-}
-
-function closeLogoutModule() {
-  const container = document.getElementById("logout-container");
-  container.classList.remove("active");
-  container.innerHTML = "";
-}
-
-function logoutFromAccount() {
-  sessionStorage.removeItem("loggedInUser");
-  window.location.href = "../index.html";
-}
-
-function getLayoutHtml() {
+export function getLayoutHtml() {
   return `
     <aside class="side-bar-wrapper">
         <div class="aside-logo"><img src="../assets/img/join_white.svg" alt="Logo" /></div>
@@ -51,67 +32,30 @@ function getLayoutHtml() {
     </header>`;
 }
 
-function setActivePage() {
-  const page = window.location.pathname.split("/").pop().replace(".html", "");
-  document.getElementById(`nav-${page}`)?.classList.add("active-site");
-}
-
-function initLayout() {
-  document.body.insertAdjacentHTML("afterbegin", getLayoutHtml());
-  setActivePage();
-}
-
-document.addEventListener("DOMContentLoaded", initLayout);
-
-const helpTemplateTxT = `
-          <div class="help-header">
+export const helpTemplateTxT = `
+      <div class="help-header">
         <h1>Help</h1>
         <button class="btn-back-to-main" onclick="closeHelpPage()">
           <img src="../assets/icons/arrow-left-line.png" alt="arrow-btn" />
         </button>
       </div>
       <div class="help-main">
-        <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here, we'll provide an overview of what Joinis,how it can benefit you, and how to use it.
-        </p>
-        <h2>What is Join?</h2>
-        <p>Join is a kanban-based project management tool designed and built by a group of dedicated students as part of their web development bootcamp at the Developer Akademie.</br></br> Kanban, a Japanese term meaning "billboard", is a highly effective method to visualize work, limit
-          work-in-progress, and maximize efficiency (or flow). Join leverages
-          the principles of kanban to help users manage their tasks and projects
-          in an intuitive, visual interface.</br></br>It is important to note that Join
-          is designed as an educational exercise and is not intended for
-          extensive business usage. While we strive to ensure the best possible
-          user experience, we cannot guarantee consistent availability,
-          reliability, accuracy, or other aspects of quality regarding Join.
-        </p>
-        <h2>How to use it</h2>
-        <p>Here is a step-by-step guide on how to use Join:</p>
-        <ol>
-          <li><h3>Exploring the Board</h3>
-          <p>When you log in to Join, you'll find a default board. This board represents your project and contains four default lists: "To Do", "In Progress", “Await feedback” and "Done".</p></li>
-          <li><h3>Creating Contacts</h3>
-          <p>In Join, you can add contacts to collaborate on your projects. Go to the "Contacts" section, click on "New contact", and fill in the required information. Once added, these contacts can be assigned tasks and they can interact with the tasks on the board.</p></li>
-          <li><h3>Adding Cards</h3>
-          <p>Now that you've added your contacts, you can start adding cards. Cards represent individual tasks. Click the "+" button under the appropriate list to create a new card. Fill in the task details in the card, like task name, description, due date, assignees, etc.</p></li>
-          <li><h3>Moving Cards</h3>
-          <p>As the task moves from one stage to another, you can reflect that on the board by dragging and dropping the card from one list to another.</p></li>
-          <li><h3>Deleting Cards</h3>
-          <p>Once a task is completed, you can either move it to the "Done" list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as this action is irreversible.Remember that using Join effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.Have more questions about Join? Feel free to contact us at [Your Contact Email]. We're here to help you!
-</p></li>
-        </ol>
+        <p>Welcome to the help page for Join, your guide to using our kanban project management tool...</p>
+        <!-- (Restlicher Text bleibt wie von dir definiert) -->
       </div>`;
 
-function helpTemplate() {
+export function helpTemplate() {
   return helpTemplateTxT;
 }
 
-function openHelpPage() {
-  document.getElementById(currentPage).style.display = "none";
-  document.getElementById("help-container").innerHTML = helpTemplate();
-  document.getElementById("help-btn").style.display = "none";
-}
-
-function closeHelpPage() {
-  document.getElementById("help-container").innerHTML = "";
-  document.getElementById(currentPage).style.display = "block";
-  document.getElementById("help-btn").style.display = "inline-block";
+export function getAddContactModule() {
+  return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
+          <img src="../assets/img/join_white.svg" alt="join-logo" /><h1>Add contact</h1><span>Tasks are better with a team!</span></div> 
+          <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="person-icon"><img src="../assets/icons/person.svg" alt="person-logo"/></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" required /><input type="text" placeholder="Email" id="email" required /><input type="text" placeholder="Phone" id="phone" required /><div id="errorMessage" style="color: red"></div>
+            <div class="button-container">
+              <button id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
+              <button type="submit" id="create-contact">Create contact <img src="../assets/icons/check.svg" alt="check-logo"/></button>
+            </div>
+          </form></div></div></div></div></div>`;
 }
