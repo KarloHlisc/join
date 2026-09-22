@@ -232,7 +232,7 @@ input {
 }
 
 #phone {
-  background-image: url("../assets/icons/lock.png");
+  background-image: url("../assets/icons/call.svg");
 }
 
 .button-container {
@@ -263,4 +263,159 @@ input {
   font-weight: bold;
   border-radius: 10px;
   background-color: #2a3647;
+}
+
+.modal {
+  position: fixed;
+  left: 60%;
+  top: 80%;
+  transform: translate(100%, 0);
+  width: 312px;
+  height: 74px;
+  max-width: 450px;
+  background-color: #091931;
+  border-radius: 20px;
+  border: 1px solid;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000;
+  opacity: 0;
+  transition:
+    transform 0.6s ease-out,
+    opacity 0.6s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.active {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.modal p {
+  color: #f8f9fa;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+#contact-details-container {
+  margin: 80px 0 0 40px;
+}
+
+#details-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+#details-header h1 {
+  font-size: 61px;
+  position: relative;
+}
+#details-header span {
+  font-size: 27px;
+}
+
+#details-header h1::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 280px;
+  transform: translateX(-50%);
+  height: 59px;
+  border-right: 3px solid #29abe2;
+}
+
+#icon-name-and-details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+#icon-name-and-details .user-icon {
+  font-size: 47px;
+}
+
+#details-icon {
+  width: 120px;
+  height: 120px;
+}
+
+#name-and-button span {
+  font-weight: 500;
+  font-size: 47px;
+}
+
+#edit-delete {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#edit {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #2a3647;
+}
+
+#delete {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #2a3647;
+}
+
+#edit:hover,
+#delete:hover {
+  font-weight: bold;
+}
+
+#contact-info {
+  font-size: 20px;
+}
+
+#details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+#details-icon {
+  font-size: 47px;
+}
+
+#edit-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: #2a3647;
+  width: 111px;
+  height: 55px;
+}
+.edit-title::after {
+  content: "";
+  position: absolute;
+  top: 380px;
+  left: 85px;
+  transform: translateX(-50%);
+  width: 90px;
+  border-bottom: 3px solid #29abe2;
+}
+
+.edit-delete {
+  font-size: 20px;
+  justify-content: center;
+  width: 113px;
+  height: 55px;
+  border: 1px solid #2a3647;
+  border-radius: 8px;
 }
