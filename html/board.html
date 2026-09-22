@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="../css/help.css" />
     <link rel="stylesheet" href="../css/board.css">
     <script src="../script.js" type="module"></script>
-    <script src="../js/template.js"></script>
+   <!-- <script src="../js/template.js"></script> -->
+    
   </head>
-  <body>
+  <body onload=" init()">
     <main>
       <div id="main-container">
         <section id="board-header">
@@ -36,7 +37,8 @@
               <button id="add-to-do-btn"><img src="../assets/icons/button-add-task.svg" alt="button-add-task"></button>
             </div>
             <div id="to-do-cards-container" class="cards-container">
-              <div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div>
+             <div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div> 
+              
             </div>
           </section>
           <section id="in-progress-section">
@@ -70,5 +72,6 @@
       </div>
       <div id="help-container"></div>
     </main>
+    <script src="../js/board.js"></script>
   </body>
 </html>
