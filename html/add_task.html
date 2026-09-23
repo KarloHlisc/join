@@ -6,11 +6,93 @@
     <title>Join - Board</title>
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/help.css" />
+    <link rel="stylesheet" href="../css/addTask.css" />
     <script src="../script.js" type="module"></script>
   </head>
   <body>
     <main>
-      <div id="main-container"></div>
+      <div id="main-container">
+        <div id="form-container">
+          <div id="add-task-title"><h1>Add Task</h1></div>
+          <form id="addTaskForm">
+            <div id="leftSide">
+              <label for="formTitle">Title*</label>
+              <input
+                type="text"
+                id="formTitle"
+                required
+                placeholder="Enter a title"
+              />
+              <label for="description">Description</label>
+              <textarea
+                id="description"
+                placeholder="Enter a description"
+              ></textarea>
+              <label for="duedate">Due date*</label>
+              <input type="date" id="duedate" required />
+            </div>
+            <div id="rightSide">
+              <span class="form-label">Priority</span>
+              <div id="priority-buttons">
+                <button class="priority-btn" data-value="urgent">
+                  Urgent
+                  <img src="../assets/icons/urgent.svg" alt="urgent-icon" />
+                </button>
+                <button class="priority-btn" data-value="medium">
+                  Medium
+                  <img src="../assets/icons/medium.svg" alt="medium-icon" />
+                </button>
+                <button class="priority-btn" data-value="low">
+                  Low <img src="../assets/icons/low.svg" alt="low-icon" />
+                </button>
+              </div>
+              <span class="form-label">Assigned to</span>
+              <div class="custom-dropdown">
+                <div class="dropdown-header" id="dropdownHeader">
+                  <span id="dropdownSelectedText"
+                    >Select contacts to assign</span
+                  >
+                  <span class="arrow">▼</span>
+                </div>
+                <ul class="dropdown-list" id="dropdownList"></ul>
+              </div>
+              <ul class="assigned-users"></ul>
+              <label for="category">Category</label>
+              <select id="category">
+                <option value="Technical">Technical</option>
+                <option value="User Story">User Story</option>
+              </select>
+              <label for="subtaskInput">Subtasks</label>
+              <div class="subtask-container">
+                <input
+                  type="text"
+                  id="subtaskInput"
+                  placeholder="Add new Subtasks"
+                />
+                <button id="addSubtaskBtn">
+                  <img src="../assets/icons/darkcheck.svg" alt="check-icon" />
+                </button>
+                <button id="clearSubtaskBtn">
+                  <img src="../assets/icons/delete.svg" alt="delete" />
+                </button>
+              </div>
+              <ul id="subTaskList"></ul>
+            </div>
+          </form>
+          <div id="createTaskBtn-container">
+            <span>*This field is requiered</span>
+            <div id="btn-container">
+              <button id="clear">
+                Clear <img src="../assets/icons/vector.svg" alt="x-icon" />
+              </button>
+              <button id="createTask">
+                Create Task
+                <img src="../assets/icons/check.svg" alt="check-icon" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="help-container"></div>
     </main>
   </body>
