@@ -6,11 +6,76 @@
     <title>Join - Board</title>
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/help.css" />
+    <link rel="stylesheet" href="../css/summary.css" />
     <script src="../script.js" type="module"></script>
   </head>
   <body>
     <main>
-      <div id="main-container"></div>
+      <div id="main-container">
+        <div id="details-header">
+          <h1>Join 360</h1>
+          <span>Key Metrics at a Glance</span>
+        </div>
+        <div class="container">
+          <div class="header">
+            <div class="cards-grid">
+              <div class="card">
+                <div class="card-icon todo">
+                  <img src="../assets/icons/to-do-edit.svg" alt="icon to do" />
+                </div>
+                <div class="card-content">
+                  <div id="card-number-to-do" class="card-number">1</div>
+                  <div class="card-label">To-do</div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-icon done">
+                  <img src="../assets/icons/done-edit.svg" alt="icon done" />
+                </div>
+                <div class="card-content">
+                  <div id="card-number-done" class="card-number">1</div>
+                  <div class="card-label">Done</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="card-stats-level">
+                <div class="card-icon urgent">
+                  <img src="../assets/icons/urgend-red.svg" alt="icon stat level" />
+                </div>
+                <div class="card-content" id="card-content-urgent">
+                  <div id="card-number-stat" class="card-number">1</div>
+                  <div class="card-label">Urgent</div>
+                </div>
+                <div class="card-content">
+                  <div id="card-deadline" class="card-deadline">
+                    October 16, 2022
+                  </div>
+                  <div class="card-deadline-date">Upcoming Deadline</div>
+                </div>
+              </div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-card">
+                <div id="tasks-in-board" class="stat-number">5</div>
+                <div class="stat-label">Tasks in Board</div>
+              </div>
+              <div class="stat-card">
+                <div id="tasks-in-progress" class="stat-number">2</div>
+                <div class="stat-label">Tasks in Progress</div>
+              </div>
+              <div class="stat-card">
+                <div id="awaiting-feedback" class="stat-number">2</div>
+                <div class="stat-label">Awaiting Feedback</div>
+              </div>
+            </div>
+          </div>
+          <div class="greeting-section">
+            <p class="greeting-text" id="greeting-text">Good morning,</p>
+            <h2 class="greeting-name" id="greeting-name">Sofia Müller</h2>
+          </div>
+        </div>
+      </div>
       <div id="help-container"></div>
     </main>
   </body>
