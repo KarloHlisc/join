@@ -13,8 +13,13 @@ const existSignUpForm = document.getElementById("signup-form");
 const errEL = document.getElementById("errorMessage");
 
 function generateNextUserId(currentUsers) {
-  const users = currentUsers || {};
-  const nextNumber = Object.keys(users).length + 1;
+  const keys = Object.keys(currentUsers || {});
+  if (keys.length === 0) return "userid_01";
+  const numbers = keys.map((key) => {
+    const match = key.match(/\d+/);
+    return match ? parseInt(match, 10) : 0;
+  });
+  const nextNumber = Math.max(...numbers) + 1;
   return `userid_${String(nextNumber).padStart(2, "0")}`;
 }
 /* prettier-ignore */

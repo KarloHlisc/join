@@ -104,7 +104,11 @@ function setActivePage() {
 }
 
 function initLayout() {
-  if (document.body && !existLoginForm) {
+  if (
+    document.body &&
+    !existLoginForm &&
+    !document.body.classList.contains("no-sidebar")
+  ) {
     document.body.insertAdjacentHTML("afterbegin", getLayoutHtml());
     setActivePage();
     userIcon();
