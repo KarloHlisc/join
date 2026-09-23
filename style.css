@@ -202,6 +202,22 @@ ol {
   margin-bottom: 16px;
 }
 
+#main-legallogin {
+  height: calc(100vh - 96px - 5px);
+  padding: 120px 80px;
+}
+
+#main-policylogin {
+  height: calc(100vh - 96px - 5px);
+  padding: 120px 80px;
+}
+
+#main-legallogin h1,
+#main-policylogin h1 {
+  font-size: 61px;
+  margin: 0px;
+}
+
 #policy-after-login-container {
   height: calc(100vh - 96px - 5px);
   padding: 120px 80px;
