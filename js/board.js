@@ -11,20 +11,19 @@ let userTasks = [];
     getCartTemplate();
 //}
 
-function getCartTemplate(){
-    const cart = document.getElementById("to-do-cards-container");
-    // cart.innerHTML="";
-    if(cart == ""){
-        cart.innerHTML = '<div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div>';
-    }
-    else{
-   
-        cart.innerHTML = cartTemplate();
-    }
+function getCartTemplate() {
+  const cart = document.getElementById("to-do-cards-container");
+  // cart.innerHTML="";
+  if (cart == "") {
+    cart.innerHTML =
+      '<div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div>';
+  } else {
+    cart.innerHTML = cartTemplate();
+  }
 }
 
 function cartTemplate() {
-    return `
+  return `
         <div role="button" class="cart" >
                 <div class="level-story">
                   <p>User Story</p>
