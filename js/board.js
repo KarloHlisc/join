@@ -1,7 +1,15 @@
 'use strict';
-function init(){
+/*
+import { database } from "../js/config.js";
+import {
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+*/
+let userTasks = [];
+//function init(){
     getCartTemplate();
-}
+//}
 
 function getCartTemplate(){
     const cart = document.getElementById("to-do-cards-container");
@@ -42,3 +50,22 @@ function cartTemplate() {
     `;
 }
 
+const BASE_URL = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/tasks";
+
+async function getUserTasks() {
+    try{
+        const response = await fetch (BASE_URL);
+        const data = await response.json();
+        getFromFetchedData(data);
+    }
+    catch(error)
+    {
+        console.log(error);
+        
+    }
+}
+
+async function getFromFetchedData(data) {
+    let fechedData = data.reults;
+    userTasks.push(...fechedData);
+}
