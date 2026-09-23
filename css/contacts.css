@@ -32,6 +32,15 @@ h1 {
 .user-btn:hover {
   background-color: #dfdfdf;
 }
+.user-btn:focus {
+  background-color: #2a3647;
+  border-radius: 10px;
+}
+
+.user-btn:focus .user-name {
+  color: #ffffff !important;
+}
+
 .user-icon {
   align-items: center;
 }
