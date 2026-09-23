@@ -13,6 +13,23 @@ const existLoginForm = document.getElementById("login-form");
 const errEL = document.getElementById("errorMessage");
 let currentPage = "main-container";
 
+window.addEventListener("pageshow", function (event) {
+  const currentPath = window.location.pathname;
+  const isLoginPage = currentPath.includes("index.html");
+  const isSignupPage = currentPath.includes("signup.html");
+  const isLegalPage = currentPath.includes("legal_login.html");
+  const isPolicyPage = currentPath.includes("policy_login.html");
+  if (
+    !isLoginPage &&
+    !isSignupPage &&
+    !isLegalPage &&
+    !isPolicyPage &&
+    !sessionStorage.getItem("loggedInUser")
+  ) {
+    window.location.replace("../index.html");
+  }
+});
+
 async function findUser(email, password) {
   const data = await get(child(ref(database), "users"));
   const users = data.exists() ? data.val() : {};
@@ -149,7 +166,7 @@ function closeLogoutModule() {
 
 function logoutFromAccount() {
   sessionStorage.removeItem("loggedInUser");
-  window.location.href = "../index.html";
+  window.location.replace("../index.html");
 }
 
 window.logInAsGuest = logInAsGuest;
