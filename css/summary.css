@@ -55,6 +55,13 @@
 
 .card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #2d3e50;
+  .card-number,.card-label{
+    color:white;
+  }
+  .img{
+    fill: #999;
+  }
 }
 
 .card-icon {
@@ -93,6 +100,15 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
+.card-stats-level:hover{
+  background-color: #2d3e50;
+  .card-number, .card-label,.card-deadline-date,.card-deadline{
+  color:white
+ }
+}
+
+
 
 #details-header {
   display: flex;
@@ -173,6 +189,11 @@
 
 .stat-card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background-color: #2d3e50;
+  .stat-number,.stat-label{
+    color: white;
+  }
 }
 
 .stat-number {
