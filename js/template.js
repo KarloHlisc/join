@@ -109,3 +109,64 @@ export function getEditContactModule(user, initials) {
             </div>
           </form></div></div></div></div></div>`;
 }
+
+export const taskFormTemplate = `
+<div id="form-container">
+  <div id="add-task-title"><h1>Add Task</h1></div>
+  <form id="addTaskForm">
+    <div id="form-body">
+      <div id="leftSide">
+        <label for="formTitle">Title*</label>
+        <input type="text" id="formTitle" required placeholder="Enter a title" />
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Enter a description"></textarea>
+        <label for="duedate">Due date*</label>
+        <input type="date" id="duedate" required />
+      </div>
+      <div id="rightSide">
+        <span class="form-label">Priority</span>
+        <div id="priority-buttons">
+          <button type="button" class="priority-btn" id="urgent-btn" data-value="urgent">Urgent <img src="../assets/icons/urgent.svg" alt="" aria-hidden="true" /></button>
+          <button type="button" class="priority-btn" id="medium-btn" data-value="medium">Medium <img src="../assets/icons/medium.svg" alt="" aria-hidden="true" /></button>
+          <button type="button" class="priority-btn" id="low-btn" data-value="low">Low <img src="../assets/icons/low.svg" alt="" aria-hidden="true" /></button>
+        </div>
+        <label for="searchInput">Assigned to</label>
+        <div class="custom-dropdown">
+          <div class="dropdown-header-input-wrapper">
+            <input type="text" id="searchInput" placeholder="Select contacts to assign" autocomplete="off" />
+            <button type="button" id="dropdownToggle" class="dropdown-btn" aria-label="Benutzerliste anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="dropdownArrowImg" /></button>
+          </div>
+          <ul class="dropdown-list hidden" id="dropdownList"></ul>
+        </div>
+        <div id="assignedUsersContainer" class="assigned-users"></div>
+        <ul class="assigned-users"></ul>
+        <label for="categoryToggle">Category</label>
+        <div class="custom-dropdown">
+          <div class="dropdown-header" id="categoryHeader">
+            <span id="categorySelectedText">Select task category</span>
+            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" /></button>
+          </div>
+          <ul class="dropdown-list hidden" id="categoryList">
+            <li class="user-item" data-value="Technical"><span class="user-name">Technical</span></li>
+            <li class="user-item" data-value="User Story"><span class="user-name">User Story</span></li>
+          </ul>
+        </div>
+        <label for="subtaskInput">Subtasks</label>
+        <div class="subtask-container">
+          <input type="text" id="subtaskInput" placeholder="Add new Subtasks" />
+          <button type="button" id="addSubtaskBtn"><img src="../assets/icons/darkcheck.svg" alt="Add Subtask" /></button>
+          <button type="button" id="clearSubtaskBtn"><img src="../assets/icons/delete.svg" alt="Clear input" /></button>
+        </div>
+        <ul id="subTaskList"></ul>
+      </div>
+    </div>
+    <div id="createTaskBtn-container">
+      <span class="required-hint">*This field is required</span>
+      <div id="btn-container">
+        <button type="reset" id="clear">Clear <img src="../assets/icons/vector.svg" alt="" aria-hidden="true" /></button>
+        <button type="submit" id="createTask">Create Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
