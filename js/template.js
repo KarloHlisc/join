@@ -144,11 +144,11 @@ export const taskFormTemplate = `
         <div class="custom-dropdown">
           <div class="dropdown-header" id="categoryHeader">
             <span id="categorySelectedText">Select task category</span>
-            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" /></button>
+            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
           </div>
           <ul class="dropdown-list hidden" id="categoryList">
-            <li class="user-item" data-value="Technical"><span class="user-name">Technical</span></li>
-            <li class="user-item" data-value="User Story"><span class="user-name">User Story</span></li>
+            <li class="user-item" data-value="Technical"><span >Technical</span></li>
+            <li class="user-item" data-value="User Story"><span >User Story</span></li>
           </ul>
         </div>
         <label for="subtaskInput">Subtasks</label>

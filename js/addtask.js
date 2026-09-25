@@ -90,56 +90,144 @@ async function getUserList() {
   container.innerHTML = container.querySelector("#add-btn-container")?.outerHTML || "";
   const rawData = data.val();
   const users = Object.keys(rawData).map((k) => ({ userId: k, ...rawData[k] })).sort((a, b) => a.name.localeCompare(b.name));
-  users.forEach((user) => {
-    createAndAppendButton(user, container, users);
-  });
+  users.forEach((user) => createAndAppendButton(user, container, users));
 }
 
-function openDropdown() {
-  const list = document.getElementById("dropdownList");
-  const arrow = document.getElementById("dropdownArrowImg");
-  if (list && list.classList.contains("hidden")) {
+function closeAllDropdowns() {
+  document.getElementById("dropdownList")?.classList.add("hidden");
+  document.getElementById("categoryList")?.classList.add("hidden");
+  document.getElementById("dropdownArrowImg")?.classList.remove("rotate-180");
+  document.getElementById("categoryArrowImg")?.classList.remove("rotate-180");
+}
+
+function toggleDropdown(listId, arrowId, callback = null) {
+  const list = document.getElementById(listId);
+  const arrow = document.getElementById(arrowId);
+  if (!list || !arrow) return;
+  const opening = list.classList.contains("hidden");
+  closeAllDropdowns();
+  if (opening) {
     list.classList.remove("hidden");
-    if (arrow) arrow.classList.add("rotate-180");
-    getUserList();
+    arrow.classList.add("rotate-180");
+    if (callback) callback();
+  }
+}
+
+function openUserDropdown() {
+  const list = document.getElementById("dropdownList");
+  if (list && list.classList.contains("hidden")) {
+    toggleDropdown("dropdownList", "dropdownArrowImg", getUserList);
   }
 }
 
 function filterUserList() {
-  openDropdown();
+  openUserDropdown();
   const filter =
     document.getElementById("searchInput")?.value.toLowerCase() || "";
   const buttons = document.querySelectorAll("#dropdownList .user-btn");
-
   buttons.forEach((btn) => {
     const name = btn.querySelector(".user-name")?.innerText.toLowerCase() || "";
     btn.style.display = name.includes(filter) ? "flex" : "none";
   });
 }
 
-async function handleDropdownToggle() {
-  const list = document.getElementById("dropdownList");
-  const arrow = document.getElementById("dropdownArrowImg");
-  if (!list || !arrow) return;
-  list.classList.toggle("hidden");
-  arrow.classList.toggle("rotate-180");
-  if (!list.classList.contains("hidden")) await getUserList();
+function setupCategorySelection() {
+  const items = document.querySelectorAll("#categoryList .user-item");
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      const selectedText = document.getElementById("categorySelectedText");
+      if (selectedText)
+        selectedText.innerText = item.getAttribute("data-value");
+      toggleDropdown("categoryList", "categoryArrowImg");
+    });
+  });
 }
 
-function setupEventListeners() {
-  const toggleBtn = document.getElementById("dropdownToggle");
-  const searchInput = document.getElementById("searchInput");
+function buttonVisability() {
+  const input = document.getElementById("subtaskInput");
+  input?.addEventListener("input", () => {
+    const hasText = input.value.trim().length > 0;
+    document.getElementById("addSubtaskBtn").style.display = hasText
+      ? "flex"
+      : "none";
+    document.getElementById("clearSubtaskBtn").style.display = hasText
+      ? "flex"
+      : "none";
+  });
+}
 
-  if (toggleBtn) toggleBtn.addEventListener("click", handleDropdownToggle);
+function clearSubtaskInput() {
+  const input = document.getElementById("subtaskInput");
+  if (!input) return;
+  input.value = "";
+  document.getElementById("addSubtaskBtn").style.display = "none";
+  document.getElementById("clearSubtaskBtn").style.display = "none";
+}
+
+function toggleSubtaskEdit(li, isEditing) {
+  li.classList.toggle("editing", isEditing);
+  const input = li.querySelector(".subtask-edit-input");
+  const textSpan = li.querySelector(".subtask-text");
+  const editImg = li.querySelector(".edit-btn img");
+
+  if (isEditing && input) {
+    input.value = textSpan.innerText;
+    input.focus();
+    if (editImg) editImg.src = "../assets/icons/darkcheck.svg";
+  } else if (editImg) {
+    editImg.src = "../assets/icons/edit.svg";
+  }
+}
+
+function saveSubtaskEdit(li) {
+  const input = li.querySelector(".subtask-edit-input");
+  const textSpan = li.querySelector(".subtask-text");
+  if (input && textSpan && input.value.trim())
+    textSpan.innerText = input.value.trim();
+  toggleSubtaskEdit(li, false);
+}
+
+/* prettier-ignore */
+function createSubtaskItem(text) {
+  const li = createEl("li", "subtask-item");
+  li.innerHTML = `<div><span>•</span><span class="subtask-text">${text}</span></div><input type="text" id="subtaskInputfield" class="subtask-edit-input" /><div class="subtask-actions"><button type="button" class="edit-btn"><img src="../assets/icons/edit.svg" alt="Edit" /></button><button type="button" class="delete-btn"><img src="../assets/icons/delete.svg" alt="Delete" /></button></div>`;
+  li.addEventListener("dblclick", () => toggleSubtaskEdit(li, true));
+  li.querySelector(".edit-btn").addEventListener("click", () => toggleSubtaskEdit(li, true));
+  li.querySelector(".delete-btn").addEventListener("click", () => li.remove());
+  const input = li.querySelector(".subtask-edit-input");
+  input.addEventListener("keydown", (e) => e.key === "Enter" && saveSubtaskEdit(li));
+  input.addEventListener("blur", () => saveSubtaskEdit(li));
+  return li;
+}
+
+function addSubtask() {
+  const input = document.getElementById("subtaskInput");
+  const container = document.getElementById("subTaskList");
+  if (!input || !container || !input.value.trim()) return;
+  container.append(createSubtaskItem(input.value.trim()));
+  clearSubtaskInput();
+}
+
+/* prettier-ignore */
+function setupEventListeners() {
+  document.getElementById("dropdownToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("dropdownList", "dropdownArrowImg", getUserList); });
+  document.getElementById("categoryToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("categoryList", "categoryArrowImg"); });
+  const searchInput = document.getElementById("searchInput");
   if (searchInput) {
     searchInput.addEventListener("input", filterUserList);
-    searchInput.addEventListener("click", openDropdown);
+    searchInput.addEventListener("click", (e) => { e.stopPropagation(); openUserDropdown(); });
   }
+  document.getElementById("addSubtaskBtn")?.addEventListener("click", addSubtask);
+  document.getElementById("clearSubtaskBtn")?.addEventListener("click", clearSubtaskInput);
+  document.getElementById("subtaskInput")?.addEventListener("keydown", (e) => e.key === "Enter" && (e.preventDefault() || addSubtask()));
+  setupCategorySelection();
+  document.addEventListener("click", closeAllDropdowns);
 }
 
 function init() {
   renderTaskForm();
   setupEventListeners();
+  buttonVisability();
 }
 
 window.renderTaskForm = renderTaskForm;

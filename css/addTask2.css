@@ -1,0 +1,229 @@
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.user-email {
+  font-size: 12px;
+  color: #666666;
+}
+
+.user-icon,
+.user-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: bold 12px sans-serif;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #2a3647;
+  border-radius: 4px;
+  background: center no-repeat;
+  transition: all 0.1s ease-in-out;
+}
+
+.user-btn.selected .custom-checkbox {
+  background-image: url("../assets/icons/darkcheck.svg");
+  background-size: 14px;
+}
+
+#assignedUsersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.subtask-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#subtaskInput {
+  padding-right: 80px;
+}
+
+#addSubtaskBtn,
+#clearSubtaskBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#addSubtaskBtn {
+  right: 10px;
+}
+
+#clearSubtaskBtn {
+  right: 40px;
+}
+
+#subTaskList,
+.assigned-users {
+  margin-top: 10px;
+  list-style: none !important;
+  padding-left: 0;
+}
+
+#subtaskInputfield {
+  height: 32px;
+  border-radius: 0 !important;
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue;
+}
+
+.subtask-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 4px !important;
+}
+
+.subtask-actions {
+  display: none;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+}
+
+.subtask-item:hover .subtask-actions,
+.subtask-item.editing .subtask-actions {
+  display: flex;
+}
+
+.subtask-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.subtask-actions button:hover {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.subtask-actions .edit-btn {
+  order: 1;
+  position: relative;
+}
+
+.subtask-actions .delete-btn {
+  order: 2;
+}
+
+.subtask-item.editing .subtask-actions .delete-btn {
+  order: 1;
+}
+
+.subtask-item.editing .subtask-actions .edit-btn {
+  order: 2;
+}
+
+.subtask-actions .edit-btn::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background-color: #d1d1d1;
+  right: -4px;
+}
+
+.subtask-item.editing .subtask-actions .edit-btn::after {
+  left: -4px;
+  right: auto;
+}
+
+.subtask-edit-input {
+  display: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.subtask-item.editing .subtask-text {
+  display: none;
+}
+
+.subtask-item.editing .subtask-edit-input {
+  display: block;
+  padding-right: 65px;
+}
+
+.subtask-item.editing .subtask-actions {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#createTaskBtn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 60px;
+  padding: 20px 45px 0;
+  width: 100%;
+}
+
+#btn-container {
+  display: flex;
+  gap: 15px;
+}
+
+#clear,
+#createTask {
+  height: 56px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 20px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+#clear {
+  color: #2a3647;
+  border: 1px solid #2a3647;
+  background-color: transparent;
+}
+
+#clear:hover {
+  border: 3px solid #2a3647;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+#createTask {
+  font-weight: bold;
+  background-color: #2a3647;
+  color: #ffffff;
+}
+
+#createTask:hover {
+  background-color: #124658;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
