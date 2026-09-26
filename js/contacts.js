@@ -173,7 +173,7 @@ const handleFormSubmit = async (e) => {
     if (await checkEmail(val("email"))) throw new Error("Email is already registered");
     await registerUser(val("email"), val("name"), val("phone"));
     closeAddContactModule()
-    showSuccessModal();
+    toggleShowSuccessModal("congrats");
   } catch (err) { if (errorDisplay) errorDisplay.textContent = err.message; }
 };
 
@@ -199,16 +199,17 @@ async function saveEditedUser(userId, currentData, val) {
     return curr;
   });
   closeAddContactModule();
+  toggleShowSuccessModal("edited")
 }
 
-function showSuccessModal() {
-  const modal = document.getElementById("congrats-modal");
+function toggleShowSuccessModal(id) {
+  const modal = document.getElementById(`${id}-modal`);
   if (!modal) return;
   modal.classList.add("active");
+  getUserList();
   setTimeout(() => {
     modal.classList.remove("active");
-    getUserList();
-  }, 2500);
+  }, 1000);
 }
 
 function deleteUser(userId) {
@@ -218,7 +219,7 @@ function deleteUser(userId) {
       if (details) details.innerHTML = "";
       closeAddContactModule();
       addContactButton();
-      getUserList();
+      toggleShowSuccessModal("deleted");
     })
     .catch((err) => console.error("Fehler:", err));
 }

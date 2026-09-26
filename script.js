@@ -43,20 +43,20 @@ function loginSuccess(user) {
   window.location.href = "./html/summary.html";
 }
 
+/* prettier-ignore */
 if (existLoginForm) {
-  existLoginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    errEL.textContent = "";
+  existLoginForm.addEventListener("submit", async (e) => {e.preventDefault();errEL.textContent = "";
+    const inputs = document.querySelectorAll("#email, #password");
+    inputs.forEach(input => input.classList.remove("input-error"));
     try {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
       const user = await findUser(email, password);
+      const input = document.querySelectorAll("#password, #email" )
       if (!user)
-        throw new Error("Check your email and password. Please try again.");
+       throw new Error("Check your email and password. Please try again.");
       loginSuccess(user);
-    } catch (err) {
-      errEL.textContent = err.message;
-    }
+    } catch (err) {errEL.textContent = err.message;inputs.forEach(input => input.classList.add("input-error"));}
   });
 }
 

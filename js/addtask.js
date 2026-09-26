@@ -11,6 +11,8 @@ import {
 import { taskFormTemplate } from "./template.js";
 
 const selectedUserIds = new Set();
+let existSignUpForm;
+let errEL;
 
 export function renderTaskForm() {
   const target = document.getElementById("main-container");
@@ -65,20 +67,18 @@ function toggleUserSelection(user, button, users) {
   if (badgeContainer) renderAssignedIcons(users, badgeContainer);
 }
 
+/* prettier-ignore */
 function createAndAppendButton(user, container, users) {
   const button = createEl("button", "user-btn");
   button.type = "button";
   if (selectedUserIds.has(user.userId)) button.classList.add("selected");
   const icon = createEl("div", "user-icon", getInitials(user.name));
   icon.style.backgroundColor = user.backgroundColor || "#000000";
-  button.append(
-    icon,
-    createTextContainer(user),
-    createEl("div", "custom-checkbox"),
-  );
-  button.addEventListener("click", () =>
-    toggleUserSelection(user, button, users),
-  );
+  button.append(icon,createTextContainer(user),createEl("div", "custom-checkbox"));
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleUserSelection(user, button, users);
+});
   container.append(button);
 }
 
@@ -208,15 +208,28 @@ function addSubtask() {
   clearSubtaskInput();
 }
 
+function resetForm() {
+  const form = document.getElementById("addTaskForm");
+  const assigned = document.getElementById("assignedUsersContainer");
+  const subtask = document.getElementById("subTaskList");
+  if (!form) return;
+  form.reset();
+  selectedUserIds.clear();
+  if (assigned) assigned.innerHTML = "";
+  if (subtask) subtask.innerHTML = "";
+  const buttons = document.querySelectorAll("#dropdownList .user-btn");
+  buttons.forEach((button) => button.classList.remove("selected"));
+  const categoryText = document.getElementById("categorySelectedText");
+  if (categoryText) categoryText.innerText = "Select task category";
+}
+
 /* prettier-ignore */
 function setupEventListeners() {
   document.getElementById("dropdownToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("dropdownList", "dropdownArrowImg", getUserList); });
   document.getElementById("categoryToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("categoryList", "categoryArrowImg"); });
   const searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", filterUserList);
-    searchInput.addEventListener("click", (e) => { e.stopPropagation(); openUserDropdown(); });
-  }
+  if (searchInput) {searchInput.addEventListener("input", filterUserList);searchInput.addEventListener("click", (e) => { e.stopPropagation(); openUserDropdown(); });}
+  document.getElementById("clear")?.addEventListener("click", resetForm);
   document.getElementById("addSubtaskBtn")?.addEventListener("click", addSubtask);
   document.getElementById("clearSubtaskBtn")?.addEventListener("click", clearSubtaskInput);
   document.getElementById("subtaskInput")?.addEventListener("keydown", (e) => e.key === "Enter" && (e.preventDefault() || addSubtask()));
@@ -224,10 +237,114 @@ function setupEventListeners() {
   document.addEventListener("click", closeAllDropdowns);
 }
 
+function generateNextTaskId(currenttasks) {
+  const keys = Object.keys(currenttasks || {});
+  if (keys.length === 0) return "task_01";
+  const numbers = keys.map((k) => parseInt(k.match(/\d+/)?.[0] || 0, 10));
+  return `task_${String(Math.max(...numbers) + 1).padStart(2, "0")}`;
+}
+
+/* prettier-ignore */
+const registerTask = async (title, desc, date, prio, cat, users, subtasks) => {
+  const tasksRef = ref(database, "tasks");
+  return runTransaction(tasksRef, (currenttasks) => {
+    const tasks = currenttasks || {};
+    tasks[generateNextTaskId(tasks)] = {
+      title, description: desc, duedate: date, status: "todo",
+      priority: prio, assignedTo: users, category: cat, subtasks
+    };
+    return tasks;
+  });
+};
+
+function getSelectedPriority() {
+  const activeBtn = document.querySelector(".priority-btn.active");
+  return activeBtn ? activeBtn.getAttribute("data-value") : "medium";
+}
+
+function setupPriorityButtons() {
+  const buttons = document.querySelectorAll(".priority-btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  });
+}
+
+function getSubtasksData() {
+  const subtasks = {};
+  document.querySelectorAll("#subTaskList .subtask-item").forEach((item, i) => {
+    const text = item.querySelector(".subtask-text")?.innerText || "";
+    subtasks[`subtask_${i}`] = { title: text, isDone: false };
+  });
+  return subtasks;
+}
+
+function clearErrors() {
+  const titleErr = document.getElementById("errorTitle");
+  const dateErr = document.getElementById("errorDate");
+  if (titleErr) titleErr.textContent = "";
+  if (dateErr) dateErr.textContent = "";
+}
+
+/* prettier-ignore */
+function checkVali(e) {
+  clearErrors();
+  if (!existSignUpForm.checkValidity()) {
+    e.preventDefault();
+    existSignUpForm.querySelectorAll(":invalid").forEach((el) => el.classList.add("input-error"));
+    if (!document.getElementById("formTitle").checkValidity()) {document.getElementById("errorTitle").textContent = "This field is required";}
+    if (!document.getElementById("duedate").checkValidity()) {document.getElementById("errorDate").textContent = "This field is required";}
+    return false;
+  }
+  return true;
+}
+
+function getAssignedUsersObj() {
+  const assignedUsers = {};
+  selectedUserIds.forEach((id) => {
+    assignedUsers[id] = true;
+  });
+  return assignedUsers;
+}
+
+/* prettier-ignore */
+function handleFormSubmitEvent(e) {
+  e.preventDefault();
+  errEL = document.getElementById("errorMessage");
+  if (errEL) errEL.textContent = "";
+  existSignUpForm.querySelectorAll(".input-error").forEach((el) => el.classList.remove("input-error"));
+  if (!checkVali(e)) return;
+  const val = (id) => document.getElementById(id)?.value?.trim() || "";
+  const cat = document.getElementById("categorySelectedText")?.innerText || "";
+  registerTask(val("formTitle"), val("description"), val("duedate"), getSelectedPriority(), cat, getAssignedUsersObj(), getSubtasksData())
+    .then(() => { resetForm(); showSuccessModal(); })
+    .catch((err) => { if (errEL) errEL.textContent = err.message; });
+}
+
+function setupFormSubmit() {
+  existSignUpForm = document.getElementById("addTaskForm");
+  existSignUpForm?.addEventListener("submit", handleFormSubmitEvent);
+}
+
+function showSuccessModal() {
+  const modal = document.getElementById("congrats-modal");
+  modal.classList.add("active");
+  setTimeout(() => {
+    modal.classList.remove("active");
+    setTimeout(() => {
+      window.location.href = "../html/board.html";
+    }, 400);
+  }, 2500);
+}
+
 function init() {
   renderTaskForm();
   setupEventListeners();
   buttonVisability();
+  setupFormSubmit();
+  setupPriorityButtons();
 }
 
 window.renderTaskForm = renderTaskForm;

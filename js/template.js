@@ -13,23 +13,24 @@ export function getLogoutModule() {
   return `
     <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
     <div id="logout-module">
-        <button id="help-btn" class="help help-logout" onclick="openHelpPage()">Help</button>
-        <button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button>
-        <button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button class="help-btn help help-logout" onclick="openHelpPage()">Help</button>
+        <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button>
+        <button class="nav-policy-btn" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
         <button id="logout" onclick="logoutFromAccount()">Logout</button>
     </div>
-    `;
+  `;
 }
 
 export function getLayoutHtml() {
   return `
     <aside class="side-bar-wrapper">
-        <div class="aside-logo"><img src="../assets/img/join_white.svg" alt="Logo" /></div>
-        <div class="aside-menu">${getNavigationHtml()}</div>
-        <div class="aside-footer"><button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button><button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button></div>
-    </aside>
-    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button><button class="user-icon header-icon" onclick="showLogoutModule()"></button></div><div id="logout-container"></div>
-    </header>`;
+        <div class="aside-logo"><img src="../assets/img/join_white.svg" alt="Logo" /></div><div class="aside-menu">${getNavigationHtml()}</div>
+        <div class="aside-footer"><button class="nav-policy-btn" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button></div></aside>
+    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button class="help-btn help" onclick="openHelpPage()">
+   <img src="../assets/icons/help.png" alt="help-icon" /></button><div class="user-icon-wrapper">
+<button class="user-icon header-icon" onclick="showLogoutModule()"></button>
+<div id="logout-container"></div></div></div></header>`;
 }
 
 export const helpTemplateTxT = `
@@ -113,15 +114,17 @@ export function getEditContactModule(user, initials) {
 export const taskFormTemplate = `
 <div id="form-container">
   <div id="add-task-title"><h1>Add Task</h1></div>
-  <form id="addTaskForm">
+  <form id="addTaskForm" novalidate>
     <div id="form-body">
       <div id="leftSide">
-        <label for="formTitle">Title*</label>
+        <label for="formTitle">Title<span class="red-star">*</span></label>
         <input type="text" id="formTitle" required placeholder="Enter a title" />
+        <div id="errorTitle" style="color: red"></div>
         <label for="description">Description</label>
         <textarea id="description" placeholder="Enter a description"></textarea>
-        <label for="duedate">Due date*</label>
+        <label for="duedate">Due date<span class="red-star">*</span></label>
         <input type="date" id="duedate" required />
+        <div id="errorDate" style="color: red"></div>
       </div>
       <div id="rightSide">
         <span class="form-label">Priority</span>
@@ -140,7 +143,7 @@ export const taskFormTemplate = `
         </div>
         <div id="assignedUsersContainer" class="assigned-users"></div>
         <ul class="assigned-users"></ul>
-        <label for="categoryToggle">Category</label>
+        <label for="categoryToggle">Category<span class="red-star">*</span></label>
         <div class="custom-dropdown">
           <div class="dropdown-header" id="categoryHeader">
             <span id="categorySelectedText">Select task category</span>
@@ -161,7 +164,7 @@ export const taskFormTemplate = `
       </div>
     </div>
     <div id="createTaskBtn-container">
-      <span class="required-hint">*This field is required</span>
+      <span class="required-hint"><span class="red-star">*</span>This field is required</span>
       <div id="btn-container">
         <button type="reset" id="clear">Clear <img src="../assets/icons/vector.svg" alt="" aria-hidden="true" /></button>
         <button type="submit" id="createTask">Create Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
