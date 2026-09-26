@@ -123,6 +123,12 @@ select:invalid {
   background-color: #ffa801;
 }
 
+.priority-btn.active {
+  box-shadow: none;
+  color: #ffffff;
+  background-color: #ffa801;
+}
+
 #urgent-btn:focus img {
   content: url("../assets/icons/urgent-white.svg");
 }

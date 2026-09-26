@@ -28,7 +28,7 @@ const registerUser = async (e, n, p) => {
   return runTransaction(usersRef, (currentUsers) => {
     const users = currentUsers || {};
     const customId = generateNextUserId(users);
-    users[customId] = {email: e,name: n,password: p,backgroundColor: getRandomColor(),};
+    users[customId] = {email: e,name: n,password: p,backgroundColor: getRandomColor(),phone: ""};
     return users;
   });
 };
@@ -84,7 +84,6 @@ function showSuccessModal() {
   }, 2500);
 }
 
-// Password visibility toggle
 /* prettier-ignore */
 function togglePasswordVisibility(id,eyeIconId,input = document.getElementById(id),icon = document.getElementById(eyeIconId)) {
     const isPassword = input.type === "password";
