@@ -123,7 +123,7 @@ export const taskFormTemplate = `
         <label for="description">Description</label>
         <textarea id="description" placeholder="Enter a description"></textarea>
         <label for="duedate">Due date<span class="red-star">*</span></label>
-        <input type="date" id="duedate" required />
+        <input type="date" id="duedate"  placeholder="dd/mm/yy" required />
         <div id="errorDate" style="color: red"></div>
       </div>
       <div id="rightSide">
