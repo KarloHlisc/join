@@ -183,7 +183,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 60px;
   padding: 20px 45px 0;
   width: 100%;
 }
@@ -261,4 +260,8 @@
   color: #f8f9fa;
   font-size: 20px;
   font-weight: 400;
+}
+
+input[type="date"]:invalid::-webkit-datetime-edit {
+  color: #999;
 }
