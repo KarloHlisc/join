@@ -1,11 +1,88 @@
+
 'use strict';
 /*
+import { database } from "../js/config.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+let userTasks = [];
+const BASE_URL = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/tasks";
+
+// Beim Laden der Seite
+document.addEventListener("DOMContentLoaded", () => {
+    getUserTasks();
+});
+*/
+let url = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
+let tickets = [];
+// Hole Daten von Firebase
+async function getUserTasks(path="") {
+    try {
+        const response = await fetch(url + path + ".json");
+        
+        const data = await response.json();
+        console.log(data);
+        
+        // Umwandle in Array
+        const taskArray = Object.entries(data || {}).map(([id, task]) => ({id,...task}));
+        
+        userTasks = taskArray;
+        displayTasks(taskArray); 
+    } catch (error) {
+        console.error("Fehler beim Laden:", error);
+    }
+}
+
+
+getUserTasks("/tasks") ;
+
+// Zeige alle Aufgaben auf der Seite
+function displayTasks(tasks) {
+    const cart = document.getElementById("to-do-cards-container");
+    
+    if (!tasks || tasks.length === 0) {
+        cart.innerHTML = '<div class="no-tasks-card">No tasks To do</div>';
+        return;
+    }
+    
+    const html = tasks.map(task => cartTemplate(task)).join("");
+    cart.innerHTML = html;
+}
+
+// Template für EINE Aufgabe
+function cartTemplate(task) {
+    return `
+        <div role="button" class="cart">
+            <div class="level-story">
+                <p>${task.level || "User Story"}</p>
+            </div>
+            <div class="title-story">
+                <h4>${task.name || "Keine Beschreibung"}</h4>
+                <p>${task.description || ""}</p>
+            </div>
+            <div class="cart-progress">
+                <progress value="${task.progress || 0}" max="100"></progress>
+                <span>${task.subtasks || "0/0"} Subtasks</span>
+            </div>
+        </div>
+    `;
+}
+
+
+
+
+
+
+
+/*
+'use strict';
+
 import { database } from "../js/config.js";
 import {
   ref,
   get,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-*/
+
+
 let userTasks = [];
 //function init(){
     getCartTemplate();
@@ -68,3 +145,5 @@ async function getFromFetchedData(data) {
     let fechedData = data.reults;
     userTasks.push(...fechedData);
 }
+
+*/
