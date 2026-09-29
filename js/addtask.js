@@ -14,12 +14,21 @@ const selectedUserIds = new Set();
 let existSignUpForm;
 let errEL;
 
+/**
+ * Renders the Add Task form into the main container.
+ * @returns {void}
+ */
 export function renderTaskForm() {
   const target = document.getElementById("main-container");
   if (!target) return;
   target.innerHTML = taskFormTemplate;
 }
 
+/**
+ * Extracts the initials from a full name.
+ * @param {string} name - The full name.
+ * @returns {string} The uppercase initials.
+ */
 function getInitials(name) {
   if (!name) return "";
   const parts = name.trim().split(/\s+/);
@@ -28,6 +37,13 @@ function getInitials(name) {
   ).toUpperCase();
 }
 
+/**
+ * Creates a DOM element with a class and optional text content.
+ * @param {string} type - The tag name to create.
+ * @param {string} className - The CSS class to apply.
+ * @param {string} [text] - Optional text content.
+ * @returns {HTMLElement} The created element.
+ */
 function createEl(type, className, text = "") {
   const el = document.createElement(type);
   el.classList.add(className);
@@ -35,6 +51,11 @@ function createEl(type, className, text = "") {
   return el;
 }
 
+/**
+ * Builds the name and email text block for a user in the assign dropdown.
+ * @param {object} user - The user's data.
+ * @returns {HTMLElement} The text container element.
+ */
 function createTextContainer(user) {
   const container = createEl("div", "text-container");
   container.append(
@@ -44,6 +65,12 @@ function createTextContainer(user) {
   return container;
 }
 
+/**
+ * Renders the initials badges for all currently selected users.
+ * @param {object[]} users - All available users.
+ * @param {HTMLElement} container - The badge container to render into.
+ * @returns {void}
+ */
 function renderAssignedIcons(users, container) {
   container.innerHTML = "";
   selectedUserIds.forEach((id) => {
@@ -55,6 +82,13 @@ function renderAssignedIcons(users, container) {
   });
 }
 
+/**
+ * Toggles a user's selection state in the assigned-to dropdown.
+ * @param {object} user - The user being toggled.
+ * @param {HTMLElement} button - The user's dropdown button.
+ * @param {object[]} users - All available users.
+ * @returns {void}
+ */
 function toggleUserSelection(user, button, users) {
   if (selectedUserIds.has(user.userId)) {
     selectedUserIds.delete(user.userId);
@@ -67,6 +101,13 @@ function toggleUserSelection(user, button, users) {
   if (badgeContainer) renderAssignedIcons(users, badgeContainer);
 }
 
+/**
+ * Creates and appends a selectable user button to the assign dropdown.
+ * @param {object} user - The user's data.
+ * @param {HTMLElement} container - The dropdown list container.
+ * @param {object[]} users - All available users.
+ * @returns {void}
+ */
 /* prettier-ignore */
 function createAndAppendButton(user, container, users) {
   const button = createEl("button", "user-btn");
@@ -82,6 +123,10 @@ function createAndAppendButton(user, container, users) {
   container.append(button);
 }
 
+/**
+ * Loads all users from Firebase into the assigned-to dropdown.
+ * @returns {Promise<void>}
+ */
 /* prettier-ignore */
 async function getUserList() {
   const data = await get(ref(database, "users"));
@@ -93,6 +138,10 @@ async function getUserList() {
   users.forEach((user) => createAndAppendButton(user, container, users));
 }
 
+/**
+ * Closes all open dropdowns and resets their arrow icons.
+ * @returns {void}
+ */
 function closeAllDropdowns() {
   document.getElementById("dropdownList")?.classList.add("hidden");
   document.getElementById("categoryList")?.classList.add("hidden");
@@ -100,6 +149,13 @@ function closeAllDropdowns() {
   document.getElementById("categoryArrowImg")?.classList.remove("rotate-180");
 }
 
+/**
+ * Opens or closes a dropdown list and rotates its arrow icon.
+ * @param {string} listId - The ID of the dropdown list element.
+ * @param {string} arrowId - The ID of the arrow icon element.
+ * @param {function} [callback] - Optional callback run when the dropdown opens.
+ * @returns {void}
+ */
 function toggleDropdown(listId, arrowId, callback = null) {
   const list = document.getElementById(listId);
   const arrow = document.getElementById(arrowId);
@@ -113,6 +169,10 @@ function toggleDropdown(listId, arrowId, callback = null) {
   }
 }
 
+/**
+ * Opens the user dropdown if it is currently closed.
+ * @returns {void}
+ */
 function openUserDropdown() {
   const list = document.getElementById("dropdownList");
   if (list && list.classList.contains("hidden")) {
@@ -120,6 +180,10 @@ function openUserDropdown() {
   }
 }
 
+/**
+ * Filters the user dropdown list based on the search input.
+ * @returns {void}
+ */
 function filterUserList() {
   openUserDropdown();
   const filter =
@@ -131,6 +195,10 @@ function filterUserList() {
   });
 }
 
+/**
+ * Wires up click handlers for selecting a task category.
+ * @returns {void}
+ */
 function setupCategorySelection() {
   const items = document.querySelectorAll("#categoryList .user-item");
   items.forEach((item) => {
@@ -143,6 +211,10 @@ function setupCategorySelection() {
   });
 }
 
+/**
+ * Shows or hides the subtask add/clear buttons based on input content.
+ * @returns {void}
+ */
 function buttonVisability() {
   const input = document.getElementById("subtaskInput");
   input?.addEventListener("input", () => {
@@ -156,6 +228,10 @@ function buttonVisability() {
   });
 }
 
+/**
+ * Clears the subtask input field and hides its action buttons.
+ * @returns {void}
+ */
 function clearSubtaskInput() {
   const input = document.getElementById("subtaskInput");
   if (!input) return;
@@ -164,6 +240,12 @@ function clearSubtaskInput() {
   document.getElementById("clearSubtaskBtn").style.display = "none";
 }
 
+/**
+ * Switches a subtask list item between view and edit mode.
+ * @param {HTMLElement} li - The subtask list item.
+ * @param {boolean} isEditing - Whether to enter edit mode.
+ * @returns {void}
+ */
 function toggleSubtaskEdit(li, isEditing) {
   li.classList.toggle("editing", isEditing);
   const input = li.querySelector(".subtask-edit-input");
@@ -179,6 +261,11 @@ function toggleSubtaskEdit(li, isEditing) {
   }
 }
 
+/**
+ * Saves the edited text of a subtask and exits edit mode.
+ * @param {HTMLElement} li - The subtask list item.
+ * @returns {void}
+ */
 function saveSubtaskEdit(li) {
   const input = li.querySelector(".subtask-edit-input");
   const textSpan = li.querySelector(".subtask-text");
@@ -187,6 +274,11 @@ function saveSubtaskEdit(li) {
   toggleSubtaskEdit(li, false);
 }
 
+/**
+ * Creates a subtask list item with edit and delete controls.
+ * @param {string} text - The subtask text.
+ * @returns {HTMLElement} The subtask list item.
+ */
 /* prettier-ignore */
 function createSubtaskItem(text) {
   const li = createEl("li", "subtask-item");
@@ -200,6 +292,10 @@ function createSubtaskItem(text) {
   return li;
 }
 
+/**
+ * Adds a new subtask from the input field to the subtask list.
+ * @returns {void}
+ */
 function addSubtask() {
   const input = document.getElementById("subtaskInput");
   const container = document.getElementById("subTaskList");
@@ -208,6 +304,10 @@ function addSubtask() {
   clearSubtaskInput();
 }
 
+/**
+ * Resets the Add Task form to its initial empty state.
+ * @returns {void}
+ */
 function resetForm() {
   const form = document.getElementById("addTaskForm");
   const assigned = document.getElementById("assignedUsersContainer");
@@ -223,6 +323,10 @@ function resetForm() {
   if (categoryText) categoryText.innerText = "Select task category";
 }
 
+/**
+ * Wires up all event listeners for the Add Task form.
+ * @returns {void}
+ */
 /* prettier-ignore */
 function setupEventListeners() {
   document.getElementById("dropdownToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("dropdownList", "dropdownArrowImg", getUserList); });
@@ -237,6 +341,11 @@ function setupEventListeners() {
   document.addEventListener("click", closeAllDropdowns);
 }
 
+/**
+ * Generates the next sequential task ID based on existing task keys.
+ * @param {object} currenttasks - The current tasks object from Firebase.
+ * @returns {string} The next task ID, e.g. "task_03".
+ */
 function generateNextTaskId(currenttasks) {
   const keys = Object.keys(currenttasks || {});
   if (keys.length === 0) return "task_01";
@@ -244,6 +353,17 @@ function generateNextTaskId(currenttasks) {
   return `task_${String(Math.max(...numbers) + 1).padStart(2, "0")}`;
 }
 
+/**
+ * Saves a new task to Firebase with a generated ID.
+ * @param {string} title - The task title.
+ * @param {string} desc - The task description.
+ * @param {string} date - The due date.
+ * @param {string} prio - The task priority.
+ * @param {string} cat - The task category.
+ * @param {object} users - The assigned users, keyed by user ID.
+ * @param {object} subtasks - The task's subtasks.
+ * @returns {Promise<void>}
+ */
 /* prettier-ignore */
 const registerTask = async (title, desc, date, prio, cat, users, subtasks) => {
   const tasksRef = ref(database, "tasks");
@@ -257,11 +377,19 @@ const registerTask = async (title, desc, date, prio, cat, users, subtasks) => {
   });
 };
 
+/**
+ * Gets the currently selected priority value.
+ * @returns {string} The selected priority, defaulting to "medium".
+ */
 function getSelectedPriority() {
   const activeBtn = document.querySelector(".priority-btn.active");
   return activeBtn ? activeBtn.getAttribute("data-value") : "medium";
 }
 
+/**
+ * Wires up click handlers for the priority buttons.
+ * @returns {void}
+ */
 function setupPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-btn");
   buttons.forEach((btn) => {
@@ -272,6 +400,10 @@ function setupPriorityButtons() {
   });
 }
 
+/**
+ * Collects all subtasks currently in the subtask list.
+ * @returns {object} The subtasks, keyed by generated subtask ID.
+ */
 function getSubtasksData() {
   const subtasks = {};
   document.querySelectorAll("#subTaskList .subtask-item").forEach((item, i) => {
@@ -281,26 +413,84 @@ function getSubtasksData() {
   return subtasks;
 }
 
-function clearErrors() {
-  const titleErr = document.getElementById("errorTitle");
-  const dateErr = document.getElementById("errorDate");
-  if (titleErr) titleErr.textContent = "";
-  if (dateErr) dateErr.textContent = "";
+/**
+ * Displays or clears a validation error message for a given input.
+ * @param {string} inputId - The ID of the input field.
+ * @param {string} errorId - The ID of the error message element.
+ * @param {string} message - The error message, or an empty string to clear it.
+ * @returns {void}
+ */
+function setFieldError(inputId, errorId, message) {
+  document.getElementById(errorId).textContent = message;
+  if (message) document.getElementById(inputId).classList.add("input-error");
 }
 
-/* prettier-ignore */
+/**
+ * Validates that the task title field is filled.
+ * @returns {boolean} True if the title is valid.
+ */
+function validateTitle() {
+  const value = document.getElementById("formTitle").value.trim();
+  setFieldError(
+    "formTitle",
+    "errorTitle",
+    value ? "" : "This field is required",
+  );
+  return !!value;
+}
+
+/**
+ * Validates that the due date field is filled.
+ * @returns {boolean} True if the date is valid.
+ */
+function validateDate() {
+  const value = document.getElementById("duedate").value.trim();
+  setFieldError("duedate", "errorDate", value ? "" : "This field is required");
+  return !!value;
+}
+
+/**
+ * Validates that a task category has been selected.
+ * @returns {boolean} True if a category is selected.
+ */
+function validateCategory() {
+  const value = document.getElementById("categorySelectedText").innerText;
+  const ok = value !== "Select task category";
+  document.getElementById("errorCategory").textContent = ok
+    ? ""
+    : "Please select a category";
+  return ok;
+}
+
+/**
+ * Clears all Add Task form validation error messages and styles.
+ * @returns {void}
+ */
+function clearErrors() {
+  ["errorTitle", "errorDate", "errorCategory"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "";
+  });
+  document.getElementById("formTitle")?.classList.remove("input-error");
+  document.getElementById("duedate")?.classList.remove("input-error");
+}
+
+/**
+ * Validates the Add Task form before submission.
+ * @param {SubmitEvent} e - The form submit event.
+ * @returns {boolean} True if the form is valid.
+ */
 function checkVali(e) {
   clearErrors();
-  if (!existSignUpForm.checkValidity()) {
-    e.preventDefault();
-    existSignUpForm.querySelectorAll(":invalid").forEach((el) => el.classList.add("input-error"));
-    if (!document.getElementById("formTitle").checkValidity()) {document.getElementById("errorTitle").textContent = "This field is required";}
-    if (!document.getElementById("duedate").checkValidity()) {document.getElementById("errorDate").textContent = "This field is required";}
-    return false;
-  }
-  return true;
+  const valid = validateTitle() && validateDate() && validateCategory();
+  if (!valid) e.preventDefault();
+  return valid;
 }
 
+/**
+ * Builds the assigned users object for saving to Firebase.
+ * @returns {object} The assigned users, keyed by user ID.
+ */
 function getAssignedUsersObj() {
   const assignedUsers = {};
   selectedUserIds.forEach((id) => {
@@ -309,6 +499,11 @@ function getAssignedUsersObj() {
   return assignedUsers;
 }
 
+/**
+ * Handles the Add Task form submission.
+ * @param {SubmitEvent} e - The form submit event.
+ * @returns {void}
+ */
 /* prettier-ignore */
 function handleFormSubmitEvent(e) {
   e.preventDefault();
@@ -323,11 +518,19 @@ function handleFormSubmitEvent(e) {
     .catch((err) => { if (errEL) errEL.textContent = err.message; });
 }
 
+/**
+ * Wires up the Add Task form submit handler.
+ * @returns {void}
+ */
 function setupFormSubmit() {
   existSignUpForm = document.getElementById("addTaskForm");
   existSignUpForm?.addEventListener("submit", handleFormSubmitEvent);
 }
 
+/**
+ * Shows the task-added success modal and redirects to the board.
+ * @returns {void}
+ */
 function showSuccessModal() {
   const modal = document.getElementById("congrats-modal");
   modal.classList.add("active");
@@ -339,6 +542,10 @@ function showSuccessModal() {
   }, 2500);
 }
 
+/**
+ * Initializes the Add Task page.
+ * @returns {void}
+ */
 function init() {
   renderTaskForm();
   setupEventListeners();

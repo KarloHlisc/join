@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * Builds the sidebar navigation buttons shown after the login.
+ * @returns  {string} HTML markup for the navigation menu.
+ */
 export function getNavigationHtml() {
   return `
         <button id="nav-summary" onclick="location.href='./summary.html'"><img src="../assets/icons/summary.png"> Summary</button>
@@ -9,6 +13,10 @@ export function getNavigationHtml() {
     `;
 }
 
+/**
+ * Builds the logout dropdown module with help, legal, and logout actions.
+ * @returns {string} HTML markup for the logout module.
+ */
 export function getLogoutModule() {
   return `
     <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
@@ -21,6 +29,10 @@ export function getLogoutModule() {
   `;
 }
 
+/**
+ * Builds the full sidebar and header layout shown on all logged-in pages.
+ * @returns {string} HTML markup for the layout.
+ */
 export function getLayoutHtml() {
   return `
     <aside class="side-bar-wrapper">
@@ -29,7 +41,7 @@ export function getLayoutHtml() {
         <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button></div></aside>
     <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button class="help-btn help" onclick="openHelpPage()">
    <img src="../assets/icons/help.png" alt="help-icon" /></button><div class="user-icon-wrapper">
-<button class="user-icon header-icon" onclick="showLogoutModule()"></button>
+<button class="user-icon" id="header-icon" onclick="showLogoutModule()"></button>
 <div id="logout-container"></div></div></div></header>`;
 }
 
@@ -70,10 +82,20 @@ export const helpTemplateTxT = `
         </ol>
       </div>`;
 
+/**
+ * Returns the static help page content
+ * @returns {string} HTML markup for the help page.
+ */
 export function helpTemplate() {
   return helpTemplateTxT;
 }
 
+/**
+ *Builds the content detail view for a given user.
+ * @param {object} user - The contact's data (name, email, phone, etc.).
+ * @param {string} initials - The contact's initials for the avatar/icon.
+ * @returns {string} HTML markup for the contact details
+ */
 export function userDetailTemplate(user, initials) {
   return `<div id="details-header"><h1>Contacts</h1><span>Better with a team</span></div>
         <div id="icon-name-and-details">
@@ -87,11 +109,15 @@ export function userDetailTemplate(user, initials) {
         <div id="details"><span ><strong>Email</strong></span><span class="user-email">${user.email}</span><span><strong>Phone</strong></span><span>${user.phone}</span></div>`;
 }
 
+/**
+ * Build the add contact modal form
+ * @returns {string} HTML markup for the add-contact modal.
+ */
 export function getAddContactModule() {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1>Add contact</h1><span>Tasks are better with a team!</span></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="person-icon"><img src="../assets/icons/person.svg" alt="person-logo"/></div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" required /><input type="text" placeholder="Email" id="email" required /><input type="text" placeholder="Phone" id="phone" required /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" /><input type="text" placeholder="Email" id="email" /><input type="text" placeholder="Phone" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
               <button id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
               <button type="submit" id="create-contact">Create contact <img src="../assets/icons/check.svg" alt="check-logo"/></button>
@@ -99,11 +125,17 @@ export function getAddContactModule() {
           </form></div></div></div></div></div>`;
 }
 
+/**
+ * Builds the "Edit contact" modal form pre-filled with existing data.
+ * @param {object} user - The contact's current data.
+ * @param {string} initials - The contact's initials for the avatar.
+ * @returns {string} HTML markup for the edit-contact modal.
+ */
 export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" value="${user.name}" id="name" required /><input type="text" value="${user.email}" id="email" required /><input type="text" value="${user.phone}" id="phone" required /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" value="${user.name}" id="name" /><input type="text" value="${user.email}" id="email" /><input type="text" value="${user.phone}" id="phone"  /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
               <button id="delete" class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
@@ -111,6 +143,7 @@ export function getEditContactModule(user, initials) {
           </form></div></div></div></div></div>`;
 }
 
+/** HTML markup for the Add Task form, injected into #main-container. */
 export const taskFormTemplate = `
 <div id="form-container">
   <div id="add-task-title"><h1>Add Task</h1></div>
@@ -118,12 +151,12 @@ export const taskFormTemplate = `
     <div id="form-body">
       <div id="leftSide">
         <label for="formTitle">Title<span class="red-star">*</span></label>
-        <input type="text" id="formTitle" required placeholder="Enter a title" />
+        <input type="text" id="formTitle" placeholder="Enter a title" />
         <div id="errorTitle" style="color: red"></div>
         <label for="description">Description</label>
         <textarea id="description" placeholder="Enter a description"></textarea>
         <label for="duedate">Due date<span class="red-star">*</span></label>
-        <input type="date" id="duedate"  placeholder="dd/mm/yy" required />
+        <input type="date" id="duedate"  placeholder="dd/mm/yy"  />
         <div id="errorDate" style="color: red"></div>
       </div>
       <div id="rightSide">
@@ -153,6 +186,7 @@ export const taskFormTemplate = `
             <li class="user-item" data-value="Technical"><span >Technical</span></li>
             <li class="user-item" data-value="User Story"><span >User Story</span></li>
           </ul>
+          <div id="errorCategory" style="color: red"></div>
         </div>
         <label for="subtaskInput">Subtasks</label>
         <div class="subtask-container">
