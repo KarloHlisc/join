@@ -116,17 +116,24 @@ select:invalid {
 .priority-btn:hover {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
-
-.priority-btn:focus {
-  box-shadow: none;
-  color: #ffffff;
-  background-color: #ffa801;
-}
-
+.priority-btn:focus,
 .priority-btn.active {
   box-shadow: none;
   color: #ffffff;
+}
+#urgent-btn:focus,
+#urgent-btn.active {
+  background-color: #ff3e00;
+}
+
+#medium-btn:focus,
+#medium-btn.active {
   background-color: #ffa801;
+}
+
+#low-btn:focus,
+#low-btn.active {
+  background-color: #7ae229;
 }
 
 #urgent-btn:focus img {
