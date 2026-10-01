@@ -1,15 +1,13 @@
 .container {
   max-width: 1920px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  margin-top: 80px;
+  margin: 20px 0 40px 25px;
 }
 
 .header {
   grid-column: 1;
-  margin-left: 80px;
 }
 
 .header h1 {
@@ -21,6 +19,16 @@
   gap: 12px;
 }
 
+#main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  min-height: calc(100vh - 101px);
+}
+
+#summary-container {
+}
 .header h1 .number {
   color: #333;
 }
@@ -56,10 +64,11 @@
 .card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #2d3e50;
-  .card-number,.card-label{
-    color:white;
+  .card-number,
+  .card-label {
+    color: white;
   }
-  .img{
+  .img {
     fill: #999;
   }
 }
@@ -101,23 +110,22 @@
   margin-bottom: 20px;
 }
 
-.card-stats-level:hover{
+.card-stats-level:hover {
   background-color: #2d3e50;
-  .card-number, .card-label,.card-deadline-date,.card-deadline{
-  color:white
- }
+  .card-number,
+  .card-label,
+  .card-deadline-date,
+  .card-deadline {
+    color: white;
+  }
 }
-
-
 
 #details-header {
   display: flex;
   align-items: center;
   justify-content: start;
   gap: 40px;
-  margin-top: 80px;
-  margin-left: 80px;
-  margin-bottom: 40px;
+  margin: 20px 0 40px 25px;
 }
 
 #details-header h1 {
@@ -191,7 +199,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   background-color: #2d3e50;
-  .stat-number,.stat-label{
+  .stat-number,
+  .stat-label {
     color: white;
   }
 }
