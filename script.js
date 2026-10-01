@@ -310,6 +310,20 @@ function logoutFromAccount() {
   window.location.replace("../index.html");
 }
 
+/**
+ * Handles the preloader animation sequence once the page has fully loaded.
+ * @returns {void}
+ */
+/* prettier-ignore */
+window.addEventListener("load", function () {
+  const movingLogo = document.getElementById("moving-logo");
+  const preloader = document.getElementById("preloader");
+  const headerLogo = document.querySelector(".header-logo");
+  if (movingLogo) movingLogo.classList.add("move-to-corner");
+  if (preloader)setTimeout(() => {preloader.classList.add("fade-out");}, 500);
+  if (headerLogo && preloader)setTimeout(() => {headerLogo.style.opacity = "1";preloader.remove();}, 800);
+});
+
 window.logInAsGuest = logInAsGuest;
 window.togglePasswordVisibility = togglePasswordVisibility;
 window.showLogoutModule = showLogoutModule;
