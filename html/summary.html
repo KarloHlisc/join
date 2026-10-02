@@ -11,7 +11,7 @@
     <script src="../script.js" type="module"></script>
     
   </head>
-  <body>
+  <body onload="init()">
     <main>
       <div id="main-container">
         <div id="summary-container">
@@ -27,7 +27,7 @@
                   <img src="../assets/icons/to-do-edit.svg" alt="icon to do" class="img" />
                 </div>
                 <div class="card-content">
-                  <div id="card-number-to-do" class="card-number">1</div>
+                  <div id="card-number-to-do" class="card-number"></div>
                   <div class="card-label">To-do</div>
                 </div>
               </button>
@@ -36,7 +36,7 @@
                   <img src="../assets/icons/done-edit.svg" alt="icon done" />
                 </div>
                 <div class="card-content">
-                  <div id="card-number-done" class="card-number">1</div>
+                  <div id="card-number-done" class="card-number"></div>
                   <div class="card-label">Done</div>
                 </div>
               </button>
@@ -47,12 +47,14 @@
                   <img src="../assets/icons/urgend-red.svg" alt="icon stat level" />
                 </div>
                 <div class="card-content" id="card-content-urgent">
-                  <div id="card-number-stat" class="card-number">1</div>
+                  <div id="card-number-stat" class="card-number"></div>
                   <div class="card-label">Urgent</div>
+                </div>
+                <div class="card-content-line" id="card-content-urgent-line">
                 </div>
                 <div class="card-content">
                   <div id="card-deadline" class="card-deadline">
-                    October 16, 2022
+                    
                   </div>
                   <div class="card-deadline-date">Upcoming Deadline</div>
                 </div>
@@ -60,22 +62,22 @@
             </div>
             <div class="stats-row">
               <button role="button" class="stat-card" onclick='location.href="../html/board.html"'>
-                <div id="tasks-in-board" class="stat-number">5</div>
+                <div id="tasks-in-board" class="stat-number"></div>
                 <div class="stat-label">Tasks in Board</div>
               </button>
               <button role="button" class="stat-card" onclick='location.href="../html/board.html"'>
-                <div id="tasks-in-progress" class="stat-number">2</div>
+                <div id="tasks-in-progress" class="stat-number"></div>
                 <div class="stat-label">Tasks in Progress</div>
               </button>
               <button role="button" class="stat-card" onclick='location.href="../html/board.html"'>
-                <div id="awaiting-feedback" class="stat-number">2</div>
+                <div id="awaiting-feedback" class="stat-number"></div>
                 <div class="stat-label">Awaiting Feedback</div>
               </button>
             </div>
           </div>
           <div class="greeting-section">
-            <p class="greeting-text" id="greeting-text">Good morning,</p>
-            <h2 class="greeting-name" id="greeting-name">Sofia Müller</h2>
+            <p class="greeting-text" id="greeting-text"></p>
+            <h2 class="greeting-name" id="greeting-name"></h2>
           </div>
         </div>
         </div>
