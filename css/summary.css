@@ -25,10 +25,9 @@
   align-items: flex-start;
   padding: 40px;
   min-height: calc(100vh - 101px);
+  background-color: rgba(246, 247, 248, 1);
 }
 
-#summary-container {
-}
 .header h1 .number {
   color: #333;
 }
@@ -108,6 +107,7 @@
   align-items: center;
   text-align: center;
   margin-bottom: 20px;
+  width: 560px;
 }
 
 .card-stats-level:hover {
@@ -117,6 +117,9 @@
   .card-deadline-date,
   .card-deadline {
     color: white;
+  }
+  #card-content-urgent-line {
+    border: 2px solid white;
   }
 }
 
@@ -231,6 +234,12 @@
   color: #666;
   font-size: 47px;
   margin-bottom: 8px;
+}
+
+#card-content-urgent-line {
+  border: 2px solid #999;
+  height: 100px;
+  border-radius: 2px;
 }
 
 .greeting-name {
