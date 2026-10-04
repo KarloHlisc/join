@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/board.css" />
     <script src="../script.js" type="module"></script>
   </head>
-  <body >
+  <body onload="init()">
     <main>
       <div id="main-container">
         <section id="board-header">
@@ -48,7 +48,7 @@
                 />
               </button>
             </div>
-            <div id="to-do-cards-container" class="cards-container">
+            <div id="to-do-cards-container" class="cards-container" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
               <div id="no-tasks-to-do" class="no-tasks-card">
                 No tasks To do
               </div>
@@ -64,7 +64,7 @@
                 />
               </button>
             </div>
-            <div id="in-progress-cards-container" class="cards-container">
+            <div id="in-progress-cards-container" class="cards-container" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
               <div id="no-tasks-in-progress" class="no-tasks-card">
                 No tasks In progress
               </div>
@@ -80,7 +80,7 @@
                 />
               </button>
             </div>
-            <div id="await-feedback-cards-container" class="cards-container">
+            <div id="await-feedback-cards-container" class="cards-container" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
               <div id="no-tasks-await-feedback" class="no-tasks-card">
                 No tasks Await feedback
               </div>
@@ -90,7 +90,7 @@
             <div id="done-card" class="tasks-style">
               <h3 id="done-title">Done</h3>
             </div>
-            <div id="done-cards-container" class="cards-container">
+            <div id="done-cards-container" class="cards-container" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)">
               <div id="no-tasks-done" class="no-tasks-card">No tasks Done</div>
             </div>
           </section>

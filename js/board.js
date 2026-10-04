@@ -1,26 +1,16 @@
 
 'use strict';
-/*
-import { database } from "../js/config.js";
-import { ref, get } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-
-let userTasks = [];
-const BASE_URL = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/tasks";
-
-// Beim Laden der Seite
-document.addEventListener("DOMContentLoaded", () => {
-    getUserTasks();
-});
-*/
-
-
-
-
-
 
 const BASE_URL = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
 let tickets = [];
 let users = [];
+let names = [];
+
+function init(){
+  getUserTasks("/tasks") ;
+ getUsers("/users");
+}
+
 // Hole Daten von Firebase
 async function getUserTasks(path="") {
     try {
@@ -33,15 +23,15 @@ async function getUserTasks(path="") {
         const taskArray = Object.entries(data || {}).map(([id, task]) => ({id,...task}));
         
         tickets = taskArray;
-        displayTasks(taskArray); 
+        displayTasks(tickets); 
     } catch (error) {
         console.error("Fehler beim Laden:", error);
     }
-    for (let index = 0; index < tickets.length; index++) {   //Object.entries(tickets)
-      const element = tickets[index];
+  //  for (let index = 0; index < tickets.length; index++) {   //Object.entries(tickets)
+    //  const element = tickets[index];
      //  console.log(element);
     
-    }
+ //   }
    
 }
 
@@ -56,7 +46,7 @@ async function getUsers(path="") {
         const taskArray = Object.entries(data || {}).map(([id, user]) => ({id,...user}));
         
         users = taskArray;
-        displayTasks(taskArray); 
+      //  findUsers(taskArray); 
     } catch (error) {
         console.error("Fehler beim Laden:", error);
     }
@@ -69,30 +59,49 @@ async function getUsers(path="") {
 
 
 
-getUserTasks("/tasks") ;
- getUsers("/users");
+
 
 // Zeige alle Aufgaben auf der Seite
 function displayTasks(tickets) {
-    const cart = document.getElementById("to-do-cards-container");
     
     if (!tickets || tickets.length === 0) {
         cart.innerHTML = '<div class="no-tasks-card">No tasks To do</div>';
         return;
     }
     
-    const html = tickets.map(task => cartTemplate(task)).join("");
+    //const html =
+     tickets.map(task => showCards(task)).join("");
+      
     
-    cart.innerHTML = html;
+    //cart.innerHTML = html;
     
 }
+
+function showCards(task){
+  const cartToDo = document.getElementById("to-do-cards-container");
+    const cartInProgres = document.getElementById("in-progress-cards-container");
+    const cartAwait = document.getElementById("await-feedback-cards-container");
+    const cartDone = document.getElementById("done-cards-container");
+   const status = task.status?.toLowerCase() || "todo";
+     if (status === "todo")  cartToDo.innerHTML += cartTemplate(task);
+        else if (status === "inprogress") cartInProgres.innerHTML += cartTemplate(task);
+        else if (status === "awaitfeedback") cartAwait.innerHTML += cartTemplate(task);
+        else if (status === "done") cartDone.innerHTML += cartTemplate(task);
+    //    if (task.priority?.toLowerCase() === "urgent") {
+      //          counts.urgent++;
+        //    }
+       
+}
+
+
 
 // Template für EINE Aufgabe
 function cartTemplate(task) {
 //let elementTaskt = Object.entries(task.subtasks).length;
+// console.log(task);
  
     return `
-        <div role="button" class="cart">
+        <button role="button" class="cart" draggable="true" ondragstart="dragstartHandler(event)">
             <div class="level-story">
                 <p>${task.category  || "User Story"}</p>
             </div>
@@ -105,23 +114,41 @@ function cartTemplate(task) {
                 <span> "0/0" Subtasks</span>
             </div>
             <div class="cart-assigment">
-                <span>${checkUsers(task)}</span>
+                <span>${findUsers(task) || ""}</span> 
                 <span>${task.priority}</span>
             </div>
-        </div>
+        </button>
     `;
+    //<!--${checkUsers(task)}-->
 }
 
 
-function checkUsers(task){
-  //  console.log(task);
-    const userid = Object.entries(task);
-    console.log(userid[1][1]);
+function findUsers(task){
+    console.log(task.assignedTo);
+    //console.log(Object.keys(task.assignedTo));
+      let userOnTask = Object.keys(task.assignedTo || "");
+      console.log(userOnTask);
+      
+    if(userOnTask == ""){return;}else{
 
-    let user = userid[1][1];
-   
+    for(let i = 0; i <= userOnTask.length; i++ ){
+      console.log(userOnTask[i]);
+
+      let found = users.find((u) => u.id == userOnTask[i]);
+      //names.push(...found);
+    //console.log(found.name);
+    if(found != undefined)
+      {
+    let userN = found.name;
     
-    if(task){}
+     const userName = userN.split(" ");
+      const firstInitial = userName[0].charAt(0);
+      const lastInitial = userName[userName.length - 1].charAt(0) || "";
+    //  console.log(firstInitial+lastInitial);
+      return firstInitial+lastInitial;
+    } else{return;}
+    }   
+    }
 }
 
 
@@ -131,159 +158,17 @@ function getAsigntUserName(user, task) {
   //  if(users[id].id === task.assignedTo.u)
     
 }
-
-
-
-
-
-
-
-
-function showAddTaskModule() {
-  const container = document.getElementById("myDialog");
-  if (!container) return;
-  container.innerHTML = taskFormTemplate();
-  document.getElementById("addTaskForm")?.addEventListener("submit", handleFormSubmit );
-  setTimeout(() => {container.classList.add("active");
-  }, 20);
+function dragstartHandler(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
 }
 
-
-function taskFormTemplate(){ return `
-<div id="form-container">
-  <div id="add-task-title"><h1>Add Task</h1></div>
-  <form id="addTaskForm" novalidate>
-    <div id="form-body">
-      <div id="leftSide">
-        <label for="formTitle">Title<span class="red-star">*</span></label>
-        <input type="text" id="formTitle" placeholder="Enter a title" />
-        <div id="errorTitle" style="color: red"></div>
-        <label for="description">Description</label>
-        <textarea id="description" placeholder="Enter a description"></textarea>
-        <label for="duedate">Due date<span class="red-star">*</span></label>
-        <input type="date" id="duedate"  placeholder="dd/mm/yy"  />
-        <div id="errorDate" style="color: red"></div>
-      </div>
-      <div id="rightSide">
-        <span class="form-label">Priority</span>
-        <div id="priority-buttons">
-          <button type="button" class="priority-btn" id="urgent-btn" data-value="urgent">Urgent <img src="../assets/icons/urgent.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="medium-btn" data-value="medium">Medium <img src="../assets/icons/medium.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="low-btn" data-value="low">Low <img src="../assets/icons/low.svg" alt="" aria-hidden="true" /></button>
-        </div>
-        <label for="searchInput">Assigned to</label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header-input-wrapper">
-            <input type="text" id="searchInput" placeholder="Select contacts to assign" autocomplete="off" />
-            <button type="button" id="dropdownToggle" class="dropdown-btn" aria-label="Benutzerliste anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="dropdownArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="dropdownList"></ul>
-        </div>
-        <div id="assignedUsersContainer" class="assigned-users"></div>
-        <ul class="assigned-users"></ul>
-        <label for="categoryToggle">Category<span class="red-star">*</span></label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header" id="categoryHeader">
-            <span id="categorySelectedText">Select task category</span>
-            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="categoryList">
-            <li class="user-item" data-value="Technical"><span >Technical</span></li>
-            <li class="user-item" data-value="User Story"><span >User Story</span></li>
-          </ul>
-          <div id="errorCategory" style="color: red"></div>
-        </div>
-        <label for="subtaskInput">Subtasks</label>
-        <div class="subtask-container">
-          <input type="text" id="subtaskInput" placeholder="Add new Subtasks" />
-          <button type="button" id="addSubtaskBtn"><img src="../assets/icons/darkcheck.svg" alt="Add Subtask" /></button>
-          <button type="button" id="clearSubtaskBtn"><img src="../assets/icons/delete.svg" alt="Clear input" /></button>
-        </div>
-        <ul id="subTaskList"></ul>
-      </div>
-    </div>
-    <div id="createTaskBtn-container">
-      <span class="required-hint"><span class="red-star">*</span>This field is required</span>
-      <div id="btn-container">
-        <button type="reset" id="clear">Clear <img src="../assets/icons/vector.svg" alt="" aria-hidden="true" /></button>
-        <button type="submit" id="createTask">Create Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
-      </div>
-    </div>
-  </form>
-</div>
-`;
-}
-/*
-'use strict';
-
-import { database } from "../js/config.js";
-import {
-  ref,
-  get,
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-
-
-let userTasks = [];
-//function init(){
-    getCartTemplate();
-//}
-
-function getCartTemplate() {
-  const cart = document.getElementById("to-do-cards-container");
-  // cart.innerHTML="";
-  if (cart == "") {
-    cart.innerHTML =
-      '<div id="no-tasks-to-do" class="no-tasks-card">No tasks To do</div>';
-  } else {
-    cart.innerHTML = cartTemplate();
-  }
+function dragoverHandler(ev) {
+  ev.preventDefault();
 }
 
-function cartTemplate() {
-  return `
-        <div role="button" class="cart" >
-                <div class="level-story">
-                  <p>User Story</p>
-                </div>
-                <div class="title-story">
-                  <h4>Kochwelt Page & Recepi</h4>
-                  <p>Building start page with recepie redcomd</p>
-                </div>
-                <div class="cart-progress">
-                  <progress id="file" value="32" max="100"></progress>
-                  <span>1/2 Subtasks</span>
-                </div>
-                <div class="cart-contibutors">
-                  <div class="contibutor">
-                    <span>AM</span>
-                    <span>EM</span>
-                  </div>
-                  <div class="cart-level">
-                    <img src="../assets/icons/urgent.svg" alt="">
-                  </div>
-                </div>
-              </div>
-    `;
+function dropHandler(ev) {
+  ev.preventDefault();
+  const dataDrag = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(dataDrag));
 }
 
-const BASE_URL = "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/tasks";
-
-async function getUserTasks() {
-    try{
-        const response = await fetch (BASE_URL);
-        const data = await response.json();
-        getFromFetchedData(data);
-    }
-    catch(error)
-    {
-        console.log(error);
-        
-    }
-}
-
-async function getFromFetchedData(data) {
-    let fechedData = data.reults;
-    userTasks.push(...fechedData);
-}
-
-*/
