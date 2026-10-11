@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/help.css" />
     <link rel="stylesheet" href="../css/board.css" />
+    <link rel="stylesheet" href="../css/addTask1.css" />
+    <link rel="stylesheet" href="../css/addTask2.css" />
     <script src="../script.js" type="module"></script>
+    <script src="../js/board/addtask-board.js" type="module"></script>
   </head>
   <body onload="init()">
     <main>
@@ -30,7 +33,7 @@
               </button>
             </div>
             <div id="add-task-btn-container">
-              <button id="add-task-btn" onclick="showAddTaskModule()"> 
+              <button id="add-task-btn" onclick="showAddTaskModule('todo')">
                 Add task
                 <img src="../assets/icons/add-btn.svg" alt="add task button" />
               </button>
@@ -38,10 +41,10 @@
           </div>
         </section>
         <section id="board-content">
-          <section id="to-do-section"  >
+          <section id="to-do-section">
             <div id="to-do-title-card" class="tasks-style">
               <h3 id="to-do-title">To do</h3>
-              <button id="add-to-do-btn">
+              <button id="add-to-do-btn" onclick="showAddTaskModule('todo')">
                 <img
                   src="../assets/icons/button-add-task.svg"
                   alt="button-add-task"
@@ -54,41 +57,60 @@
               </div>
             </div>
           </section>
-          <section id="in-progress-section"  >
+          <section id="in-progress-section">
             <div id="in-progress-card" class="tasks-style">
               <h3 id="in-progress-title">In progress</h3>
-              <button id="add-in-progress-btn">
+              <button
+                id="add-in-progress-btn"
+                onclick="showAddTaskModule('in-progress')"
+              >
                 <img
                   src="../assets/icons/button-add-task.svg"
                   alt="button-add-task"
                 />
               </button>
             </div>
-            <div id="in-progress-cards-container" class="cards-container container">
+            <div
+              id="in-progress-cards-container"
+              class="cards-container container"
+            >
               <div id="no-tasks-in-progress" class="no-tasks-card">
                 No tasks In progress
               </div>
             </div>
           </section>
-          <section id="await-feedback-section" >
+          <section id="await-feedback-section">
             <div id="await-feedback-card" class="tasks-style">
               <h3 id="await-feedback-title">Await feedback</h3>
-              <button id="add-await-feedback-btn" class="add-btn-tasks">
+              <button
+                id="add-await-feedback-btn"
+                class="add-btn-tasks"
+                onclick="showAddTaskModule('await-feedback')"
+              >
                 <img
                   src="../assets/icons/button-add-task.svg"
                   alt="button-add-task"
                 />
               </button>
             </div>
-            <div id="await-feedback-cards-container" class="cards-container container">
+            <div
+              id="await-feedback-cards-container"
+              class="cards-container container"
+            >
               <div id="no-tasks-await-feedback" class="no-tasks-card">
                 No tasks Await feedback
               </div>
             </div>
           </section>
-          <section id="done-section"  >
+          <section id="done-section">
             <div id="done-card" class="tasks-style">
               <h3 id="done-title">Done</h3>
+              <button id="add-done-btn" onclick="showAddTaskModule('done')">
+                <img
+                  src="../assets/icons/button-add-task.svg"
+                  alt="button-add-task"
+                />
+              </button>
             </div>
             <div id="done-cards-container" class="cards-container container">
               <div id="no-tasks-done" class="no-tasks-card">No tasks Done</div>
@@ -100,6 +122,11 @@
         <dialog id="myDialog"></dialog>
       </div>
     </main>
+    <div id="add-task-container"></div>
+    <div id="congrats-modal" class="modal">
+      <p>task added to board</p>
+      <img src="../assets/icons/board.png" alt="" />
+    </div>
     <!--<script src="../js/template.js"></script> -->
     <script src="../js/board.js"></script>
   </body>

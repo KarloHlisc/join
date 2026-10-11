@@ -143,6 +143,19 @@ export function getEditContactModule(user, initials) {
           </form></div></div></div></div></div>`;
 }
 
+/**
+ * Builds the "Add Task" modal wrapper around the task form.
+ * @returns {string} HTML markup for the add-task modal.
+ */
+export function getAddTaskModule() {
+  return `<div id="add-task-overlay" onmousedown="if (event.target === this) closeAddTaskModule()">
+    <div id="add-task-module">
+      <button type="button" id="close-task-module" onclick="closeAddTaskModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button>
+      ${taskFormTemplate}
+    </div>
+  </div>`;
+}
+
 /** HTML markup for the Add Task form, injected into #main-container. */
 export const taskFormTemplate = `
 <div id="form-container">
