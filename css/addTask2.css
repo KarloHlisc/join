@@ -9,8 +9,8 @@
   color: #666666;
 }
 
-.user-icon,
-.user-badge {
+:where(#form-container) .user-icon,
+:where(#form-container) .user-badge {
   width: 32px;
   height: 32px;
   border-radius: 50%;
