@@ -140,6 +140,23 @@ function findUsers(task) {
   }
 }
 
+/**
+ * Filters the user dropdown list based on the search input.
+ * @returns {void}
+ */
+function filterUserList() {
+  // openUserDropdown();
+  const filter =
+    document.getElementById("search-task")?.value.toLowerCase() || "";
+    console.log(filter);
+    
+  const buttons = document.querySelectorAll("#dropdownList .button-search");
+  buttons.forEach((btn) => {
+    const name = btn.querySelector(".user-name")?.innerText.toLowerCase() || "";
+    btn.style.display = name.includes(filter) ? "flex" : "none";
+  });
+}
+
 function findUsersByTask(task) {
   const userIds = Object.keys(task.assignedTo || {});
   if (userIds.length === 0) return "";
