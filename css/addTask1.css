@@ -1,4 +1,4 @@
-#main-container {
+[data-page="add-task"] #main-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -41,10 +41,10 @@
   flex-direction: column;
 }
 
-input,
-select,
-.custom-dropdown,
-#description {
+:where(#form-container) input,
+:where(#form-container) select,
+:where(#form-container) .custom-dropdown,
+:where(#form-container) #description {
   width: 100%;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -53,9 +53,9 @@ select,
   background-color: #ffffff;
 }
 
-input,
-select,
-.custom-dropdown {
+:where(#form-container) input,
+:where(#form-container) select,
+:where(#form-container) .custom-dropdown {
   height: 48px;
   padding: 0 15px;
 }

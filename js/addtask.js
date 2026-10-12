@@ -34,13 +34,16 @@ import {
 const selectedUserIds = new Set();
 let existSignUpForm;
 let errEL;
+let taskStatus = "todo";
+let onTaskCreated = null;
 
 /**
- * Renders the Add Task form into the main container.
+ * Renders the Add Task form into the given container.
+ * @param {string} [targetId="main-container"] - ID of the target container.
  * @returns {void}
  */
-export function renderTaskForm() {
-  const target = document.getElementById("main-container");
+export function renderTaskForm(targetId = "main-container") {
+  const target = document.getElementById(targetId);
   if (!target) return;
   target.innerHTML = taskFormTemplate;
 }
@@ -241,6 +244,7 @@ function setupEventListeners() {
   document.getElementById("clearSubtaskBtn")?.addEventListener("click", clearSubtaskInput);
   document.getElementById("subtaskInput")?.addEventListener("keydown", (e) => e.key === "Enter" && (e.preventDefault() || addSubtask()));
   setupCategorySelection();
+  document.removeEventListener("click", closeAllDropdowns);
   document.addEventListener("click", closeAllDropdowns);
 }
 
@@ -273,7 +277,7 @@ const registerTask = async (title, desc, date, prio, cat, users, subtasks) => {
   return runTransaction(tasksRef, (currenttasks) => {
     const tasks = currenttasks || {};
     tasks[generateNextTaskId(tasks)] = {
-      title, description: desc, duedate: date, status: "todo",
+      title, description: desc, duedate: date, status: taskStatus,
       priority: prio, assignedTo: users, category: cat, subtasks
     };
     return tasks;
@@ -315,22 +319,34 @@ function getAssignedUsersObj() {
 }
 
 /**
+ * Saves the task to Firebase and disables the submit button while loading.
+ * @returns {void}
+ */
+/* prettier-ignore */
+function saveTask() {
+  const val = (id) => document.getElementById(id)?.value?.trim() || "";
+  const cat = document.getElementById("categorySelectedText")?.innerText || "";
+  const btn = document.getElementById("createTask");
+  btn.disabled = true;
+  registerTask(val("formTitle"), val("description"), val("duedate"), getSelectedPriority(), cat, getAssignedUsersObj(), getSubtasksData())
+    .then(() => { resetForm(); showSuccessModal(); })
+    .catch((err) => { btn.disabled = false; if (errEL) errEL.textContent = err.message; });
+}
+
+/**
  * Handles the Add Task form submission.
  * @param {SubmitEvent} e - The form submit event.
  * @returns {void}
  */
-/* prettier-ignore */
 function handleFormSubmitEvent(e) {
   e.preventDefault();
   errEL = document.getElementById("errorMessage");
   if (errEL) errEL.textContent = "";
-  existSignUpForm.querySelectorAll(".input-error").forEach((el) => el.classList.remove("input-error"));
+  existSignUpForm
+    .querySelectorAll(".input-error")
+    .forEach((el) => el.classList.remove("input-error"));
   if (!checkVali(e)) return;
-  const val = (id) => document.getElementById(id)?.value?.trim() || "";
-  const cat = document.getElementById("categorySelectedText")?.innerText || "";
-  registerTask(val("formTitle"), val("description"), val("duedate"), getSelectedPriority(), cat, getAssignedUsersObj(), getSubtasksData())
-    .then(() => { resetForm(); showSuccessModal(); })
-    .catch((err) => { if (errEL) errEL.textContent = err.message; });
+  saveTask();
 }
 
 /**
@@ -343,18 +359,42 @@ function setupFormSubmit() {
 }
 
 /**
- * Shows the task-added success modal and redirects to the board.
+ * Redirects to the board page.
+ * @returns {void}
+ */
+function redirectToBoard() {
+  window.location.href = "../html/board.html";
+}
+
+/**
+ * Shows the task-added toast. In modal mode the callback runs immediately,
+ * otherwise the user is redirected to the board.
  * @returns {void}
  */
 function showSuccessModal() {
   const modal = document.getElementById("congrats-modal");
   modal.classList.add("active");
+  if (onTaskCreated) onTaskCreated();
   setTimeout(() => {
     modal.classList.remove("active");
-    setTimeout(() => {
-      window.location.href = "../html/board.html";
-    }, 400);
+    if (!onTaskCreated) setTimeout(redirectToBoard, 400);
   }, 2500);
+}
+
+/**
+ * Prepares the rendered task form for a given column status.
+ * @param {string} [status="todo"] - Status assigned to the new task.
+ * @param {function|null} [onCreated=null] - Callback after a task was created.
+ * @returns {void}
+ */
+export function setupTaskForm(status = "todo", onCreated = null) {
+  taskStatus = status;
+  onTaskCreated = onCreated;
+  selectedUserIds.clear();
+  setupEventListeners();
+  buttonVisability();
+  setupFormSubmit();
+  setupPriorityButtons();
 }
 
 /**
@@ -363,10 +403,11 @@ function showSuccessModal() {
  */
 function init() {
   renderTaskForm();
-  setupEventListeners();
-  buttonVisability();
-  setupFormSubmit();
-  setupPriorityButtons();
+  setupTaskForm();
+}
+
+if (document.body.dataset.page === "add-task") {
+  document.addEventListener("DOMContentLoaded", init);
 }
 
 window.setFieldError = setFieldError;
@@ -385,4 +426,7 @@ window.closeAllDropdowns = closeAllDropdowns;
 window.toggleDropdown = toggleDropdown;
 window.openUserDropdown = openUserDropdown;
 window.renderTaskForm = renderTaskForm;
-document.addEventListener("DOMContentLoaded", init);
+window.renderTaskForm = renderTaskForm;
+if (document.body.dataset.page === "add-task") {
+  document.addEventListener("DOMContentLoaded", init);
+}
