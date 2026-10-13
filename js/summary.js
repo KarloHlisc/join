@@ -110,10 +110,16 @@ async function getUrgentDeadline() {
   try {
     const response = await fetch(BASE_URL + "tasks.json");
     const data = await response.json();
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
-      id,
-      ...task,
-    }));
+     showTaskArra(data); 
+  } catch (error) {
+    console.error("Fehler beim Laden des nächsten Deadlines:", error);
+    return null;
+  }
+}
+
+
+function showTaskArra(data){
+  const taskArray = Object.entries(data || {}).map(([id, task]) => ({id, ...task,}));
     const urgentTasks = taskArray.filter(
       (task) => task.priority?.toLowerCase() === "urgent" && task.duedate,
     );
@@ -122,10 +128,6 @@ async function getUrgentDeadline() {
     }
     urgentTasks.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
     return urgentTasks[0].duedate;
-  } catch (error) {
-    console.error("Fehler beim Laden des nächsten Deadlines:", error);
-    return null;
-  }
 }
 
 /**
