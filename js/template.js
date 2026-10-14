@@ -1,5 +1,7 @@
 "use strict";
 
+import { escapeHtml } from "./utils.js";
+
 /**
  * Builds the sidebar navigation buttons shown after the login.
  * @returns  {string} HTML markup for the navigation menu.
@@ -101,12 +103,12 @@ export function userDetailTemplate(user, initials) {
         <div id="icon-name-and-details">
           <div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="name-and-button">
-            <span>${user.name}</span>
+            <span>${escapeHtml(user.name)}</span>
             <div id="edit-delete"><button id="edit" onclick="showEditContactModule('${user.userId}')"><img src="../assets/icons/edit.svg" alt="edit-btn" />Edit</button><button id="delete" onclick="deleteUser('${user.userId}')"><img src="../assets/icons/delete.svg" alt="delete-btn" />Delete</button></div>
           </div>
         </div>
         <span id="contact-info">Contact information</span>
-        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${user.email}</span><span><strong>Phone</strong></span><span>${user.phone}</span></div>`;
+        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div>`;
 }
 
 /**
@@ -119,7 +121,7 @@ export function getAddContactModule() {
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="person-icon"><img src="../assets/icons/person.svg" alt="person-logo"/></div>
           <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" /><input type="text" placeholder="Email" id="email" /><input type="text" placeholder="Phone" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
+              <button type="button" id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
               <button type="submit" id="create-contact">Create contact <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;
@@ -135,9 +137,9 @@ export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" value="${user.name}" id="name" /><input type="text" value="${user.email}" id="email" /><input type="text" value="${user.phone}" id="phone"  /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button id="delete" class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
+              <button type="button" id="delete" class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;
@@ -196,7 +198,7 @@ export const taskFormTemplate = `
             <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
           </div>
           <ul class="dropdown-list hidden" id="categoryList">
-            <li class="user-item" data-value="Technical"><span >Technical</span></li>
+            <li class="user-item" data-value="Technical Tasks"><span >Technical Tasks</span></li>
             <li class="user-item" data-value="User Story"><span >User Story</span></li>
           </ul>
           <div id="errorCategory" style="color: red"></div>

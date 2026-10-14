@@ -13,7 +13,7 @@ import {
   closeAllDropdowns,
   toggleDropdown,
   openUserDropdown,
-} from "./addtask/addtask-dropdown.js";
+} from "./addtask/addtask_dropdown.js";
 import {
   clearSubtaskInput,
   toggleSubtaskEdit,
@@ -21,7 +21,7 @@ import {
   createSubtaskItem,
   addSubtask,
   getSubtasksData,
-} from "./addtask/addtask-subtask.js";
+} from "./addtask/addtask_subtask.js";
 import {
   setFieldError,
   validateTitle,
@@ -29,9 +29,14 @@ import {
   validateCategory,
   clearErrors,
   checkVali,
-} from "./addtask/addtask-validate.js";
+} from "./addtask/addtask_validate.js";
+import {
+  selectedUserIds,
+  getUserList,
+  filterUserList,
+} from "./addtask/addtask_assign.js";
+import { buildTaskData, registerTask } from "./addtask/addtask_save.js";
 
-const selectedUserIds = new Set();
 let existSignUpForm;
 let errEL;
 let taskStatus = "todo";
@@ -73,108 +78,6 @@ function createEl(type, className, text = "") {
   el.classList.add(className);
   if (text) el.innerText = text;
   return el;
-}
-
-/**
- * Builds the name and email text block for a user in the assign dropdown.
- * @param {object} user - The user's data.
- * @returns {HTMLElement} The text container element.
- */
-function createTextContainer(user) {
-  const container = createEl("div", "text-container");
-  container.append(
-    createEl("span", "user-name", user.name),
-    createEl("span", "user-email", user.email),
-  );
-  return container;
-}
-
-/**
- * Renders the initials badges for all currently selected users.
- * @param {object[]} users - All available users.
- * @param {HTMLElement} container - The badge container to render into.
- * @returns {void}
- */
-function renderAssignedIcons(users, container) {
-  container.innerHTML = "";
-  selectedUserIds.forEach((id) => {
-    const user = users.find((u) => u.userId === id);
-    if (!user) return;
-    const badge = createEl("div", "user-badge", getInitials(user.name));
-    badge.style.backgroundColor = user.backgroundColor || "#000000";
-    container.append(badge);
-  });
-}
-
-/**
- * Toggles a user's selection state in the assigned-to dropdown.
- * @param {object} user - The user being toggled.
- * @param {HTMLElement} button - The user's dropdown button.
- * @param {object[]} users - All available users.
- * @returns {void}
- */
-function toggleUserSelection(user, button, users) {
-  if (selectedUserIds.has(user.userId)) {
-    selectedUserIds.delete(user.userId);
-    button.classList.remove("selected");
-  } else {
-    selectedUserIds.add(user.userId);
-    button.classList.add("selected");
-  }
-  const badgeContainer = document.getElementById("assignedUsersContainer");
-  if (badgeContainer) renderAssignedIcons(users, badgeContainer);
-}
-
-/**
- * Creates and appends a selectable user button to the assign dropdown.
- * @param {object} user - The user's data.
- * @param {HTMLElement} container - The dropdown list container.
- * @param {object[]} users - All available users.
- * @returns {void}
- */
-/* prettier-ignore */
-function createAndAppendButton(user, container, users) {
-  const button = createEl("button", "user-btn");
-  button.type = "button";
-  if (selectedUserIds.has(user.userId)) button.classList.add("selected");
-  const icon = createEl("div", "user-icon", getInitials(user.name));
-  icon.style.backgroundColor = user.backgroundColor || "#000000";
-  button.append(icon,createTextContainer(user),createEl("div", "custom-checkbox"));
-  button.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggleUserSelection(user, button, users);
-});
-  container.append(button);
-}
-
-/**
- * Loads all users from Firebase into the assigned-to dropdown.
- * @returns {Promise<void>}
- */
-/* prettier-ignore */
-async function getUserList() {
-  const data = await get(ref(database, "users"));
-  const container = document.getElementById("dropdownList");
-  if (!container || !data.exists()) return;
-  container.innerHTML = container.querySelector("#add-btn-container")?.outerHTML || "";
-  const rawData = data.val();
-  const users = Object.keys(rawData).map((k) => ({ userId: k, ...rawData[k] })).sort((a, b) => a.name.localeCompare(b.name));
-  users.forEach((user) => createAndAppendButton(user, container, users));
-}
-
-/**
- * Filters the user dropdown list based on the search input.
- * @returns {void}
- */
-function filterUserList() {
-  openUserDropdown();
-  const filter =
-    document.getElementById("searchInput")?.value.toLowerCase() || "";
-  const buttons = document.querySelectorAll("#dropdownList .user-btn");
-  buttons.forEach((btn) => {
-    const name = btn.querySelector(".user-name")?.innerText.toLowerCase() || "";
-    btn.style.display = name.includes(filter) ? "flex" : "none";
-  });
 }
 
 /**
@@ -227,22 +130,63 @@ function resetForm() {
   buttons.forEach((button) => button.classList.remove("selected"));
   const categoryText = document.getElementById("categorySelectedText");
   if (categoryText) categoryText.innerText = "Select task category";
+  selectPriority("medium");
+}
+
+/**
+ * Wires up Dropdown event listeners for the Add Task form.
+ * @returns {void}
+ */
+function setupDropdownListeners() {
+  document.getElementById("dropdownToggle")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleDropdown("dropdownList", "dropdownArrowImg", getUserList);
+  });
+  document.getElementById("categoryToggle")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleDropdown("categoryList", "categoryArrowImg");
+  });
+}
+
+/**
+ * Wires up Search event listeners for the Add Task form.
+ * @returns {void}
+ */
+function setupSearchListeners() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+  input.addEventListener("input", filterUserList);
+  input.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openUserDropdown(getUserList);
+  });
+}
+
+/**
+ * Wires up Subtask event listeners for the Add Task form.
+ * @returns {void}
+ */
+function setupSubtaskListeners() {
+  document
+    .getElementById("addSubtaskBtn")
+    ?.addEventListener("click", addSubtask);
+  document
+    .getElementById("clearSubtaskBtn")
+    ?.addEventListener("click", clearSubtaskInput);
+  document
+    .getElementById("subtaskInput")
+    ?.addEventListener("keydown", handleSubtaskEnter);
 }
 
 /**
  * Wires up all event listeners for the Add Task form.
  * @returns {void}
  */
-/* prettier-ignore */
 function setupEventListeners() {
-  document.getElementById("dropdownToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("dropdownList", "dropdownArrowImg", getUserList); });
-  document.getElementById("categoryToggle")?.addEventListener("click", (e) => { e.stopPropagation(); toggleDropdown("categoryList", "categoryArrowImg"); });
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) {searchInput.addEventListener("input", filterUserList);searchInput.addEventListener("click", (e) => { e.stopPropagation(); openUserDropdown(); });}
+  setupDropdownListeners();
+  setupSearchListeners();
+  setupSubtaskListeners();
   document.getElementById("clear")?.addEventListener("click", resetForm);
-  document.getElementById("addSubtaskBtn")?.addEventListener("click", addSubtask);
-  document.getElementById("clearSubtaskBtn")?.addEventListener("click", clearSubtaskInput);
-  document.getElementById("subtaskInput")?.addEventListener("keydown", (e) => e.key === "Enter" && (e.preventDefault() || addSubtask()));
   setupCategorySelection();
   document.removeEventListener("click", closeAllDropdowns);
   document.addEventListener("click", closeAllDropdowns);
@@ -261,30 +205,6 @@ function generateNextTaskId(currenttasks) {
 }
 
 /**
- * Saves a new task to Firebase with a generated ID.
- * @param {string} title - The task title.
- * @param {string} desc - The task description.
- * @param {string} date - The due date.
- * @param {string} prio - The task priority.
- * @param {string} cat - The task category.
- * @param {object} users - The assigned users, keyed by user ID.
- * @param {object} subtasks - The task's subtasks.
- * @returns {Promise<void>}
- */
-/* prettier-ignore */
-const registerTask = async (title, desc, date, prio, cat, users, subtasks) => {
-  const tasksRef = ref(database, "tasks");
-  return runTransaction(tasksRef, (currenttasks) => {
-    const tasks = currenttasks || {};
-    tasks[generateNextTaskId(tasks)] = {
-      title, description: desc, duedate: date, status: taskStatus,
-      priority: prio, assignedTo: users, category: cat, subtasks
-    };
-    return tasks;
-  });
-};
-
-/**
  * Gets the currently selected priority value.
  * @returns {string} The selected priority, defaulting to "medium".
  */
@@ -294,28 +214,28 @@ function getSelectedPriority() {
 }
 
 /**
- * Wires up click handlers for the priority buttons.
+ * Marks one priority button as active and swaps the icons.
+ * @param {string} [value="medium"] - The priority to select.
+ * @returns {void}
+ */
+function selectPriority(value = "medium") {
+  document.querySelectorAll(".priority-btn").forEach((btn) => {
+    const active = btn.dataset.value === value;
+    btn.classList.toggle("active", active);
+    btn.querySelector("img").src =
+      `../assets/icons/${btn.dataset.value}${active ? "-white" : ""}.svg`;
+  });
+}
+
+/**
+ * Wires up click handlers for the priority buttons and preselects medium.
  * @returns {void}
  */
 function setupPriorityButtons() {
-  const buttons = document.querySelectorAll(".priority-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-    });
+  document.querySelectorAll(".priority-btn").forEach((btn) => {
+    btn.addEventListener("click", () => selectPriority(btn.dataset.value));
   });
-}
-/**
- * Builds the assigned users object for saving to Firebase.
- * @returns {object} The assigned users, keyed by user ID.
- */
-function getAssignedUsersObj() {
-  const assignedUsers = {};
-  selectedUserIds.forEach((id) => {
-    assignedUsers[id] = true;
-  });
-  return assignedUsers;
+  selectPriority("medium");
 }
 
 /**
@@ -324,13 +244,23 @@ function getAssignedUsersObj() {
  */
 /* prettier-ignore */
 function saveTask() {
-  const val = (id) => document.getElementById(id)?.value?.trim() || "";
-  const cat = document.getElementById("categorySelectedText")?.innerText || "";
   const btn = document.getElementById("createTask");
   btn.disabled = true;
-  registerTask(val("formTitle"), val("description"), val("duedate"), getSelectedPriority(), cat, getAssignedUsersObj(), getSubtasksData())
-    .then(() => { resetForm(); showSuccessModal(); })
-    .catch((err) => { btn.disabled = false; if (errEL) errEL.textContent = err.message; });
+  registerTask(buildTaskData(), taskStatus)
+    .then(() => {
+      resetForm();
+      showSuccessModal();
+    })
+    .catch((err) => {
+      btn.disabled = false;
+      if (errEL) errEL.textContent = err.message;
+    });
+}
+
+function handleSubtaskEnter(e) {
+  if (e.key !== "Enter") return;
+  e.preventDefault();
+  addSubtask();
 }
 
 /**
@@ -388,7 +318,7 @@ function showSuccessModal() {
  * @returns {void}
  */
 export function setupTaskForm(status = "todo", onCreated = null) {
-  taskStatus = status;
+  taskStatus = status.replace(/-/g, "");
   onTaskCreated = onCreated;
   selectedUserIds.clear();
   setupEventListeners();
@@ -406,10 +336,6 @@ function init() {
   setupTaskForm();
 }
 
-if (document.body.dataset.page === "add-task") {
-  document.addEventListener("DOMContentLoaded", init);
-}
-
 window.setFieldError = setFieldError;
 window.validateTitle = validateTitle;
 window.validateDate = validateDate;
@@ -425,7 +351,6 @@ window.getSubtasksData = getSubtasksData;
 window.closeAllDropdowns = closeAllDropdowns;
 window.toggleDropdown = toggleDropdown;
 window.openUserDropdown = openUserDropdown;
-window.renderTaskForm = renderTaskForm;
 window.renderTaskForm = renderTaskForm;
 if (document.body.dataset.page === "add-task") {
   document.addEventListener("DOMContentLoaded", init);

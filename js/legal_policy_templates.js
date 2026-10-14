@@ -28,12 +28,12 @@ export function getPolicyTemplate() {
 const legalTemplate = ` <h1>Legal Notice</h1>
       <h4>Subtitle</h4>
       <ul>
-        <li>[Student Names List]</li>
-        <li>[Address of the JOIN operator - e.g. one of the students]</li>
-        <li>[Postcode and city]</li>
+        <li>Sandro Spirig</li>
+        <li>Gartenstrasse 3</li>
+        <li>8000 Zürich</li>
       </ul>
       <h4>Exploring the Board</h4>
-      <p>Email: [Email]</p>
+      <p>Email: sandro.spirig@example.com</p>
       <h4>Acceptance of terms</h4>
       <p>
         By accessing and using Join (Product), you acknowledge and agree to the
