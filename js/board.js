@@ -275,19 +275,16 @@ function checkIfExist(getCartTitle, getCartDescription){
 }
 
 function iterarCards(getCartTitle,getCartDescription){
-   if(getCartTitle.length != 0){
-    for (let index = 0; index < getCartTitle.length; index++) {
-        const elementTitle = getCartTitle[index];
+    const search = [...new Set([...getCartTitle, ...getCartDescription])];
+   if(search.length != 0){
+    for (let index = 0; index < search.length; index++) {
+        const elementTitle = search[index]; 
         showCards(elementTitle);
+     } 
    } 
-   }
-   if(getCartDescription.length != 0){
-     for (let indexDescription = 0; indexDescription < getCartDescription.length; indexDescription++) {
-            const elementDescription = getCartDescription[indexDescription];
-       showCards(elementDescription);   
-    }
-   }
-       
+   else{
+    return;
+   }    
 }
 
 function editTask(taskId) {
