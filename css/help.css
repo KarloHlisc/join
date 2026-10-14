@@ -1,27 +1,30 @@
-h1 {
+.help-header h1 {
   font-size: 61px;
-  margin: 0px;
+  margin: 0;
 }
-h2 {
-  font-size: 27px;
-  margin-bottom: 20px;
-}
+
 .help-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 60px;
-  height: 61px;
+  min-height: 61px;
 }
 
 .help-main {
   margin: 60px;
 }
-li {
+
+.help-main h2 {
+  font-size: 27px;
+  margin-bottom: 20px;
+}
+
+.help-main li {
   padding-left: 20px;
 }
 
-::marker {
+.help-main li::marker {
   font-weight: 900;
   font-size: 27px;
 }

@@ -119,33 +119,9 @@ function showSuccessModal() {
 }
 
 /**
- * Toggles a password input between hidden and visible text.
- * @param {string} id - The ID of the password input.
- * @param {string} eyeIconId - The ID of the toggle icon.
+ * Enables the sign up button only if all fields are filled and privacy is accepted.
  * @returns {void}
  */
-/* prettier-ignore */
-function togglePasswordVisibility(id,eyeIconId,input = document.getElementById(id),icon = document.getElementById(eyeIconId)) {
-    const isPassword = input.type === "password";
-    input.type = isPassword ? "text" : "password";
-    icon.src = isPassword ? icon.src.replace(".png", "_off.png") : icon.src.replace("_off.png", ".png");
-}
-
-/**
- * Shows the password-visibility toggle button once a password field has input.
- * @returns {void}
- */
-function setupPasswordToggle() {
-  document.querySelectorAll("#password, #confirm-password").forEach((input) => {
-    input.addEventListener("input", () => {
-      const btn = input
-        .closest(".input-wrapper")
-        .querySelector(".toggle-password-btn");
-      btn.style.display = input.value.length > 0 ? "inline-block" : "none";
-    });
-  });
-}
-
 function updateSignupButton() {
   const v = getSignupFormValues();
   const filled = v.name && v.email && v.password && v.confirmPassword;
@@ -154,6 +130,10 @@ function updateSignupButton() {
   );
 }
 
+/**
+ * Registers input listeners that keep the sign up button state current.
+ * @returns {void}
+ */
 function setupSignupButtonState() {
   if (!existSignUpForm) return;
   existSignUpForm.querySelectorAll("input").forEach((input) => {
@@ -164,6 +144,3 @@ function setupSignupButtonState() {
 }
 
 setupSignupButtonState();
-
-window.togglePasswordVisibility = togglePasswordVisibility;
-setupPasswordToggle();

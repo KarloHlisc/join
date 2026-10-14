@@ -101,7 +101,7 @@ export async function getUserList() {
  * @returns {void}
  */
 export function filterUserList() {
-  openUserDropdown(getUserlist);
+  openUserDropdown(getUserList);
   const filter =
     document.getElementById("searchInput")?.value.toLowerCase() || "";
   const buttons = document.querySelectorAll("#dropdownList .user-btn");

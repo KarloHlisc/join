@@ -55,7 +55,7 @@ export const helpTemplateTxT = `
         </button>
       </div>
       <div class="help-main">
-        <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here, we'll provide an overview of what Joinis,how it can benefit you, and how to use it.
+        <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here, we'll provide an overview of what Join is, how it can benefit you, and how to use it.
         </p>
         <h2>What is Join?</h2>
         <p>Join is a kanban-based project management tool designed and built by a group of dedicated students as part of their web development bootcamp at the Developer Akademie.</br></br> Kanban, a Japanese term meaning "billboard", is a highly effective method to visualize work, limit
@@ -79,7 +79,7 @@ export const helpTemplateTxT = `
           <li><h3>Moving Cards</h3>
           <p>As the task moves from one stage to another, you can reflect that on the board by dragging and dropping the card from one list to another.</p></li>
           <li><h3>Deleting Cards</h3>
-          <p>Once a task is completed, you can either move it to the "Done" list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as this action is irreversible.Remember that using Join effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.Have more questions about Join? Feel free to contact us at [Your Contact Email]. We're here to help you!
+          <p>Once a task is completed, you can either move it to the "Done" list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as this action is irreversible.Remember that using Join effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.Have more questions about Join? Feel free to contact us at sandrospirig@example.com. We're here to help you!
 </p></li>
         </ol>
       </div>`;
@@ -101,7 +101,7 @@ export function helpTemplate() {
 export function userDetailTemplate(user, initials) {
   return `<div id="details-header"><h1>Contacts</h1><span>Better with a team</span></div>
         <div id="icon-name-and-details">
-          <div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
+          <div class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="name-and-button">
             <span>${escapeHtml(user.name)}</span>
             <div id="edit-delete"><button id="edit" onclick="showEditContactModule('${user.userId}')"><img src="../assets/icons/edit.svg" alt="edit-btn" />Edit</button><button id="delete" onclick="deleteUser('${user.userId}')"><img src="../assets/icons/delete.svg" alt="delete-btn" />Delete</button></div>
@@ -136,10 +136,10 @@ export function getAddContactModule() {
 export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
-          <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
+          <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button type="button" id="delete" class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
+              <button type="button"  class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;

@@ -56,12 +56,12 @@ export function saveSubtaskEdit(li) {
 export function createSubtaskItem(text) {
   const li = document.createElement("li");
   li.classList.add("subtask-item");
-  li.innerHTML = `<div><span>•</span><span class="subtask-text">${escapeHtml(text)}</span></div><input type="text" id="subtaskInputfield" class="subtask-edit-input" /><div class="subtask-actions"><button type="button" class="edit-btn"><img src="../assets/icons/edit.svg" alt="Edit" /></button><button type="button" class="delete-btn"><img src="../assets/icons/delete.svg" alt="Delete" /></button></div>`;
+  li.innerHTML = `<div><span>•</span><span class="subtask-text">${escapeHtml(text)}</span></div><input type="text" class="subtask-edit-input" /><div class="subtask-actions"><button type="button" class="edit-btn"><img src="../assets/icons/edit.svg" alt="Edit" /></button><button type="button" class="delete-btn"><img src="../assets/icons/delete.svg" alt="Delete" /></button></div>`;
   li.addEventListener("dblclick", () => toggleSubtaskEdit(li, true));
   li.querySelector(".edit-btn").addEventListener("click", () => toggleSubtaskEdit(li, true));
   li.querySelector(".delete-btn").addEventListener("click", () => li.remove());
   const input = li.querySelector(".subtask-edit-input");
-  input.addEventListener("keydown", (e) => e.key === "Enter" && saveSubtaskEdit(li));
+  input.addEventListener("keydown", (e) => { if (e.key !== "Enter") return;e.preventDefault();saveSubtaskEdit(li);});
   input.addEventListener("blur", () => saveSubtaskEdit(li));
   return li;
 }

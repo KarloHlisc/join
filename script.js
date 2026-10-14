@@ -8,19 +8,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
 import { getLayoutHtml, getLogoutModule, helpTemplate } from "./js/template.js";
+
 import {
   getPolicyTemplate,
   getLegalTemplate,
 } from "./js/legal_policy_templates.js";
 
-/**
- * Checks whether a string is a syntactically valid email address.
- * @param {string} email - The email address to validate.
- * @returns {boolean} True if the format is valid.
- */
-export function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+import { isValidEmail, getInitials } from "./js/utils.js";
 
 /**
  * renders the shared policy notice markup injected into policy-after-login-container .
@@ -42,25 +36,28 @@ const existLoginForm = document.getElementById("login-form");
 const errEL = document.getElementById("errorMessage");
 let currentPage = "main-container";
 
+const publicPages = ["signup.html", "legal_login.html", "policy_login.html"];
+
 /**
- * Adds an addeventlistener to the pages that doesnt allow access without a logged in user.
+ * Checks whether a page may be opened without login.
+ * @param {string} path - The current pathname.
+ * @returns {boolean} True if the page is public.
  */
-window.addEventListener("pageshow", function (event) {
-  const currentPath = window.location.pathname;
-  const isLoginPage = !currentPath.includes("/html/");
-  const isSignupPage = currentPath.includes("signup.html");
-  const isLegalPage = currentPath.includes("legal_login.html");
-  const isPolicyPage = currentPath.includes("policy_login.html");
-  if (
-    !isLoginPage &&
-    !isSignupPage &&
-    !isLegalPage &&
-    !isPolicyPage &&
-    !sessionStorage.getItem("loggedInUser")
-  ) {
+function isPublicPage(path) {
+  return !path.includes("/html/") || publicPages.some((p) => path.includes(p));
+}
+
+/**
+ * Redirects to the login page when no user is logged in.
+ * @returns {void}
+ */
+function protectPage() {
+  if (isPublicPage(window.location.pathname)) return;
+  if (!sessionStorage.getItem("loggedInUser"))
     window.location.replace("../index.html");
-  }
-});
+}
+
+window.addEventListener("pageshow", protectPage);
 
 /**
  * Finds a registered user matching the given email and password.
@@ -71,9 +68,10 @@ window.addEventListener("pageshow", function (event) {
 async function findUser(email, password) {
   const data = await get(child(ref(database), "users"));
   const users = data.exists() ? data.val() : {};
-  return Object.values(users).find(
-    (u) => u.email === email && u.password === password,
+  const entry = Object.entries(users).find(
+    ([, u]) => u.email === email && u.password === password,
   );
+  return entry ? { userId: entry[0], ...entry[1] } : undefined;
 }
 
 /**
@@ -203,18 +201,6 @@ function setupPasswordToggle() {
 }
 
 /**
- * Extracts the initials from a full name.
- * @param {string} name - The full name.
- * @returns {string} The uppercase initials.
- */
-function getInitials(name) {
-  if (!name) return "";
-  const parts = name.trim().split(/\s+/);
-  const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
-  return ini.toUpperCase();
-}
-
-/**
  * Renders the logged-in user's initials and color on the header avatar.
  * @returns {void}
  */
@@ -313,22 +299,43 @@ function logoutFromAccount() {
 }
 
 /**
- * Handles the preloader animation sequence once the page has fully loaded.
+ * Moves the preloader logo to the header logo position.
+ * @param {HTMLElement} logo - The moving logo.
+ * @param {HTMLElement} head - The header logo.
+ * @param {HTMLElement} wrap - The logo wrapper.
  * @returns {void}
  */
-/* prettier-ignore */
-window.addEventListener("load", function () {
-  const logo = document.getElementById("moving-logo"), pre = document.getElementById("preloader"), head = document.querySelector(".header-logo"), wrap = document.querySelector(".logo-wrapper");
-  if (logo && head && wrap) {
-    const t = head.getBoundingClientRect();
-    const x = t.left + t.width / 2 - window.innerWidth / 2;
-    const y = t.top + t.height / 2 - window.innerHeight / 2;
-    wrap.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-    logo.style.width = `${t.width}px`;
-    logo.style.height = `${t.height}px`;
-  }
-  if (pre) setTimeout(() => pre.classList.add("fade-out"), 500);
-  if (head && pre) setTimeout(() => { head.style.opacity = "1"; pre.remove(); }, 800);
+function moveLogoToHeader(logo, head, wrap) {
+  const t = head.getBoundingClientRect();
+  const x = t.left + t.width / 2 - window.innerWidth / 2;
+  const y = t.top + t.height / 2 - window.innerHeight / 2;
+  wrap.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+  logo.style.width = `${t.width}px`;
+  logo.style.height = `${t.height}px`;
+}
+
+/**
+ * Fades out and removes the preloader.
+ * @param {HTMLElement|null} pre - The preloader element.
+ * @param {HTMLElement|null} head - The header logo.
+ * @returns {void}
+ */
+function finishPreloader(pre, head) {
+  if (!pre) return;
+  setTimeout(() => pre.classList.add("fade-out"), 500);
+  setTimeout(() => {
+    if (head) head.style.opacity = "1";
+    pre.remove();
+  }, 800);
+}
+
+window.addEventListener("load", () => {
+  const logo = document.getElementById("moving-logo");
+  const pre = document.getElementById("preloader");
+  const head = document.querySelector(".header-logo");
+  const wrap = document.querySelector(".logo-wrapper");
+  if (logo && head && wrap) moveLogoToHeader(logo, head, wrap);
+  finishPreloader(pre, head);
 });
 
 window.logInAsGuest = logInAsGuest;
