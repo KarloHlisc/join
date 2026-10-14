@@ -4,7 +4,7 @@ import {
   remove,
   ref,
   get,
-  child,
+  update,
   runTransaction,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
@@ -13,6 +13,19 @@ import {
   userDetailTemplate,
   getEditContactModule,
 } from "./template.js";
+
+import {
+  buildUser,
+  checkEmail,
+  getInitials,
+  createEl,
+  generateNextUserId,
+} from "./utils.js";
+
+import {
+  validateContactFields,
+  showContactErrors,
+} from "./contacts/contacts_validate.js";
 
 /**
  * Opens the "Add contact" modal and wires up its form submit handler.
@@ -58,32 +71,6 @@ function closeAddContactModule() {
   if (!container) return;
   container.classList.remove("active");
   container.innerHTML = "";
-}
-
-/**
- * Extracts the initials from a full name.
- * @param {string} name - The full name.
- * @returns {string} The uppercase initials.
- */
-function getInitials(name) {
-  if (!name) return "";
-  const parts = name.trim().split(/\s+/);
-  const ini = parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0];
-  return ini.toUpperCase();
-}
-
-/**
- * Creates a DOM element with a class and optional text content.
- * @param {string} type - The tag name to create.
- * @param {string} className - The CSS class to apply.
- * @param {string} [text] - Optional text content.
- * @returns {HTMLElement} The created element.
- */
-function createEl(type, className, text = "") {
-  const el = document.createElement(type);
-  el.classList.add(className);
-  if (text) el.innerText = text;
-  return el;
 }
 
 /**
@@ -177,20 +164,13 @@ function addContactButton() {
 }
 
 /**
- * Generates the next sequential user ID based on existing user keys.
- * @param {object} currentUsers - The current users object from Firebase.
- * @returns {string} The next user ID, e.g. "userid_03".
+ * reads the current values from the contact form fields.
+ * @returns {object} The form values.
  */
-function generateNextUserId(currentUsers) {
-  const keys = Object.keys(currentUsers || {});
-  if (keys.length === 0) return "userid_01";
-  const numbers = keys.map((key) => {
-    const match = key.match(/\d+/);
-    return match ? parseInt(match, 10) : 0;
-  });
-  const nextNumber = Math.max(...numbers) + 1;
-  return `userid_${String(nextNumber).padStart(2, "0")}`;
-}
+const readContactForm = () => {
+  const val = (id) => document.getElementById(id).value.trim();
+  return { name: val("name"), email: val("email"), phone: val("phone") };
+};
 
 /**
  * Registers a new contact in Firebase with a generated ID and random avatar color.
@@ -199,52 +179,12 @@ function generateNextUserId(currentUsers) {
  * @param {string} p - The contact's phone number.
  * @returns {Promise<void>}
  */
-/* prettier-ignore */
-const registerUser = async (e, n, p) => {
-  const usersRef = ref(database, "users");
-  return runTransaction(usersRef, (currentUsers) => {
-    const users = currentUsers || {};
-    const customId = generateNextUserId(users);
-    users[customId] = {email: e,name: n,password: "",backgroundColor: getRandomColor(),phone: p};
+const registerUser = (email, name, phone) => {
+  return runTransaction(ref(database, "users"), (current) => {
+    const users = current || {};
+    users[generateNextUserId(users)] = buildUser(email, name, "", phone);
     return users;
   });
-};
-
-/**
- * Generates a random hex color for the contact's avatar background.
- * @returns {string} A hex color string.
- */
-function getRandomColor() {
-  let characters = "0123456789ABCDEF";
-  let color = "#";
-
-  for (let i = 0; i < 6; i++) {
-    color += characters[getRandomNumber(0, 15)];
-  }
-
-  return color;
-}
-
-/**
- * Generates a random integer between two bounds, inclusive.
- * @param {number} low - The lower bound.
- * @param {number} high - The upper bound.
- * @returns {number} A random integer.
- */
-function getRandomNumber(low, high) {
-  let r = Math.floor(Math.random() * (high - low + 1)) + low;
-  return r;
-}
-
-/**
- * Checks whether an email address is already registered.
- * @param {string} email - The email to check.
- * @returns {Promise<object|undefined>} The matching user, or undefined.
- */
-const checkEmail = async (email) => {
-  const data = await get(child(ref(database), "users"));
-  const users = data.exists() ? data.val() : {};
-  return Object.values(users).find((u) => u.email === email);
 };
 
 /**
@@ -252,18 +192,15 @@ const checkEmail = async (email) => {
  * @param {SubmitEvent} e - The form submit event.
  * @returns {Promise<void>}
  */
-/* prettier-ignore */
 const handleFormSubmit = async (e) => {
   e.preventDefault();
-  const errorDisplay = document.getElementById("errorMessage");
-  if (errorDisplay) errorDisplay.textContent = "";
-  try {
-    const val = (id) => document.getElementById(id).value.trim();
-    if (await checkEmail(val("email"))) throw new Error("Email is already registered");
-    await registerUser(val("email"), val("name"), val("phone"));
-    closeAddContactModule()
-    toggleShowSuccessModal("congrats");
-  } catch (err) { if (errorDisplay) errorDisplay.textContent = err.message; }
+  const values = readContactForm();
+  if (!showContactErrors(validateContactFields(values))) return;
+  if (await checkEmail(values.email))
+    return showContactErrors({ email: "Email is already registered" });
+  await registerUser(values.email, values.name, values.phone);
+  closeAddContactModule();
+  toggleShowSuccessModal("congrats");
 };
 
 /**
@@ -274,16 +211,13 @@ const handleFormSubmit = async (e) => {
  */
 async function handleEditSubmit(e, userId) {
   e.preventDefault();
-  const val = (id) => document.getElementById(id).value.trim();
-  const errorDisplay = document.getElementById("errorMessage");
-  if (errorDisplay) errorDisplay.textContent = "";
-  const existingUser = await checkEmail(val("email"));
+  const values = readContactForm();
+  if (!showContactErrors(validateContactFields(values))) return;
   const currentData = (await get(ref(database, `users/${userId}`))).val();
-  if (existingUser && existingUser.email !== currentData?.email) {
-    if (errorDisplay) errorDisplay.textContent = "Email is already registered";
-    return;
-  }
-  await saveEditedUser(userId, currentData, val);
+  const existing = await checkEmail(values.email);
+  if (existing && existing.email !== currentData?.email)
+    return showContactErrors({ email: "Email is already registered" });
+  await saveEditedUser(userId, currentData, values);
 }
 
 /**
@@ -294,14 +228,14 @@ async function handleEditSubmit(e, userId) {
  * @returns {Promise<void>}
  */
 /* prettier-ignore */
-async function saveEditedUser(userId, currentData, val) {
-  const updated = {...currentData,name: val("name"),email: val("email"),phone: val("phone"),};
+async function saveEditedUser(userId, currentData, values) {
+  const updated = { ...currentData, ...values };
   await runTransaction(ref(database, "users"), (curr) => {
     if (curr) curr[userId] = updated;
     return curr;
   });
   closeAddContactModule();
-  toggleShowSuccessModal("edited")
+  toggleShowSuccessModal("edited");
 }
 
 /**
@@ -320,20 +254,37 @@ function toggleShowSuccessModal(id) {
 }
 
 /**
- * Deletes a contact from Firebase and updates the UI.
- * @param {string} userId - The Firebase key of the contact to delete.
+ * Removes a contact from the assignedTo list of all tasks.
+ * @param {string} userId - The Firebase key of the contact.
  * @returns {Promise<void>}
  */
-function deleteUser(userId) {
-  return remove(ref(database, `users/${userId}`))
-    .then(() => {
-      const details = document.getElementById("contact-details-container");
-      if (details) details.innerHTML = "";
-      closeAddContactModule();
-      addContactButton();
-      toggleShowSuccessModal("deleted");
-    })
-    .catch((err) => console.error("Fehler:", err));
+async function removeUserFromTasks(userId) {
+  const snap = await get(ref(database, "tasks"));
+  if (!snap.exists()) return;
+  const updates = {};
+  Object.entries(snap.val()).forEach(([taskId, task]) => {
+    if (task.assignedTo?.[userId])
+      updates[`tasks/${taskId}/assignedTo/${userId}`] = null;
+  });
+  if (Object.keys(updates).length) await update(ref(database), updates);
+}
+
+/**
+ * Deletes a contact and removes it from all tasks.
+ * @param {string} userId - The Firebase key of the contact.
+ * @returns {Promise<void>}
+ */
+async function deleteUser(userId) {
+  try {
+    await removeUserFromTasks(userId);
+    await remove(ref(database, `users/${userId}`));
+    document.getElementById("contact-details-container").innerHTML = "";
+    closeAddContactModule();
+    addContactButton();
+    toggleShowSuccessModal("deleted");
+  } catch (err) {
+    console.error("Delete failed:", err);
+  }
 }
 
 /**

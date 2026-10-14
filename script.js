@@ -47,7 +47,7 @@ let currentPage = "main-container";
  */
 window.addEventListener("pageshow", function (event) {
   const currentPath = window.location.pathname;
-  const isLoginPage = currentPath.includes("index.html");
+  const isLoginPage = !currentPath.includes("/html/");
   const isSignupPage = currentPath.includes("signup.html");
   const isLegalPage = currentPath.includes("legal_login.html");
   const isPolicyPage = currentPath.includes("policy_login.html");
@@ -96,8 +96,10 @@ function loginSuccess(user) {
 function validateLoginFields(email, password) {
   const inputs = document.querySelectorAll("#email, #password");
   inputs.forEach((input) => input.classList.remove("input-error"));
-  if (email && password) return true;
-  errEL.textContent = "Please fill in email and password.";
+  if (email && password && isValidEmail(email)) return true;
+  errEL.textContent = email && !isValidEmail(email)
+    ? "Please enter a valid email address."
+    : "Please fill in email and password.";
   inputs.forEach((input) => input.classList.add("input-error"));
   return false;
 }

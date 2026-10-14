@@ -34,9 +34,8 @@ export function toggleDropdown(listId, arrowId, callback = null) {
  * Opens the user dropdown if it is currently closed.
  * @returns {void}
  */
-export function openUserDropdown() {
+export function openUserDropdown(loadUsers) {
   const list = document.getElementById("dropdownList");
-  if (list && list.classList.contains("hidden")) {
-    toggleDropdown("dropdownList", "dropdownArrowImg", getUserList);
-  }
+  if (!list || !list.classList.contains("hidden")) return;
+  toggleDropdown("dropdownList", "dropdownArrowImg", loadUsers);
 }
