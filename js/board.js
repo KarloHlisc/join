@@ -20,13 +20,11 @@ async function getUserTasks(path = "") {
   try {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
-
     // Umwandle in Array
     const taskArray = Object.entries(data || {}).map(([id, task]) => ({
       id,
       ...task,
     }));
-
     tickets = taskArray;
     displayTasks(tickets);
   } catch (error) {
@@ -188,12 +186,8 @@ function editTask(taskId) {
 function getPriorityImage(priority) {
   const images = {
     urgent: "../assets/icons/urgent.svg",
-    dringend: "../assets/icons/urgent.svg",
-    high: "../assets/icons/high.svg",
-    hoch: "../assets/icons/high.svg",
     medium: "../assets/icons/medium.svg",
     low: "../assets/icons/low.svg",
-    niedrig: "../assets/icons/low.svg",
   };
   return images[priority?.toLowerCase()] || "../assets/icons/low.svg";
 }
@@ -262,27 +256,38 @@ function searchCards(){
 
 function filterItems(arr, query){
     console.log(arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase())));
-    let getCart = arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase()));
-    checkIfExist(getCart);
+     console.log(arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase())));
+    let getCartTitle = arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase()));
+    let getCartDescription = arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase()));
+    checkIfExist(getCartTitle,getCartDescription);
 }
 
-function checkIfExist(getCart){
-    if(!getCart.length == 0 ){
+function checkIfExist(getCartTitle, getCartDescription){
+    if(!getCartTitle.length == 0 || !getCartDescription.length == 0){
         document.getElementById("to-do-cards-container").innerHTML="";
         document.getElementById("in-progress-cards-container").innerHTML="";
         document.getElementById("await-feedback-cards-container").innerHTML="";
         document.getElementById("done-cards-container").innerHTML="";
-        iterarCards(getCart);
+        iterarCards(getCartTitle, getCartDescription);
     }else{
         return;
     }
 }
 
-function iterarCards(getCart){
-    for (let index = 0; index < getCart.length; index++) {
-        const element = getCart[index];
-       showCards(element);  
+function iterarCards(getCartTitle,getCartDescription){
+   if(getCartTitle.length != 0){
+    for (let index = 0; index < getCartTitle.length; index++) {
+        const elementTitle = getCartTitle[index];
+        showCards(elementTitle);
+   } 
+   }
+   if(getCartDescription.length != 0){
+     for (let indexDescription = 0; indexDescription < getCartDescription.length; indexDescription++) {
+            const elementDescription = getCartDescription[indexDescription];
+       showCards(elementDescription);   
     }
+   }
+       
 }
 
 function editTask(taskId) {
