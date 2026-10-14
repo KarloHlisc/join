@@ -316,12 +316,17 @@ function logoutFromAccount() {
  */
 /* prettier-ignore */
 window.addEventListener("load", function () {
-  const movingLogo = document.getElementById("moving-logo");
-  const preloader = document.getElementById("preloader");
-  const headerLogo = document.querySelector(".header-logo");
-  if (movingLogo) movingLogo.classList.add("move-to-corner");
-  if (preloader)setTimeout(() => {preloader.classList.add("fade-out");}, 500);
-  if (headerLogo && preloader)setTimeout(() => {headerLogo.style.opacity = "1";preloader.remove();}, 800);
+  const logo = document.getElementById("moving-logo"), pre = document.getElementById("preloader"), head = document.querySelector(".header-logo"), wrap = document.querySelector(".logo-wrapper");
+  if (logo && head && wrap) {
+    const t = head.getBoundingClientRect();
+    const x = t.left + t.width / 2 - window.innerWidth / 2;
+    const y = t.top + t.height / 2 - window.innerHeight / 2;
+    wrap.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    logo.style.width = `${t.width}px`;
+    logo.style.height = `${t.height}px`;
+  }
+  if (pre) setTimeout(() => pre.classList.add("fade-out"), 500);
+  if (head && pre) setTimeout(() => { head.style.opacity = "1"; pre.remove(); }, 800);
 });
 
 window.logInAsGuest = logInAsGuest;
