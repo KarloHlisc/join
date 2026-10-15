@@ -10,7 +10,7 @@ function getCartTemplate(task) {
             </div>
             <div class="cart-progress">
                 <progress value="" max="100"></progress>
-                <span>"0/0" Subtasks</span>
+                <span id="showSubtask">${showSubtasks(task) || 0} Subtasks</span>
             </div>
             <div class="cart-assigment">
             <div class="users-together">
@@ -18,9 +18,9 @@ function getCartTemplate(task) {
                         ${getAssignedUsersArray(task).map((user) => `
                             <div class="user-chip">
                                 <div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
-                            </div></div> 
+                            </div>
                         `,).join("")}
-                    </div> 
+                    </div> </div> 
                 <div class="priority-badge">
                     <img src="${getPriorityImage(task.priority)}" alt="${task.priority}" class="priority-icon-small">
                 </div>
