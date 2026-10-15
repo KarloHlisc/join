@@ -19,10 +19,7 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
-      id,
-      ...task,
-    }));
+    const taskArray = Object.entries(data || {}).map(([id, task]) => ({id,...task, }));
     tickets = taskArray;
     displayTasks(tickets);
   } catch (error) {
@@ -36,10 +33,7 @@ async function getUsers(path = "") {
     const data = await response.json();
 
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, user]) => ({
-      id,
-      ...user,
-    }));
+    const taskArray = Object.entries(data || {}).map(([id, user]) => ({id,...user,}));
 
     users = taskArray;
   } catch (error) {
@@ -122,7 +116,7 @@ function findUsersByTask(task) {
 
 function openEditTask(task){
   const dialogEdit = document.getElementById("myAddTask");
-  dialogEdit.innerHTML = getTaskFormTemplate(task);
+  dialogEdit.innerHTML = getTaskFormTemplate(task.id);
   dialogEdit.showModal();
  closeDialogTask();
   dialogEdit.addEventListener("click", (e) => {
@@ -160,13 +154,22 @@ function openTaskDialog(event) {
   });
 }
 
+function showSubtasks(task){
+  //let subtask = document.getElementById("showSubtask");
+  const subtask = Object.keys(task.subtasks || {});
+  //document.getElementById("showSubtask").innerHTML+=
+  
+  for(let index = 0; index < subtask.length; index++){
+    let element = subtask[index];
+    return `0/${subtask.length}`;
+    
+  }
+}
+
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
-    id,
-    ...st,
-  }));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id,...st,}));
 return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
