@@ -90,6 +90,15 @@ function findUsers(task) {
   }
 }
 
+function getTaskColor(task){
+  //let getColorTask = Object.entries(task.category);
+  if(task.category == "User Story"){
+    return "rgba(0, 56, 255, 1)";
+  }else if(task.category == "Technical"){
+    return "rgba(31, 215, 193, 1)";
+  }
+}
+
 function getUserOnTask(userOnTask){
   for (let i = 0; i <= userOnTask.length; i++) {
       let found = users.find((u) => u.id == userOnTask[i]);
