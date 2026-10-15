@@ -92,13 +92,15 @@ function cartTemplate(task) {
 
 function findUsers(task) {
   let userOnTask = Object.keys(task.assignedTo || "");
-
-  if (userOnTask == "") {
-    return;
+  if (userOnTask == "") {return;
   } else {
-    for (let i = 0; i <= userOnTask.length; i++) {
-      let found = users.find((u) => u.id == userOnTask[i]);
+    getUserOnTask(userOnTask);
+  }
+}
 
+function getUserOnTask(userOnTask){
+  for (let i = 0; i <= userOnTask.length; i++) {
+      let found = users.find((u) => u.id == userOnTask[i]);
       if (found != undefined) {
         let userN = found.name;
         const userName = userN.split(" ");
@@ -109,35 +111,49 @@ function findUsers(task) {
         return;
       }
     }
-  }
 }
 
 function findUsersByTask(task) {
   const userIds = Object.keys(task.assignedTo || {});
   if (userIds.length === 0) return "";
-
-  return userIds
-    .map((userId) => {
+  return userIds.map((userId) => {
       const user = users.find((u) => u.id === userId);
       return user ? user.name : "Unknown";
-    })
-    .join(", ");
+    }).join(", ");
+}
+
+function openEditTask(task){
+  const dialogEdit = document.getElementById("myAddTask");
+  dialogEdit.innerHTML = getTaskFormTemplate(task);
+  dialogEdit.showModal();
+ closeDialogTask();
+  dialogEdit.addEventListener("click", (e) => {
+    if (e.target === dialogEdit) {
+      dialogEdit.close();
+    }
+  })
+}
+
+function closeDialogTask(){
+   const taskDialog = document.getElementById("myDialog");
+  taskDialog.close();
+}
+
+function closeEditTask(){
+   const dialogEdit = document.getElementById("myAddTask");
+  dialogEdit.close();
 }
 
 // Dialog Functions
 function openTaskDialog(event) {
   // Prevent drag-and-drop from triggering the dialog
   if (event.target.closest(".dragging")) return;
-
   const taskId = event.currentTarget.getAttribute("data-task-id");
   const task = tickets.find((t) => t.id === taskId);
-
   if (!task) return;
-
   const dialog = document.getElementById("myDialog");
   dialog.innerHTML = createTaskDetailTemplate(task);
   dialog.showModal();
-
   // Close dialog when clicking outside
   dialog.addEventListener("click", (e) => {
     if (e.target === dialog) {
@@ -149,10 +165,7 @@ function openTaskDialog(event) {
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
-    id,
-    ...st,
-  }));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id, ...st,}));
 return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
@@ -167,13 +180,11 @@ function getAssignedUsersArray(task) {
 async function deleteTask(path="") {
   let response = await fetch(BASE_URL + path + ".json",{
     method:"DELETE",
-  })
- 
+  }) 
  // if (confirm("Are you sure you want to delete this task?")) {
    // console.log("Delete task:", taskId);
     // Add delete logic here
-    document.getElementById("myDialog").close();
-  
+    document.getElementById("myDialog").close(); 
   return responseToJson = await response.json();
 }
 
@@ -192,8 +203,6 @@ function getPriorityImage(priority) {
   return images[priority?.toLowerCase()] || "../assets/icons/low.svg";
 }
 
-
-
 // Drag and Drop Functions
 function getDragAfrerElement(container, y) {
   const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)"),];
@@ -205,9 +214,8 @@ function getDragAfrerElement(container, y) {
         return { offset: offset, element: child };
       } else {
         return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY },).element;
+      }},
+      { offset: Number.NEGATIVE_INFINITY },).element;
 }
 
 function initDragAndDrop() {
@@ -255,8 +263,6 @@ function searchCards(){
 }
 
 function filterItems(arr, query){
-    console.log(arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase())));
-     console.log(arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase())));
     let getCartTitle = arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase()));
     let getCartDescription = arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase()));
     checkIfExist(getCartTitle,getCartDescription);
