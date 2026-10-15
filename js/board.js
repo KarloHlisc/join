@@ -2,7 +2,6 @@
 
 //import { getCreateTaskDetailTemplate} from "../js/template.js";
 
-
 const BASE_URL =
   "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
 let tickets = [];
@@ -13,7 +12,6 @@ function init() {
   getUserTasks("/tasks");
   getUsers("/users");
 }
-
 
 // Hole Daten von Firebase
 async function getUserTasks(path = "") {
@@ -84,7 +82,7 @@ function showCards(task) {
   else if (status === "done") cartDone.innerHTML += cartTemplate(task);
 }
 
-// Template für EINE Aufgabe 
+// Template für EINE Aufgabe
 function cartTemplate(task) {
   const taskId = `task-${task.id}`;
   return getCartTemplate(task);
@@ -165,7 +163,10 @@ function openTaskDialog(event) {
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id, ...st,}));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
+    id,
+    ...st,
+  }));
 return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
@@ -180,11 +181,13 @@ function getAssignedUsersArray(task) {
 async function deleteTask(path="") {
   let response = await fetch(BASE_URL + path + ".json",{
     method:"DELETE",
-  }) 
+  })
+ 
  // if (confirm("Are you sure you want to delete this task?")) {
    // console.log("Delete task:", taskId);
     // Add delete logic here
-    document.getElementById("myDialog").close(); 
+    document.getElementById("myDialog").close();
+  
   return responseToJson = await response.json();
 }
 
@@ -205,7 +208,9 @@ function getPriorityImage(priority) {
 
 // Drag and Drop Functions
 function getDragAfrerElement(container, y) {
-  const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)"),];
+  const draggableElements = [
+    ...container.querySelectorAll(".draggable:not(.dragging)"),
+  ];
   return draggableElements.reduce(
     (closest, child) => {
       const box = child.getBoundingClientRect();
@@ -214,8 +219,9 @@ function getDragAfrerElement(container, y) {
         return { offset: offset, element: child };
       } else {
         return closest;
-      }},
-      { offset: Number.NEGATIVE_INFINITY },).element;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY },).element;
 }
 
 function initDragAndDrop() {
@@ -232,9 +238,8 @@ function initDragAndDrop() {
   cartContainersFun(cardContainers);
 }
 
-
 function cartContainersFun(cardContainers) {
-   cardContainers.forEach((container) => {
+  cardContainers.forEach((container) => {
     container.addEventListener("dragover", (e) => {
       e.preventDefault();
       const draggable = document.querySelector(".dragging");
@@ -249,16 +254,12 @@ function cartContainersFun(cardContainers) {
   });
 }
 
-function findCardsInArray(){
-    
-}
-
-function searchCards(){
-  let cardSearchText =  document.getElementById("search-task").value;
+function searchCards() {
+  let cardSearchText = document.getElementById("search-task").value;
   console.log(cardSearchText);
   filterItems(tickets, cardSearchText);
-  if(cardSearchText == ""){
-    displayTasks(tickets); 
+  if (cardSearchText == "") {
+    displayTasks(tickets);
   }
 }
 
@@ -297,8 +298,6 @@ function editTask(taskId) {
   console.log("Edit task:", taskId);
   document.getElementById("myDialog").close();
 }
-
-
 
 function getInitials(name) {
   const parts = name.split(" ");
