@@ -7,27 +7,16 @@ import {
   get,
   child,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-import { isValidEmail } from "../script.js";
+import {
+  isValidEmail,
+  generateNextUserId,
+  getRandomColor,
+  checkEmail,
+} from "./utils.js";
 
 // sign up Users
 const existSignUpForm = document.getElementById("signup-form");
 const errEL = document.getElementById("errorMessage");
-
-/**
- * Generates the next sequential user ID based on existing user keys.
- * @param {object} currentUsers - The current users object from Firebase.
- * @returns {string} The next user ID, e.g. "userid_03".
- */
-function generateNextUserId(currentUsers) {
-  const keys = Object.keys(currentUsers || {});
-  if (keys.length === 0) return "userid_01";
-  const numbers = keys.map((key) => {
-    const match = key.match(/\d+/);
-    return match ? parseInt(match, 10) : 0;
-  });
-  const nextNumber = Math.max(...numbers) + 1;
-  return `userid_${String(nextNumber).padStart(2, "0")}`;
-}
 
 /**
  * Registers a new user in Firebase with a generated ID and random avatar color.
@@ -45,43 +34,6 @@ const registerUser = async (e, n, p) => {
     users[customId] = {email: e,name: n,password: p,backgroundColor: getRandomColor(),phone: ""};
     return users;
   });
-};
-
-/**
- * Generates a random hex color for the user's avatar background.
- * @returns {string} A hex color string, e.g. "#3FA1B2".
- */
-function getRandomColor() {
-  let characters = "0123456789ABCDEF";
-  let color = "#";
-
-  for (let i = 0; i < 6; i++) {
-    color += characters[getRandomNumber(0, 15)];
-  }
-
-  return color;
-}
-
-/**
- * Generates a random integer between two bounds, inclusive.
- * @param {number} low - The lower bound.
- * @param {number} high - The upper bound.
- * @returns {number} A random integer.
- */
-function getRandomNumber(low, high) {
-  let r = Math.floor(Math.random() * (high - low + 1)) + low;
-  return r;
-}
-
-/**
- * Checks whether an email address is already registered.
- * @param {string} email - The email to check.
- * @returns {Promise<object|undefined>} The matching user, or undefined.
- */
-const checkEmail = async (email) => {
-  const data = await get(child(ref(database), "users"));
-  const users = data.exists() ? data.val() : {};
-  return Object.values(users).find((u) => u.email === email);
 };
 
 /**
@@ -193,6 +145,25 @@ function setupPasswordToggle() {
     });
   });
 }
+
+function updateSignupButton() {
+  const v = getSignupFormValues();
+  const filled = v.name && v.email && v.password && v.confirmPassword;
+  document.getElementById("signup-button").disabled = !(
+    filled && v.checkbox.checked
+  );
+}
+
+function setupSignupButtonState() {
+  if (!existSignUpForm) return;
+  existSignUpForm.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("input", updateSignupButton);
+    input.addEventListener("change", updateSignupButton);
+  });
+  updateSignupButton();
+}
+
+setupSignupButtonState();
 
 window.togglePasswordVisibility = togglePasswordVisibility;
 setupPasswordToggle();
