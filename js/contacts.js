@@ -133,23 +133,41 @@ function createAndAppendButton(user, container) {
 }
 
 /**
+ * Sorts the raw Firebase users alphabetically by name.
+ * @param {object} rawData - The users object from Firebase.
+ * @returns {object[]} The sorted user list.
+ */
+function getSortedUsers(rawData) {
+  return Object.keys(rawData)
+    .map((k) => ({ userId: k, ...rawData[k] }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Renders letter headers and contact buttons.
+ * @param {object[]} users - The sorted users.
+ * @param {HTMLElement} container - The list container.
+ * @returns {void}
+ */
+function renderUserList(users, container) {
+  let lastLetter = "";
+  users.forEach((user) => {
+    lastLetter = checkAndRenderHeader(user.name, lastLetter, container);
+    createAndAppendButton(user, container);
+  });
+}
+
+/**
  * Loads all contacts from Firebase and renders them as a sorted list.
  * @returns {Promise<void>}
  */
-/* prettier-ignore */
 async function getUserList() {
   const data = await get(ref(database, "users"));
   const container = document.getElementById("list-container");
   if (!container || !data.exists()) return;
-  const btnHtml =container.querySelector("#add-btn-container")?.outerHTML || "";
-  container.innerHTML = btnHtml;
-  const rawData = data.val();
-  const users = Object.keys(rawData).map((k) => ({ userId: k, ...rawData[k] }));
-  users.sort((a, b) => a.name.localeCompare(b.name));
-  let lastLetter = "";
-  users.forEach((user) => { lastLetter = checkAndRenderHeader(user.name, lastLetter, container);
-    createAndAppendButton(user, container);
-  });
+  const btn = container.querySelector("#add-btn-container")?.outerHTML || "";
+  container.innerHTML = btn;
+  renderUserList(getSortedUsers(data.val()), container);
 }
 
 /**
@@ -174,9 +192,9 @@ const readContactForm = () => {
 
 /**
  * Registers a new contact in Firebase with a generated ID and random avatar color.
- * @param {string} e - The contact's email.
- * @param {string} n - The contact's name.
- * @param {string} p - The contact's phone number.
+ * @param {string} email - The contact's email.
+ * @param {string} name - The contact's name.
+ * @param {string} phone - The contact's phone number.
  * @returns {Promise<void>}
  */
 const registerUser = (email, name, phone) => {
@@ -221,10 +239,27 @@ async function handleEditSubmit(e, userId) {
 }
 
 /**
+ * Updates the stored login user and header initials after editing the own contact.
+ * @param {string} userId - The Firebase key of the edited contact.
+ * @param {object} updated - The new contact data.
+ * @returns {void}
+ */
+function syncLoggedInUser(userId, updated) {
+  const stored = JSON.parse(sessionStorage.getItem("loggedInUser") || "{}");
+  if (stored.userId !== userId) return;
+  sessionStorage.setItem(
+    "loggedInUser",
+    JSON.stringify({ ...updated, userId }),
+  );
+  const icon = document.getElementById("header-icon");
+  if (icon) icon.innerText = getInitials(updated.name);
+}
+
+/**
  * Saves the edited contact data to Firebase.
  * @param {string} userId - The Firebase key of the contact.
  * @param {object} currentData - The contact's existing data.
- * @param {function} val - A helper to read a form field's trimmed value.
+ * @param {object} values - The validated form values.
  * @returns {Promise<void>}
  */
 /* prettier-ignore */
@@ -234,6 +269,7 @@ async function saveEditedUser(userId, currentData, values) {
     if (curr) curr[userId] = updated;
     return curr;
   });
+  syncLoggedInUser(userId, updated);
   closeAddContactModule();
   toggleShowSuccessModal("edited");
 }

@@ -49,10 +49,6 @@
   align-items: center;
 }
 
-#subtaskInput {
-  padding-right: 80px;
-}
-
 #addSubtaskBtn,
 #clearSubtaskBtn {
   position: absolute;
@@ -161,6 +157,7 @@
   display: none;
   width: 100%;
   box-sizing: border-box;
+  padding-right: 80px;
 }
 
 .subtask-item.editing .subtask-text {

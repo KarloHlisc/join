@@ -1,12 +1,4 @@
 "use strict";
-import { database } from "../js/config.js";
-import {
-  remove,
-  ref,
-  get,
-  child,
-  runTransaction,
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
 import { taskFormTemplate } from "./template.js";
 import {
@@ -54,33 +46,6 @@ export function renderTaskForm(targetId = "main-container") {
 }
 
 /**
- * Extracts the initials from a full name.
- * @param {string} name - The full name.
- * @returns {string} The uppercase initials.
- */
-function getInitials(name) {
-  if (!name) return "";
-  const parts = name.trim().split(/\s+/);
-  return (
-    parts.length >= 2 ? parts[0][0] + parts[1][0] : parts[0][0]
-  ).toUpperCase();
-}
-
-/**
- * Creates a DOM element with a class and optional text content.
- * @param {string} type - The tag name to create.
- * @param {string} className - The CSS class to apply.
- * @param {string} [text] - Optional text content.
- * @returns {HTMLElement} The created element.
- */
-function createEl(type, className, text = "") {
-  const el = document.createElement(type);
-  el.classList.add(className);
-  if (text) el.innerText = text;
-  return el;
-}
-
-/**
  * Wires up click handlers for selecting a task category.
  * @returns {void}
  */
@@ -114,20 +79,29 @@ function buttonVisability() {
 }
 
 /**
+ * Clears assigned users, subtasks and selection state.
+ * @returns {void}
+ */
+function clearAssignedAndSubtasks() {
+  selectedUserIds.clear();
+  const assigned = document.getElementById("assignedUsersContainer");
+  const subtask = document.getElementById("subTaskList");
+  if (assigned) assigned.innerHTML = "";
+  if (subtask) subtask.innerHTML = "";
+  document
+    .querySelectorAll("#dropdownList .user-btn")
+    .forEach((button) => button.classList.remove("selected"));
+}
+
+/**
  * Resets the Add Task form to its initial empty state.
  * @returns {void}
  */
 function resetForm() {
   const form = document.getElementById("addTaskForm");
-  const assigned = document.getElementById("assignedUsersContainer");
-  const subtask = document.getElementById("subTaskList");
   if (!form) return;
   form.reset();
-  selectedUserIds.clear();
-  if (assigned) assigned.innerHTML = "";
-  if (subtask) subtask.innerHTML = "";
-  const buttons = document.querySelectorAll("#dropdownList .user-btn");
-  buttons.forEach((button) => button.classList.remove("selected"));
+  clearAssignedAndSubtasks();
   const categoryText = document.getElementById("categorySelectedText");
   if (categoryText) categoryText.innerText = "Select task category";
   selectPriority("medium");
@@ -193,27 +167,6 @@ function setupEventListeners() {
 }
 
 /**
- * Generates the next sequential task ID based on existing task keys.
- * @param {object} currenttasks - The current tasks object from Firebase.
- * @returns {string} The next task ID, e.g. "task_03".
- */
-function generateNextTaskId(currenttasks) {
-  const keys = Object.keys(currenttasks || {});
-  if (keys.length === 0) return "task_01";
-  const numbers = keys.map((k) => parseInt(k.match(/\d+/)?.[0] || 0, 10));
-  return `task_${String(Math.max(...numbers) + 1).padStart(2, "0")}`;
-}
-
-/**
- * Gets the currently selected priority value.
- * @returns {string} The selected priority, defaulting to "medium".
- */
-function getSelectedPriority() {
-  const activeBtn = document.querySelector(".priority-btn.active");
-  return activeBtn ? activeBtn.getAttribute("data-value") : "medium";
-}
-
-/**
  * Marks one priority button as active and swaps the icons.
  * @param {string} [value="medium"] - The priority to select.
  * @returns {void}
@@ -257,6 +210,11 @@ function saveTask() {
     });
 }
 
+/**
+ * Adds a subtask when Enter is pressed, without submitting the form.
+ * @param {KeyboardEvent} e - The keydown event.
+ * @returns {void}
+ */
 function handleSubtaskEnter(e) {
   if (e.key !== "Enter") return;
   e.preventDefault();

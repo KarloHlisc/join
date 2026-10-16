@@ -332,3 +332,10 @@ ol {
   border: 1px solid #ff8190 !important;
   outline: none;
 }
+
+#add-task-title h1,
+#policy-after-login-container h1,
+#legal-after-login-container h1 {
+  font-size: 61px;
+  margin: 0;
+}

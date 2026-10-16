@@ -43,22 +43,28 @@ const templates = {
 };
 
 /**
- * Renders the pre-login layout and the page-specific template into the DOM.
+ * Renders the page-specific template into its main element.
  * @returns {void}
  */
-/* prettier-ignore */
+function renderPageTemplate() {
+  const page = window.location.pathname
+    .split("/")
+    .pop()
+    .replace(".html", "")
+    .replaceAll("_", "")
+    .toLowerCase();
+  const template = templates[`get${page}Template`];
+  const main = document.getElementById(`main-${page}`);
+  if (typeof template === "function" && main) main.innerHTML = template();
+}
+
+/**
+ * Renders the pre-login layout and the page-specific template.
+ * @returns {void}
+ */
 function initLayout() {
   document.body.insertAdjacentHTML("afterbegin", getLayoutHtmlBeforeLogin());
-  const page = window.location.pathname.split("/").pop().replace(".html", "").replaceAll("_", "").toLowerCase();
-  const whichTemplate = `get${page}Template`;
-  if (typeof templates[whichTemplate] === "function") {
-    const mainElement = document.getElementById(`main-${page}`);
-    if (mainElement) {
-      mainElement.innerHTML = templates[whichTemplate]();
-    } else {
-      console.error(`Das Element main-${page} wurde im DOM nicht gefunden!`);
-    }
-  }
+  renderPageTemplate();
   setActivePage();
 }
 
@@ -71,8 +77,8 @@ function getpolicyloginTemplate() {
 }
 
 /**
- * Returns the privacy policy template for pre-login pages.
- * @returns {string} HTML markup for the privacy policy.
+ * Returns the legal notice template for pre-login pages.
+ * @returns {string} HTML markup for the legal notice.
  */
 function getlegalloginTemplate() {
   return getLegalTemplate();

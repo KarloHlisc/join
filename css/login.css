@@ -2,7 +2,7 @@ body.no-sidebar {
   display: block !important;
   height: auto;
   max-width: 1440px;
-  min-height: 100vh; 
+  min-height: 100vh;
   margin: auto;
   overflow-y: auto;
   position: relative;
@@ -22,9 +22,9 @@ body.no-sidebar {
   flex-shrink: 0;
 }
 
-header p{
-  font-size:16px;
-  margin-left:0px;
+header p {
+  font-size: 16px;
+  margin-left: 0px;
 }
 
 body.no-sidebar main {
@@ -35,7 +35,7 @@ body.no-sidebar main {
   margin-top: 0;
   flex: 1 0 auto;
   background-color: #ffffff;
-  padding:0;
+  padding: 0;
 }
 
 h1 {
@@ -105,9 +105,8 @@ form {
 input {
   height: 48px;
   border-radius: 10px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
-
 
 .input-wrapper {
   position: relative;
@@ -117,21 +116,21 @@ input {
 }
 
 #email,
-#password{
-  padding: 0 45px 0 15px; 
+#password {
+  padding: 0 45px 0 15px;
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 10px; 
+  border-radius: 10px;
   background-repeat: no-repeat;
-  background-position: calc(100% - 15px) center; 
+  background-position: calc(100% - 15px) center;
   background-size: 24px 24px;
 }
 
 #email {
-  background-image: url("../assets/icons/mail.png"); /
+  background-image: url("../assets/icons/mail.png");
 }
 
-#password{
+#password {
   background-image: url("../assets/icons/lock.png");
 }
 
@@ -141,7 +140,6 @@ input {
   padding-left: 15px;
   transition: all 0.2s ease;
 }
-
 
 .toggle-password-btn {
   position: absolute;
@@ -164,7 +162,7 @@ input {
   height: 100%;
 }
 
-#errorMessage{
+#errorMessage {
   color: red;
   text-align: center;
   position: absolute;
@@ -203,12 +201,13 @@ input {
   font-size: 21px;
 }
 
-#login-button:hover, #signup-button:hover{
-background-color: #124658;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+#login-button:hover,
+#signup-button:hover {
+  background-color: #124658;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-#guest-button:hover{
+#guest-button:hover {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border: 2px solid #091931;
 }
