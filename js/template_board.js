@@ -1,6 +1,6 @@
 function getCartTemplate(task) {
   return `
-        <button role="button" class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)" data-task-id="${task.id}">
+        <button role="button"  data-id="${task.id}"  class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)" >
             <div class="level-story">
                 <p style="background-color: ${getTaskColor(task)}"">${task.category || "User Story"}</p>
             </div>
