@@ -8,9 +8,9 @@ let tickets = [];
 let users = [];
 let names = [];
 
-function init() {
-  getUserTasks("/tasks");
-  getUsers("/users");
+ async function init() {
+   await Promise.all([ getUserTasks("/tasks"), getUsers("/users")]);
+   displayTasks(tickets);
 }
 
 // Hole Daten von Firebase
@@ -19,9 +19,7 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({id,...task, }));
-    tickets = taskArray;
-    displayTasks(tickets);
+    tickets = Object.entries(data || {}).map(([id, task]) => ({id,...task, }));
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -31,11 +29,8 @@ async function getUsers(path = "") {
   try {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
-
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, user]) => ({id,...user,}));
-
-    users = taskArray;
+     users = Object.entries(data || {}).map(([id, user]) => ({id,...user,}));
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -61,6 +56,8 @@ function displayTasks(tickets) {
   // Initialize drag-and-drop after cards are rendered
   initDragAndDrop();
 }
+
+
 
 function showCards(task) {
   const cartToDo = document.getElementById("to-do-cards-container");
@@ -94,7 +91,7 @@ function getTaskColor(task){
   //let getColorTask = Object.entries(task.category);
   if(task.category == "User Story"){
     return "rgba(0, 56, 255, 1)";
-  }else if(task.category == "Technical"){
+  }else if(task.category == "Technical" || "Technical Tasks"){
     return "rgba(31, 215, 193, 1)";
   }
 }
