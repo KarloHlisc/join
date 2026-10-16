@@ -19,10 +19,7 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
-      id,
-      ...task,
-    }));
+    const taskArray = Object.entries(data || {}).map(([id, task]) => ({id,...task, }));
     tickets = taskArray;
     displayTasks(tickets);
   } catch (error) {
@@ -36,10 +33,7 @@ async function getUsers(path = "") {
     const data = await response.json();
 
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, user]) => ({
-      id,
-      ...user,
-    }));
+    const taskArray = Object.entries(data || {}).map(([id, user]) => ({id,...user,}));
 
     users = taskArray;
   } catch (error) {
@@ -90,13 +84,24 @@ function cartTemplate(task) {
 
 function findUsers(task) {
   let userOnTask = Object.keys(task.assignedTo || "");
-
-  if (userOnTask == "") {
-    return;
+  if (userOnTask == "") {return;
   } else {
-    for (let i = 0; i <= userOnTask.length; i++) {
-      let found = users.find((u) => u.id == userOnTask[i]);
+    getUserOnTask(userOnTask);
+  }
+}
 
+function getTaskColor(task){
+  //let getColorTask = Object.entries(task.category);
+  if(task.category == "User Story"){
+    return "rgba(0, 56, 255, 1)";
+  }else if(task.category == "Technical"){
+    return "rgba(31, 215, 193, 1)";
+  }
+}
+
+function getUserOnTask(userOnTask){
+  for (let i = 0; i <= userOnTask.length; i++) {
+      let found = users.find((u) => u.id == userOnTask[i]);
       if (found != undefined) {
         let userN = found.name;
         const userName = userN.split(" ");
@@ -107,35 +112,49 @@ function findUsers(task) {
         return;
       }
     }
-  }
 }
 
 function findUsersByTask(task) {
   const userIds = Object.keys(task.assignedTo || {});
   if (userIds.length === 0) return "";
-
-  return userIds
-    .map((userId) => {
+  return userIds.map((userId) => {
       const user = users.find((u) => u.id === userId);
       return user ? user.name : "Unknown";
-    })
-    .join(", ");
+    }).join(", ");
+}
+
+function openEditTask(task){
+  const dialogEdit = document.getElementById("myAddTask");
+  dialogEdit.innerHTML = getTaskFormTemplate(task.id);
+  dialogEdit.showModal();
+ closeDialogTask();
+  dialogEdit.addEventListener("click", (e) => {
+    if (e.target === dialogEdit) {
+      dialogEdit.close();
+    }
+  })
+}
+
+function closeDialogTask(){
+   const taskDialog = document.getElementById("myDialog");
+  taskDialog.close();
+}
+
+function closeEditTask(){
+   const dialogEdit = document.getElementById("myAddTask");
+  dialogEdit.close();
 }
 
 // Dialog Functions
 function openTaskDialog(event) {
   // Prevent drag-and-drop from triggering the dialog
   if (event.target.closest(".dragging")) return;
-
   const taskId = event.currentTarget.getAttribute("data-task-id");
   const task = tickets.find((t) => t.id === taskId);
-
   if (!task) return;
-
   const dialog = document.getElementById("myDialog");
   dialog.innerHTML = createTaskDetailTemplate(task);
   dialog.showModal();
-
   // Close dialog when clicking outside
   dialog.addEventListener("click", (e) => {
     if (e.target === dialog) {
@@ -144,14 +163,23 @@ function openTaskDialog(event) {
   });
 }
 
+function showSubtasks(task){
+  //let subtask = document.getElementById("showSubtask");
+  const subtask = Object.keys(task.subtasks || {});
+  //document.getElementById("showSubtask").innerHTML+=
+  
+  for(let index = 0; index < subtask.length; index++){
+    let element = subtask[index];
+    return `0/${subtask.length}`;
+    
+  }
+}
+
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
-    id,
-    ...st,
-  }));
-  return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id,...st,}));
+return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
 function getAssignedUsersArray(task) {
@@ -162,17 +190,17 @@ function getAssignedUsersArray(task) {
   });
 }
 
-async function deleteTask(path = "") {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "DELETE",
-  });
-
-  // if (confirm("Are you sure you want to delete this task?")) {
-  // console.log("Delete task:", taskId);
-  // Add delete logic here
-  document.getElementById("myDialog").close();
-
-  return (responseToJson = await response.json());
+async function deleteTask(path="") {
+  let response = await fetch(BASE_URL + path + ".json",{
+    method:"DELETE",
+  })
+ 
+ // if (confirm("Are you sure you want to delete this task?")) {
+   // console.log("Delete task:", taskId);
+    // Add delete logic here
+    document.getElementById("myDialog").close();
+  
+  return responseToJson = await response.json();
 }
 
 function editTask(taskId) {
@@ -205,8 +233,7 @@ function getDragAfrerElement(container, y) {
         return closest;
       }
     },
-    { offset: Number.NEGATIVE_INFINITY },
-  ).element;
+    { offset: Number.NEGATIVE_INFINITY },).element;
 }
 
 function initDragAndDrop() {
@@ -239,8 +266,6 @@ function cartContainersFun(cardContainers) {
   });
 }
 
-function findCardsInArray() {}
-
 function searchCards() {
   let cardSearchText = document.getElementById("search-task").value;
   console.log(cardSearchText);
@@ -251,8 +276,6 @@ function searchCards() {
 }
 
 function filterItems(arr, query){
-    console.log(arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase())));
-     console.log(arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase())));
     let getCartTitle = arr.filter((el) => el.title.toLowerCase().includes(query.toLowerCase()));
     let getCartDescription = arr.filter((el) => el.description.toLowerCase().includes(query.toLowerCase()));
     checkIfExist(getCartTitle,getCartDescription);
