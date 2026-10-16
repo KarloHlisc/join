@@ -2,23 +2,29 @@ body.no-sidebar {
   display: block !important;
   height: auto;
   max-width: 1440px;
+  min-height: 100vh;
   margin: auto;
+  overflow-y: auto;
+  position: relative;
 }
 
 #main-header {
   width: 80%;
   max-width: 1440px;
+  height: 121.79px;
   margin: 0 auto;
-  padding: 20px 0 0 0;
+  margin-top: 50px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 20px;
-  margin-top: 20px;
   box-shadow: none;
+  flex-shrink: 0;
 }
-header p{
-  font-size:16px;
-  margin-left:0px;
+
+header p {
+  font-size: 16px;
+  margin-left: 0px;
 }
 
 body.no-sidebar main {
@@ -27,6 +33,9 @@ body.no-sidebar main {
   align-items: center;
   margin-left: 0;
   margin-top: 0;
+  flex: 1 0 auto;
+  background-color: #ffffff;
+  padding: 0;
 }
 
 h1 {
@@ -49,7 +58,7 @@ h1::after {
 
 .header-logo {
   width: 100px;
-  height: 100%;
+  height: 121px;
 }
 
 .sign-up-container {
@@ -75,7 +84,7 @@ h1::after {
 .form-container {
   height: 449px;
   width: 652px;
-  margin-top: 48px;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,16 +98,15 @@ form {
   display: flex;
   flex-direction: column;
   gap: 25px;
-  margin-top: 25px;
+  margin-top: 50px;
   position: relative;
 }
 
 input {
   height: 48px;
   border-radius: 10px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
-
 
 .input-wrapper {
   position: relative;
@@ -108,21 +116,21 @@ input {
 }
 
 #email,
-#password{
-  padding: 0 45px 0 15px; 
+#password {
+  padding: 0 45px 0 15px;
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 10px; 
+  border-radius: 10px;
   background-repeat: no-repeat;
-  background-position: calc(100% - 15px) center; 
+  background-position: calc(100% - 15px) center;
   background-size: 24px 24px;
 }
 
 #email {
-  background-image: url("../assets/icons/mail.png"); /
+  background-image: url("../assets/icons/mail.png");
 }
 
-#password{
+#password {
   background-image: url("../assets/icons/lock.png");
 }
 
@@ -132,7 +140,6 @@ input {
   padding-left: 15px;
   transition: all 0.2s ease;
 }
-
 
 .toggle-password-btn {
   position: absolute;
@@ -155,7 +162,7 @@ input {
   height: 100%;
 }
 
-#errorMessage{
+#errorMessage {
   color: red;
   text-align: center;
   position: absolute;
@@ -194,22 +201,30 @@ input {
   font-size: 21px;
 }
 
-#login-button:hover, #signup-button:hover{
-background-color: #124658;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+#login-button:hover,
+#signup-button:hover {
+  background-color: #124658;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-#guest-button:hover{
+#guest-button:hover {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border: 2px solid #091931;
 }
 
-footer {
-  text-align: center;
-  margin: 20px auto;
+#main-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: auto;
+  position: absolute;
+  bottom: 0;
 }
 
-footer a {
+#main-footer a {
   color: #b8b8b9;
-  padding: 0 15px;
+  text-decoration: none;
 }

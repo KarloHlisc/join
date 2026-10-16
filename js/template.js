@@ -1,5 +1,11 @@
 "use strict";
 
+import { escapeHtml } from "./utils.js";
+
+/**
+ * Builds the sidebar navigation buttons shown after the login.
+ * @returns  {string} HTML markup for the navigation menu.
+ */
 export function getNavigationHtml() {
   return `
         <button id="nav-summary" onclick="location.href='./summary.html'"><img src="../assets/icons/summary.png"> Summary</button>
@@ -9,27 +15,36 @@ export function getNavigationHtml() {
     `;
 }
 
+/**
+ * Builds the logout dropdown module with help, legal, and logout actions.
+ * @returns {string} HTML markup for the logout module.
+ */
 export function getLogoutModule() {
   return `
     <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
     <div id="logout-module">
-        <button id="help-btn" class="help help-logout" onclick="openHelpPage()">Help</button>
-        <button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button>
-        <button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button class="help-btn help help-logout" onclick="openHelpPage()">Help</button>
+        <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button>
+        <button class="nav-policy-btn" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
         <button id="logout" onclick="logoutFromAccount()">Logout</button>
     </div>
-    `;
+  `;
 }
 
+/**
+ * Builds the full sidebar and header layout shown on all logged-in pages.
+ * @returns {string} HTML markup for the layout.
+ */
 export function getLayoutHtml() {
   return `
     <aside class="side-bar-wrapper">
-        <div class="aside-logo"><img src="../assets/img/join_white.svg" alt="Logo" /></div>
-        <div class="aside-menu">${getNavigationHtml()}</div>
-        <div class="aside-footer"><button id="nav-policy_after_login" onclick="location.href='./policy_after_login.html'">Privacy Policy</button><button id="nav-legal_after_login" onclick="location.href='./legal_after_login.html'">Legal notice</button></div>
-    </aside>
-    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button id="help-btn" class="help" onclick="openHelpPage()"><img src="../assets/icons/help.png" alt="help-icon" /></button><button class="user-icon header-icon" onclick="showLogoutModule()"></button></div><div id="logout-container"></div>
-    </header>`;
+        <div class="aside-logo"><img src="../assets/img/join_white.svg" alt="Logo" /></div><div class="aside-menu">${getNavigationHtml()}</div>
+        <div class="aside-footer"><button class="nav-policy-btn" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button></div></aside>
+    <header><p>Kanban Project Management Tool</p><div class="user-and-help"><button class="help-btn help" onclick="openHelpPage()">
+   <img src="../assets/icons/help.png" alt="help-icon" /></button><div class="user-icon-wrapper">
+<button class="user-icon" id="header-icon" onclick="showLogoutModule()"></button>
+<div id="logout-container"></div></div></div></header>`;
 }
 
 export const helpTemplateTxT = `
@@ -40,7 +55,7 @@ export const helpTemplateTxT = `
         </button>
       </div>
       <div class="help-main">
-        <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here, we'll provide an overview of what Joinis,how it can benefit you, and how to use it.
+        <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here, we'll provide an overview of what Join is, how it can benefit you, and how to use it.
         </p>
         <h2>What is Join?</h2>
         <p>Join is a kanban-based project management tool designed and built by a group of dedicated students as part of their web development bootcamp at the Developer Akademie.</br></br> Kanban, a Japanese term meaning "billboard", is a highly effective method to visualize work, limit
@@ -64,48 +79,146 @@ export const helpTemplateTxT = `
           <li><h3>Moving Cards</h3>
           <p>As the task moves from one stage to another, you can reflect that on the board by dragging and dropping the card from one list to another.</p></li>
           <li><h3>Deleting Cards</h3>
-          <p>Once a task is completed, you can either move it to the "Done" list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as this action is irreversible.Remember that using Join effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.Have more questions about Join? Feel free to contact us at [Your Contact Email]. We're here to help you!
+          <p>Once a task is completed, you can either move it to the "Done" list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as this action is irreversible.Remember that using Join effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.Have more questions about Join? Feel free to contact us at sandrospirig@example.com. We're here to help you!
 </p></li>
         </ol>
       </div>`;
 
+/**
+ * Returns the static help page content
+ * @returns {string} HTML markup for the help page.
+ */
 export function helpTemplate() {
   return helpTemplateTxT;
 }
 
+/**
+ *Builds the content detail view for a given user.
+ * @param {object} user - The contact's data (name, email, phone, etc.).
+ * @param {string} initials - The contact's initials for the avatar/icon.
+ * @returns {string} HTML markup for the contact details
+ */
 export function userDetailTemplate(user, initials) {
   return `<div id="details-header"><h1>Contacts</h1><span>Better with a team</span></div>
         <div id="icon-name-and-details">
-          <div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
+          <div class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="name-and-button">
-            <span>${user.name}</span>
+            <span>${escapeHtml(user.name)}</span>
             <div id="edit-delete"><button id="edit" onclick="showEditContactModule('${user.userId}')"><img src="../assets/icons/edit.svg" alt="edit-btn" />Edit</button><button id="delete" onclick="deleteUser('${user.userId}')"><img src="../assets/icons/delete.svg" alt="delete-btn" />Delete</button></div>
           </div>
         </div>
         <span id="contact-info">Contact information</span>
-        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${user.email}</span><span><strong>Phone</strong></span><span>${user.phone}</span></div>`;
+        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div>`;
 }
 
+/**
+ * Build the add contact modal form
+ * @returns {string} HTML markup for the add-contact modal.
+ */
 export function getAddContactModule() {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1>Add contact</h1><span>Tasks are better with a team!</span></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="person-icon"><img src="../assets/icons/person.svg" alt="person-logo"/></div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" required /><input type="text" placeholder="Email" id="email" required /><input type="text" placeholder="Phone" id="phone" required /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" /><input type="text" placeholder="Email" id="email" /><input type="text" placeholder="Phone" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
+              <button type="button" id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
               <button type="submit" id="create-contact">Create contact <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;
 }
 
+/**
+ * Builds the "Edit contact" modal form pre-filled with existing data.
+ * @param {object} user - The contact's current data.
+ * @param {string} initials - The contact's initials for the avatar.
+ * @returns {string} HTML markup for the edit-contact modal.
+ */
 export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
-          <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" value="${user.name}" id="name" required /><input type="text" value="${user.email}" id="email" required /><input type="text" value="${user.phone}" id="phone" required /><div id="errorMessage" style="color: red"></div>
+          <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button id="delete" class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
+              <button type="button"  class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;
 }
+
+/**
+ * Builds the "Add Task" modal wrapper around the task form.
+ * @returns {string} HTML markup for the add-task modal.
+ */
+export function getAddTaskModule() {
+  return `<div id="add-task-overlay" onmousedown="if (event.target === this) closeAddTaskModule()">
+    <div id="add-task-module">
+      <button type="button" id="close-task-module" onclick="closeAddTaskModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button>
+      ${taskFormTemplate}
+    </div>
+  </div>`;
+}
+
+/** HTML markup for the Add Task form, injected into #main-container. */
+export const taskFormTemplate = `
+<div id="form-container">
+  <div id="add-task-title"><h1>Add Task</h1></div>
+  <form id="addTaskForm" novalidate>
+    <div id="form-body">
+      <div id="leftSide">
+        <label for="formTitle">Title<span class="red-star">*</span></label>
+        <input type="text" id="formTitle" placeholder="Enter a title" />
+        <div id="errorTitle" style="color: red"></div>
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Enter a description"></textarea>
+        <label for="duedate">Due date<span class="red-star">*</span></label>
+        <input type="date" id="duedate"  placeholder="dd/mm/yy"  />
+        <div id="errorDate" style="color: red"></div>
+      </div>
+      <div id="rightSide">
+        <span class="form-label">Priority</span>
+        <div id="priority-buttons">
+          <button type="button" class="priority-btn" id="urgent-btn" data-value="urgent">Urgent <img src="../assets/icons/urgent.svg" alt="" aria-hidden="true" /></button>
+          <button type="button" class="priority-btn" id="medium-btn" data-value="medium">Medium <img src="../assets/icons/medium.svg" alt="" aria-hidden="true" /></button>
+          <button type="button" class="priority-btn" id="low-btn" data-value="low">Low <img src="../assets/icons/low.svg" alt="" aria-hidden="true" /></button>
+        </div>
+        <label for="searchInput">Assigned to</label>
+        <div class="custom-dropdown">
+          <div class="dropdown-header-input-wrapper">
+            <input type="text" id="searchInput" placeholder="Select contacts to assign" autocomplete="off" />
+            <button type="button" id="dropdownToggle" class="dropdown-btn" aria-label="Benutzerliste anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="dropdownArrowImg" /></button>
+          </div>
+          <ul class="dropdown-list hidden" id="dropdownList"></ul>
+        </div>
+        <div id="assignedUsersContainer" class="assigned-users"></div>
+        <ul class="assigned-users"></ul>
+        <label for="categoryToggle">Category<span class="red-star">*</span></label>
+        <div class="custom-dropdown">
+          <div class="dropdown-header" id="categoryHeader">
+            <span id="categorySelectedText">Select task category</span>
+            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
+          </div>
+          <ul class="dropdown-list hidden" id="categoryList">
+            <li class="user-item" data-value="Technical Tasks"><span >Technical Tasks</span></li>
+            <li class="user-item" data-value="User Story"><span >User Story</span></li>
+          </ul>
+          <div id="errorCategory" style="color: red"></div>
+        </div>
+        <label for="subtaskInput">Subtasks</label>
+        <div class="subtask-container">
+          <input type="text" id="subtaskInput" placeholder="Add new Subtasks" />
+          <button type="button" id="addSubtaskBtn"><img src="../assets/icons/darkcheck.svg" alt="Add Subtask" /></button>
+          <button type="button" id="clearSubtaskBtn"><img src="../assets/icons/delete.svg" alt="Clear input" /></button>
+        </div>
+        <ul id="subTaskList"></ul>
+      </div>
+    </div>
+    <div id="createTaskBtn-container">
+      <span class="required-hint"><span class="red-star">*</span>This field is required</span>
+      <div id="btn-container">
+        <button type="reset" id="clear">Clear <img src="../assets/icons/vector.svg" alt="" aria-hidden="true" /></button>
+        <button type="submit" id="createTask">Create Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
