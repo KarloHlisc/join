@@ -15,11 +15,7 @@ function getCartTemplate(task) {
             <div class="cart-assigment">
             <div class="users-together">
                 <div class="assigned-users">
-                        ${getAssignedUsersArray(task).map((user) => `
-                            <div class="user-chip">
-                                <div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
-                            </div>
-                        `,).join("")}
+                   ${getUsersOnCart(task)}
                     </div> </div> 
                 <div class="priority-badge">
                     <img src="${getPriorityImage(task.priority)}" alt="${task.priority}" class="priority-icon-small">
@@ -27,6 +23,17 @@ function getCartTemplate(task) {
             </div>
         </button>
     `;
+}
+
+function getUsersOnCart(task) {
+  return `${getAssignedUsersArray(task)
+    .map(
+      (
+        user,
+      ) => `<div class="user-chip"><div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
+       </div>`,
+    )
+    .join("")}`;
 }
 
 function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
@@ -59,24 +66,35 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                         <span class="detail-label">Assigned to:</span>
                     </div>
                     <div class="assigned-users">
-                        ${assignedUsers.map((user) => `
+                        ${assignedUsers
+                          .map(
+                            (user) => `
                             <div class="user-chip">
                                 <div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
                                 <span>${user.name}</span>
                             </div>
-                        `,).join("")}
+                        `,
+                          )
+                          .join("")}
                     </div>
                 </div>
                 
                 <div class="subtasks-section">
                     <h3 class="subtasks-title">Subtasks</h3>
                     <div class="subtasks-list">
-                        ${subtaskArray.length > 0 ? subtaskArray.map((st) => `
+                        ${
+                          subtaskArray.length > 0
+                            ? subtaskArray
+                                .map(
+                                  (st) => `
                                 <div class="subtask-item">
                                     <input type="checkbox" id="subtask-${st.id}" ${st.done ? "checked" : ""}>
                                     <label for="subtask-${st.id}">${st.title}</label>
                                 </div>
-                            `,).join("") : '<p class="no-subtasks">No subtasks</p>'
+                            `,
+                                )
+                                .join("")
+                            : '<p class="no-subtasks">No subtasks</p>'
                         }
                     </div>
                 </div>
@@ -95,9 +113,8 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
     `;
 }
 
-
-function getTaskFormTemplate(task){
-    return  `
+function getTaskFormTemplate(task) {
+  return `
 <div id="form-container">
   <div id="add-task-title"><h1>Add Task</h1></div>
   <form id="addTaskForm" novalidate>
