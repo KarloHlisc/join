@@ -24,7 +24,13 @@
           </div>
           <div id="board-task-container">
             <div id="search-task-container">
-              <input type="text" name="search-task" id="search-task" placeholder="Find Task" onkeyup="searchCards()"/>
+              <input
+                type="text"
+                name="search-task"
+                id="search-task"
+                placeholder="Find Task"
+                onkeyup="searchCards()"
+              />
               <button id="button-search" onclick="searchCards()">
                 <img src="../assets/icons/search-btn.svg" alt="button-search" />
               </button>
@@ -42,44 +48,72 @@
             <div id="to-do-title-card" class="tasks-style">
               <h3 id="to-do-title">To do</h3>
               <button id="add-to-do-btn" onclick="showAddTaskModule('todo')">
-                <img src="../assets/icons/button-add-task.svg" alt="button-add-task"/>
+                <img
+                  src="../assets/icons/button-add-task.svg"
+                  alt="button-add-task"
+                />
               </button>
             </div>
-            <div id="to-do-cards-container" class="cards-container container" data-status="todo">
-            </div>
+            <div
+              id="to-do-cards-container"
+              class="cards-container container"
+              data-status="todo"
+            ></div>
           </section>
           <section id="in-progress-section">
             <div id="in-progress-card" class="tasks-style">
               <h3 id="in-progress-title">In progress</h3>
-              <button id="add-in-progress-btn" onclick="showAddTaskModule('in-progress')">
-                <img src="../assets/icons/button-add-task.svg" alt="button-add-task"/>
+              <button
+                id="add-in-progress-btn"
+                onclick="showAddTaskModule('in-progress')"
+              >
+                <img
+                  src="../assets/icons/button-add-task.svg"
+                  alt="button-add-task"
+                />
               </button>
             </div>
-            <div id="in-progress-cards-container" class="cards-container container" data-status="inprogress">
-            </div>
+            <div
+              id="in-progress-cards-container"
+              class="cards-container container"
+              data-status="inprogress"
+            ></div>
           </section>
           <section id="await-feedback-section">
             <div id="await-feedback-card" class="tasks-style">
               <h3 id="await-feedback-title">Await feedback</h3>
-              <button id="add-await-feedback-btn" class="add-btn-tasks" onclick="showAddTaskModule('await-feedback')">
-                <img src="../assets/icons/button-add-task.svg" alt="button-add-task"/>
+              <button
+                id="add-await-feedback-btn"
+                class="add-btn-tasks"
+                onclick="showAddTaskModule('await-feedback')"
+              >
+                <img
+                  src="../assets/icons/button-add-task.svg"
+                  alt="button-add-task"
+                />
               </button>
             </div>
-            <div id="await-feedback-cards-container" class="cards-container container" data-status="awaitfeedback">
-            </div>
+            <div
+              id="await-feedback-cards-container"
+              class="cards-container container"
+              data-status="awaitfeedback"
+            ></div>
           </section>
           <section id="done-section">
             <div id="done-card" class="tasks-style">
               <h3 id="done-title">Done</h3>
             </div>
-            <div id="done-cards-container" class="cards-container container" data-status="done">
-            </div>
+            <div
+              id="done-cards-container"
+              class="cards-container container"
+              data-status="done"
+            ></div>
           </section>
         </section>
       </div>
       <div id="help-container">
         <dialog id="myDialog"></dialog>
-         <dialog id="myAddTask"></dialog>
+        <dialog id="myAddTask"></dialog>
       </div>
     </main>
     <div id="add-task-container"></div>
