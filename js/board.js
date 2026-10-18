@@ -22,12 +22,10 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
+    tickets = Object.entries(data || {}).map(([id, task]) => ({
       id,
       ...task,
     }));
-    tickets = taskArray;
-    displayTasks(tickets);
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -38,12 +36,10 @@ async function getUsers(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    const taskArray = Object.entries(data || {}).map(([id, user]) => ({
+    users = Object.entries(data || {}).map(([id, user]) => ({
       id,
       ...user,
     }));
-
-    users = taskArray;
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -321,19 +317,6 @@ async function updateStatusFirebase(cardId, newStatus) {
   }
 }
 
-async function deleteTask(taskId) {
-  const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
-    method: "DELETE",
-  });
-
-  // if (confirm("Are you sure you want to delete this task?")) {
-  // console.log("Delete task:", taskId);
-
-  document.getElementById("myDialog").close();
-
-  return (responseToJson = await response.json());
-}
-
 function clearAllContainers() {
   clearTheTaskPreview();
   displayTasks(tickets);
@@ -382,11 +365,6 @@ function iterarCards(getCartTitle, getCartDescription) {
   } else {
     return;
   }
-}
-
-function editTask(taskId) {
-  console.log("Edit task:", taskId);
-  document.getElementById("myDialog").close();
 }
 
 function getInitials(name) {
