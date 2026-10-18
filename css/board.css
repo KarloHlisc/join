@@ -13,7 +13,6 @@ main {
   padding: 40px;
   min-height: calc(100vh - 101px);
   background-color: rgba(246, 247, 248, 1);
-  overflow:scroll;
 }
 
 #board-title-container {
