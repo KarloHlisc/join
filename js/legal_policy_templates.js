@@ -32,8 +32,14 @@ const legalTemplate = ` <h1>Legal Notice</h1>
         <li>Gartenstrasse 3</li>
         <li>8000 Zürich</li>
       </ul>
+      <ul>
+        <li>Karlo H</li>
+        <li>PilgStr 5</li>
+        <li>8133 Munich</li>
+      </ul>
       <h4>Exploring the Board</h4>
       <p>Email: sandro.spirig@example.com</p>
+      <p>Email: karlo.h@example.com</p>
       <h4>Acceptance of terms</h4>
       <p>
         By accessing and using Join (Product), you acknowledge and agree to the
