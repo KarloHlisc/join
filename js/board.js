@@ -11,6 +11,11 @@ let tickets = [];
 let users = [];
 let names = [];
 
+/**
+ * Initializes the board, loads tasks and users, and displays the tasks.
+ * Also adds a click listener to close the task dialog.
+ * @returns {Promise<void>}
+ */
 async function init() {
   await Promise.all([getUserTasks("/tasks"), getUsers("/users")]);
   displayTasks(tickets);
@@ -19,13 +24,22 @@ async function init() {
   });
 }
 
+/**
+ * Reloads the tasks and refreshes the board.
+ * @returns {Promise<void>}
+ */
 async function reloadBoard() {
   await getUserTasks("/tasks");
   displayTasks(tickets);
 }
 
 document.addEventListener("tasksChanged", reloadBoard);
-// Hole Daten von Firebase
+
+/**
+ * Loads tasks from Firebase and stores them in the `tickets` array.
+ * @param {string} [path=""] Firebase path relative to the database URL.
+ * @returns {Promise<void>}
+ */
 async function getUserTasks(path = "") {
   try {
     const response = await fetch(BASE_URL + path + ".json");
@@ -40,6 +54,11 @@ async function getUserTasks(path = "") {
   }
 }
 
+/**
+ * Loads tasks from Firebase and stores them in the `tickets` array.
+ * @param {string} [path=""] Firebase path relative to the database URL.
+ * @returns {Promise<void>}
+ */
 async function getUsers(path = "") {
   try {
     const response = await fetch(BASE_URL + path + ".json");
@@ -54,6 +73,10 @@ async function getUsers(path = "") {
   }
 }
 
+/**
+ * Clears the task containers in all board columns.
+ * @returns {void}
+ */
 function clearTheTaskPreview() {
   cartToDo.innerHTML = "";
   cartInProgres.innerHTML = "";
@@ -61,7 +84,11 @@ function clearTheTaskPreview() {
   cartDone.innerHTML = "";
 }
 
-// Zeige alle Aufgaben auf der Seite
+/**
+ * Clears the board, renders the provided tasks, and initializes drag and drop.
+ * @param {Array<Object>} tickets Tasks to display on the board.
+ * @returns {void}
+ */
 function displayTasks(tickets) {
   clearTheTaskPreview();
   tickets.forEach((task) => showCards(task));
@@ -69,6 +96,10 @@ function displayTasks(tickets) {
   checkIfBoardEmpty();
 }
 
+/**
+ * Displays a placeholder in each empty board column.
+ * @returns {void}
+ */
 function checkIfBoardEmpty() {
   if (cartToDo.childNodes[1] === undefined) {
     cartToDo.innerHTML =
@@ -88,6 +119,11 @@ function checkIfBoardEmpty() {
   }
 }
 
+/**
+ * Renders a task in the board column that matches its status.
+ * @param {Object} task Task with at least a `status` property.
+ * @returns {void}
+ */
 function showCards(task) {
   const status = task.status?.toLowerCase() || "todo";
   if (status === "todo") cartToDo.innerHTML += cartTemplate(task);
@@ -98,12 +134,22 @@ function showCards(task) {
   else if (status === "done") cartDone.innerHTML += cartTemplate(task);
 }
 
-// Template für EINE Aufgabe
+/**
+ * Creates the HTML markup for a task card.
+ * @param {Object} task Task to render.
+ * @returns {string} The task card's HTML markup.
+ */
 function cartTemplate(task) {
   const taskId = `task-${task.id}`;
   return getCartTemplate(task);
 }
 
+/**
+ * Gets the IDs of the users assigned to a task and passes them to
+ * `getUserOnTask` for further processing.
+ * @param {Object} task Task with an optional `assignedTo` property.
+ * @returns {void}
+ */
 function findUsers(task) {
   let userOnTask = Object.keys(task.assignedTo || "");
   if (userOnTask == "") {
@@ -113,11 +159,23 @@ function findUsers(task) {
   }
 }
 
+/**
+ * Returns the color associated with a task's category.
+ * @param {Object} task Task with a `category` property.
+ * @returns {string} An RGBA color value.
+ */
 function getTaskColor(task) {
   if (task.category === "User Story") return "rgba(0, 56, 255, 1)";
   return "rgba(31, 215, 193, 1)";
 }
 
+/**
+ * Updates a subtask's completion status in Firebase and refreshes the board.
+ * @param {string} taskId ID of the task.
+ * @param {string} subId ID of the subtask.
+ * @param {boolean} isDone Whether the subtask is complete.
+ * @returns {Promise<void>}
+ */
 async function toggleSubtask(taskId, subId, isDone) {
   await fetch(`${BASE_URL}tasks/${taskId}/subtasks/${subId}.json`, {
     method: "PATCH",
@@ -128,6 +186,11 @@ async function toggleSubtask(taskId, subId, isDone) {
   displayTasks(tickets);
 }
 
+/**
+ * Gets initials for the users assigned to a task based on their IDs.
+ * @param {string[]} userOnTask IDs of users assigned to the task.
+ * @returns {string|undefined} The initials of a matching user, or `undefined`.
+ */
 function getUserOnTask(userOnTask) {
   for (let i = 0; i <= userOnTask.length; i++) {
     let found = users.find((u) => u.id == userOnTask[i]);
@@ -143,6 +206,11 @@ function getUserOnTask(userOnTask) {
   }
 }
 
+/**
+ * Returns the names of the users assigned to a task.
+ * @param {Object} task Task with an optional `assignedTo` property.
+ * @returns {string} Assigned users' names, separated by commas, or an empty string.
+ */
 function findUsersByTask(task) {
   const userIds = Object.keys(task.assignedTo || {});
   if (userIds.length === 0) return "";
@@ -154,6 +222,11 @@ function findUsersByTask(task) {
     .join(", ");
 }
 
+/**
+ * Opens the task editing dialog and sets its form content.
+ * @param {Object} task Task to edit.
+ * @returns {void}
+ */
 function openEditTask(task) {
   const dialogEdit = document.getElementById("myAddTask");
   dialogEdit.innerHTML = getTaskFormTemplate(task.id);
@@ -166,17 +239,29 @@ function openEditTask(task) {
   });
 }
 
+/**
+ * Closes the task details dialog.
+ * @returns {void}
+ */
 function closeDialogTask() {
   const taskDialog = document.getElementById("myDialog");
   taskDialog.close();
 }
 
+/**
+ * Closes the dialog used to add or edit a task.
+ * @returns {void}
+ */
 function closeEditTask() {
   const dialogEdit = document.getElementById("myAddTask");
   dialogEdit.close();
 }
 
-// Dialog Functions
+/**
+ * Opens the details dialog for the task whose ID is on the event target.
+ * @param {Event} event Click event from an element with a `data-id` attribute.
+ * @returns {void}
+ */
 function openTaskDialog(event) {
   const taskId = event.currentTarget.getAttribute("data-id");
   const task = tickets.find((t) => t.id === taskId);
@@ -186,6 +271,11 @@ function openTaskDialog(event) {
   dialog.showModal();
 }
 
+/**
+ * Returns the number of completed subtasks and the total number of subtasks.
+ * @param {Object} task Task with optional subtasks.
+ * @returns {string} Progress in the format "completed/total", or an empty string.
+ */
 function showSubtasks(task) {
   const subs = Object.values(task.subtasks || {});
   if (!subs.length) return "";
@@ -193,12 +283,22 @@ function showSubtasks(task) {
   return `${done}/${subs.length}`;
 }
 
+/**
+ * Calculates the completion percentage of a task's subtasks.
+ * @param {Object} task Task with optional subtasks.
+ * @returns {number} Progress from 0 to 100.
+ */
 function getProgressValue(task) {
   const subs = Object.values(task.subtasks || {});
   if (!subs.length) return 0;
   return (subs.filter((s) => s.isDone).length / subs.length) * 100;
 }
 
+/**
+ * Creates the HTML markup for a task details dialog.
+ * @param {Object} task Task whose details should be displayed.
+ * @returns {string} The dialog's HTML markup.
+ */
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
@@ -209,6 +309,12 @@ function createTaskDetailTemplate(task) {
   return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
+/**
+ * Returns the user objects assigned to a task.
+ * Users that cannot be found are returned with the name "Unknown".
+ * @param {Object} task Task with an optional `assignedTo` property.
+ * @returns {Array<Object>} The assigned users.
+ */
 function getAssignedUsersArray(task) {
   const userIds = Object.keys(task.assignedTo || {});
   return userIds.map((userId) => {
@@ -217,18 +323,33 @@ function getAssignedUsersArray(task) {
   });
 }
 
+/**
+ * Deletes a task from Firebase, closes the details dialog, and reloads the board.
+ * @param {string} taskId ID of the task to delete.
+ * @returns {Promise<void>}
+ */
 async function deleteTask(taskId) {
   await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
   closeDialogTask();
   await reloadBoard();
 }
 
+/**
+ * Opens the task editing module and closes the details dialog.
+ * @param {string} taskId ID of the task to edit.
+ * @returns {void}
+ */
 function editTask(taskId) {
   showEditTaskModule(taskId);
   console.log("Edit task:", taskId);
   document.getElementById("myDialog").close();
 }
 
+/**
+ * Returns the image path for the specified priority.
+ * @param {string} priority Priority, such as "urgent", "medium", or "low".
+ * @returns {string} Path to the priority icon.
+ */
 function getPriorityImage(priority) {
   const images = {
     urgent: "../assets/icons/urgent.svg",
@@ -238,7 +359,13 @@ function getPriorityImage(priority) {
   return images[priority?.toLowerCase()] || "../assets/icons/low.svg";
 }
 
-// Drag and Drop Functions
+/**
+ * Finds the card element before which a dragged card should be inserted,
+ * based on the pointer's vertical position.
+ * @param {Element} container Container holding the cards.
+ * @param {number} y Pointer's vertical position in the viewport.
+ * @returns {Element|undefined} The next card element, or `undefined`.
+ */
 function getDragAfrerElement(container, y) {
   const draggableElements = [
     ...container.querySelectorAll(".draggable:not(.dragging)"),
@@ -255,141 +382,4 @@ function getDragAfrerElement(container, y) {
     },
     { offset: Number.NEGATIVE_INFINITY },
   ).element;
-}
-
-let dropZonesReady = false;
-
-function initDragAndDrop() {
-  const draggables = document.querySelectorAll(".draggable");
-  const cardContainers = document.querySelectorAll(".cards-container");
-  draggables.forEach((draggable) => {
-    draggable.addEventListener("dragstart", () => {
-      draggable.classList.add("dragging");
-    });
-    draggable.addEventListener("dragend", () => {
-      draggable.classList.remove("dragging");
-      saveCardStatus(draggable);
-    });
-  });
-  if (dropZonesReady) return;
-  cartContainersFun(cardContainers);
-  dropZonesReady = true;
-}
-
-function cartContainersFun(cardContainers) {
-  cardContainers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      const draggable = document.querySelector(".dragging");
-      if (!draggable) return;
-      container.classList.add("drag-over");
-      container.querySelector(".no-tasks-card")?.remove();
-      const afterElement = getDragAfrerElement(container, e.clientY);
-      if (afterElement == null) container.appendChild(draggable);
-      else container.insertBefore(draggable, afterElement);
-    });
-    container.addEventListener("dragleave", (e) => {
-      if (!container.contains(e.relatedTarget))
-        container.classList.remove("drag-over");
-    });
-    container.addEventListener("drop", () =>
-      container.classList.remove("drag-over"),
-    );
-  });
-}
-
-function cartContainersFun(cardContainers) {
-  cardContainers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      const draggable = document.querySelector(".dragging");
-      if (!draggable) return;
-      const afterElement = getDragAfrerElement(container, e.clientY);
-      if (afterElement == null) {
-        container.appendChild(draggable);
-      } else {
-        container.insertBefore(draggable, afterElement);
-      }
-    });
-  });
-}
-
-async function saveCardStatus(card) {
-  const cardId = card.dataset.id;
-  const container = card.closest(".cards-container");
-  const newStatus = container?.dataset.status;
-  if (!cardId || !newStatus) {
-    console.error("Karte braucht data-id und Spalte braucht data-status.");
-    return;
-  }
-  try {
-    const task = tickets.find((t) => t.id === cardId);
-    if (task) {
-      task.status = newStatus;
-    }
-    await updateStatusFirebase(cardId, newStatus);
-    clearAllContainers();
-  } catch (error) {
-    console.error("Status konnte nicht gespeichert werden:", error);
-  }
-}
-
-async function updateStatusFirebase(cardId, newStatus) {
-  const response = await fetch(`${BASE_URL}tasks/${cardId}.json`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status: newStatus }),
-  });
-  if (!response.ok) {
-    throw new Error(`Firebase-Error: ${response.status}`);
-  }
-}
-
-function clearAllContainers() {
-  clearTheTaskPreview();
-  displayTasks(tickets);
-}
-
-function searchCards() {
-  let cardSearchText = document.getElementById("search-task").value;
-  filterItems(tickets, cardSearchText);
-  if (cardSearchText == "") {
-    displayTasks(tickets);
-  }
-}
-
-function filterItems(arr, query) {
-  let getCartTitle = arr.filter((el) =>
-    el.title.toLowerCase().includes(query.toLowerCase()),
-  );
-  let getCartDescription = arr.filter((el) =>
-    (el.description || "").toLowerCase().includes(query.toLowerCase()),
-  );
-  checkIfExist(getCartTitle, getCartDescription);
-}
-
-function checkIfExist(getCartTitle, getCartDescription) {
-  clearTheTaskPreview();
-  iterarCards(getCartTitle, getCartDescription);
-  checkIfBoardEmpty();
-  initDragAndDrop();
-}
-
-function iterarCards(getCartTitle, getCartDescription) {
-  const search = [...new Set([...getCartTitle, ...getCartDescription])];
-  if (search.length != 0) {
-    for (let index = 0; index < search.length; index++) {
-      const elementTitle = search[index];
-      showCards(elementTitle);
-    }
-  } else {
-    return;
-  }
-}
-
-function getInitials(name) {
-  const parts = name.split(" ");
-  const first = parts[0].charAt(0).toUpperCase();
-  const last = parts[parts.length - 1].charAt(0).toUpperCase();
-  return first + last;
 }
