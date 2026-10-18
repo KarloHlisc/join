@@ -1,3 +1,7 @@
+main {
+     overflow-y: none;
+}
+
 #board-header {
   display: flex;
   flex-direction: row;
@@ -63,7 +67,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 100vh;
+  height: 100%;
   width: 250px;
 }
 
@@ -139,57 +143,7 @@ progress {
   }
 }
 
-/*Dialog style
-#add-task-dialog {
-  width: min(950px, 94vw);
-  height: min(850px, 94vh);
-  padding: 0;
-  border: none;
-  border-radius: 24px;
-  overflow: hidden;
-  background: #f6f7f8;
-}
 
-#add-task-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.add-task-dialog-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-#add-task-frame {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: #f6f7f8;
-}
-
-.close-add-task-dialog {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  z-index: 10;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  color: #172b4d;
-  font-size: 30px;
-  line-height: 30px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close-add-task-dialog:hover {
-  background: #e5e7eb;
-}
-
-*/
 .dragging {
   opacity: 0.5;
   cursor: grabbing;
@@ -217,7 +171,7 @@ progress {
   }
 }
 
-/*Dialog stily end*/
+/*Dialog stily */
 
 /* Dialog Styles */
 #myDialog {
@@ -499,24 +453,7 @@ progress {
   /* filter: brightness(0) invert(1);*/
 }
 
-/* Scrollbar styling 
-.dialog-body::-webkit-scrollbar {
-    width: 6px;
-}
 
-.dialog-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.dialog-body::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
-}
-
-.dialog-body::-webkit-scrollbar-thumb:hover {
-    background: #999;
-}
-*/
 
 #task-modal-overlay {
   position: fixed;

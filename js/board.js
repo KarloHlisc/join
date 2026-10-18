@@ -1,6 +1,9 @@
 "use strict";
 
-//import { getCreateTaskDetailTemplate} from "../js/template.js";
+const cartToDo = document.getElementById("to-do-cards-container");
+const cartInProgres = document.getElementById("in-progress-cards-container");
+const cartAwait = document.getElementById("await-feedback-cards-container");
+const cartDone = document.getElementById("done-cards-container");
 
 const BASE_URL =
   "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
@@ -19,10 +22,12 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    tickets = Object.entries(data || {}).map(([id, task]) => ({
+    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
       id,
       ...task,
     }));
+    tickets = taskArray;
+    displayTasks(tickets);
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -32,43 +37,53 @@ async function getUsers(path = "") {
   try {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
-
     // Umwandle in Array
-    users = Object.entries(data || {}).map(([id, user]) => ({
+    const taskArray = Object.entries(data || {}).map(([id, user]) => ({
       id,
       ...user,
     }));
+
+    users = taskArray;
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
 }
 
+function clearTheTaskPreview() {
+  cartToDo.innerHTML = "";
+  cartInProgres.innerHTML = "";
+  cartAwait.innerHTML = "";
+  cartDone.innerHTML = "";
+}
+
 // Zeige alle Aufgaben auf der Seite
 function displayTasks(tickets) {
-  if (!tickets || tickets.length === 0) {
-    document.getElementById("to-do-cards-container").innerHTML =
-      '<div class="no-tasks-card">No tasks To do</div>';
-    return;
-  }
-
-  // Clear containers
-  document.getElementById("to-do-cards-container").innerHTML = "";
-  document.getElementById("in-progress-cards-container").innerHTML = "";
-  document.getElementById("await-feedback-cards-container").innerHTML = "";
-  document.getElementById("done-cards-container").innerHTML = "";
-
-  // Render tasks
+  clearTheTaskPreview();
   tickets.forEach((task) => showCards(task));
-
-  // Initialize drag-and-drop after cards are rendered
   initDragAndDrop();
+  checkIfBoardEmpty();
+}
+
+function checkIfBoardEmpty() {
+  if (cartToDo.childNodes[1] === undefined) {
+    cartToDo.innerHTML =
+      '<div class="no-tasks-card" data-id="notodo">No tasks To do</div>';
+  }
+  if (cartInProgres.childNodes[1] === undefined) {
+    cartInProgres.innerHTML =
+      '<div class="no-tasks-card" data-id="noinprogress">No tasks In progress</div>';
+  }
+  if (cartAwait.childNodes[1] === undefined) {
+    cartAwait.innerHTML =
+      '<div class="no-tasks-card" data-id="noawaitfeedback">No tasks Await feedback</div>';
+  }
+  if (cartDone.childNodes[1] === undefined) {
+    cartDone.innerHTML =
+      '<div class="no-tasks-card" data-id="nodone">No tasks Done</div>';
+  }
 }
 
 function showCards(task) {
-  const cartToDo = document.getElementById("to-do-cards-container");
-  const cartInProgres = document.getElementById("in-progress-cards-container");
-  const cartAwait = document.getElementById("await-feedback-cards-container");
-  const cartDone = document.getElementById("done-cards-container");
   const status = task.status?.toLowerCase() || "todo";
   if (status === "todo") cartToDo.innerHTML += cartTemplate(task);
   else if (status === "inprogress")
@@ -253,6 +268,7 @@ function initDragAndDrop() {
     });
     draggable.addEventListener("dragend", () => {
       draggable.classList.remove("dragging");
+      saveCardStatus(draggable);
     });
   });
   cartContainersFun(cardContainers);
@@ -272,6 +288,57 @@ function cartContainersFun(cardContainers) {
       }
     });
   });
+}
+
+async function saveCardStatus(card) {
+  const cardId = card.dataset.id;
+  const container = card.closest(".cards-container");
+  const newStatus = container?.dataset.status;
+  if (!cardId || !newStatus) {
+    console.error("Karte braucht data-id und Spalte braucht data-status.");
+    return;
+  }
+  try {
+    const task = tickets.find((t) => t.id === cardId);
+    if (task) {
+      task.status = newStatus;
+    }
+    updateStatusFirebase(cardId, newStatus);
+    clearAllContainers();
+  } catch (error) {
+    console.error("Status konnte nicht gespeichert werden:", error);
+  }
+}
+
+async function updateStatusFirebase(cardId, newStatus) {
+  const response = await fetch(`${BASE_URL}tasks/${cardId}.json`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: newStatus }),
+  });
+  if (!response.ok) {
+    throw new Error(`Firebase-Error: ${response.status}`);
+  }
+}
+
+async function deleteTask(taskId) {
+  const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
+    method: "DELETE",
+  });
+
+  // if (confirm("Are you sure you want to delete this task?")) {
+  // console.log("Delete task:", taskId);
+
+  document.getElementById("myDialog").close();
+
+  return (responseToJson = await response.json());
+}
+
+function clearAllContainers() {
+  clearTheTaskPreview();
+  displayTasks(tickets);
+  // Dann Drag & Drop initialisieren
+  initDragAndDrop();
 }
 
 function searchCards() {
@@ -327,19 +394,4 @@ function getInitials(name) {
   const first = parts[0].charAt(0).toUpperCase();
   const last = parts[parts.length - 1].charAt(0).toUpperCase();
   return first + last;
-}
-
-function getUserColor(userId) {
-  const colors = [
-    "#2d8cff",
-    "#ff3d00",
-    "#4caf50",
-    "#ff9800",
-    "#9c27b0",
-    "#00bcd4",
-    "#e91e63",
-    "#fbc02d",
-  ];
-  const index = Math.abs(userId.charCodeAt(0)) % colors.length;
-  return colors[index];
 }
