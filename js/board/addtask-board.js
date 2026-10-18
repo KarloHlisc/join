@@ -31,8 +31,7 @@ function closeAddTaskModule() {
  */
 function handleTaskCreated() {
   closeAddTaskModule();
-  document.dispatchEvent(new CustomEvent("taskCreated"));
-  displayTasks(tickets);
+  document.dispatchEvent(new CustomEvent("tasksChanged"));
 }
 
 window.showAddTaskModule = showAddTaskModule;

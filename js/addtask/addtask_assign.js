@@ -41,6 +41,19 @@ function renderAssignedIcons(users, container) {
 }
 
 /**
+ * Renders badges for all preselected users.
+ * @returns {Promise<void>}
+ */
+export async function renderSelectedBadges() {
+  const data = await get(ref(database, "users"));
+  if (!data.exists()) return;
+  const raw = data.val();
+  const users = Object.keys(raw).map((k) => ({ userId: k, ...raw[k] }));
+  const box = document.getElementById("assignedUsersContainer");
+  if (box) renderAssignedIcons(users, box);
+}
+
+/**
  * Toggles a user's selection state in the assigned-to dropdown.
  * @param {object} user - The user being toggled.
  * @param {HTMLElement} button - The user's dropdown button.
