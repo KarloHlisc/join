@@ -3,37 +3,27 @@ import { setupTaskForm } from "../addtask.js";
 import { getAddTaskModule } from "../template.js";
 
 /**
- * Opens the "Add Task" modal and prepares the form for the given status.
- * @param {string} [status="todo"] - Status assigned to the new task.
+ * Opens the task form prefilled with an existing task.
+ * @param {string} taskId - The task ID.
  * @returns {void}
  */
-function showEditTaskModule(task) {
+function showEditTaskModule(taskId) {
+  const task = tickets.find((t) => t.id === taskId);
   const container = document.getElementById("add-task-container");
-  if (!container) return;
+  if (!task || !container) return;
+  document.getElementById("myDialog").close();
   container.innerHTML = getAddTaskModule();
-  setupTaskForm(task, handleTaskCreated);
+  setupTaskForm(task.status, handleTaskUpdated, task);
   setTimeout(() => container.classList.add("active"), 20);
 }
 
 /**
- * Closes and clears the "Add Task" modal.
+ * Closes the modal and tells the board to reload.
  * @returns {void}
  */
-function closeAddTaskModule() {
-  const container = document.getElementById("add-task-container");
-  if (!container) return;
-  container.classList.remove("active");
-  container.innerHTML = "";
+function handleTaskUpdated() {
+  window.closeAddTaskModule();
+  document.dispatchEvent(new CustomEvent("tasksChanged"));
 }
 
-/**
- * Closes the modal and notifies the board that a task was created.
- * @returns {void}
- */
-function handleTaskCreated() {
-  closeAddTaskModule();
-  document.dispatchEvent(new CustomEvent("taskCreated"));
-}
-
-window.showAddTaskModule = showEditTaskModule;
-window.closeAddTaskModule = closeAddTaskModule;
+window.showEditTaskModule = showEditTaskModule;

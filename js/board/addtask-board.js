@@ -1,7 +1,6 @@
 "use strict";
 import { setupTaskForm } from "../addtask.js";
 import { getAddTaskModule } from "../template.js";
-
 /**
  * Opens the "Add Task" modal and prepares the form for the given status.
  * @param {string} [status="todo"] - Status assigned to the new task.
@@ -32,7 +31,7 @@ function closeAddTaskModule() {
  */
 function handleTaskCreated() {
   closeAddTaskModule();
-  document.dispatchEvent(new CustomEvent("taskCreated"));
+  document.dispatchEvent(new CustomEvent("tasksChanged"));
 }
 
 window.showAddTaskModule = showAddTaskModule;

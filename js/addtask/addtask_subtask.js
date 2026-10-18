@@ -53,7 +53,7 @@ export function saveSubtaskEdit(li) {
  * @returns {HTMLElement} The subtask list item.
  */
 /* prettier-ignore */
-export function createSubtaskItem(text) {
+export function createSubtaskItem(text, isDone = false) {
   const li = document.createElement("li");
   li.classList.add("subtask-item");
   li.innerHTML = `<div><span>•</span><span class="subtask-text">${escapeHtml(text)}</span></div><input type="text" class="subtask-edit-input" /><div class="subtask-actions"><button type="button" class="edit-btn"><img src="../assets/icons/edit.svg" alt="Edit" /></button><button type="button" class="delete-btn"><img src="../assets/icons/delete.svg" alt="Delete" /></button></div>`;
@@ -86,7 +86,10 @@ export function getSubtasksData() {
   const subtasks = {};
   document.querySelectorAll("#subTaskList .subtask-item").forEach((item, i) => {
     const text = item.querySelector(".subtask-text")?.innerText || "";
-    subtasks[`subtask_${i}`] = { title: text, isDone: false };
+    subtasks[`subtask_${i}`] = {
+      title: text,
+      isDone: item.dataset.done === "true",
+    };
   });
   return subtasks;
 }

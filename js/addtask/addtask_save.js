@@ -3,9 +3,20 @@ import { database } from "../config.js";
 import {
   ref,
   runTransaction,
+  update,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 import { getAssignedUsersObj } from "./addtask_assign.js";
 import { getSubtasksData } from "./addtask_subtask.js";
+
+/**
+ * Updates an existing task, keeping its status.
+ * @param {string} taskId - The task ID.
+ * @param {object} task - The new task data.
+ * @returns {Promise<void>}
+ */
+export function updateTask(taskId, task) {
+  return update(ref(database, `tasks/${taskId}`), task);
+}
 
 /**
  * Generates the next sequential task ID.
