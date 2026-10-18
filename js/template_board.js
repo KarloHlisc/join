@@ -2,14 +2,14 @@ function getCartTemplate(task) {
   return `
         <button role="button"  data-id="${task.id}"  class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)" >
             <div class="level-story">
-                <p style="background-color: ${getTaskColor(task)}"">${task.category || "User Story"}</p>
+                <p style="background-color: ${getTaskColor(task)}">${task.category || "User Story"}</p>
             </div>
             <div class="title-story">
                 <h4>${task.title || "Keine Beschreibung"}</h4>
                 <p>${task.description || ""}</p>
             </div>
             <div class="cart-progress">
-                <progress value="" max="100"></progress>
+                <progress value="${getProgressValue(task)}" max="100"></progress>
                 <span id="showSubtask">${showSubtasks(task) || 0} Subtasks</span>
             </div>
             <div class="cart-assigment">
@@ -40,7 +40,7 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
   return `
         <div class="dialog-content">
             <div class="dialog-header">
-                <span class="category-badge" style="background-color:${task.colors};">${task.category || "User Story"}</span>
+                <span class="category-badge" style="background-color:${getTaskColor(task)};">${task.category || "User Story"}</span>
                 <button class="close-btn" onclick="document.getElementById('myDialog').close()">✕</button>
             </div>
             
@@ -51,7 +51,7 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                 <div class="task-details">
                     <div class="detail-row">
                         <span class="detail-label">Due date:</span>
-                        <span class="detail-value">${task.dueDate || "No date"}</span>
+                        <span class="detail-value">${task.duedate || "No date"}</span>
                     </div>
                     
                     <div class="detail-row">
@@ -88,7 +88,8 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                                 .map(
                                   (st) => `
                                 <div class="subtask-item">
-                                    <input type="checkbox" id="subtask-${st.id}" ${st.done ? "checked" : ""}>
+                                    <input type="checkbox" id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
+                                     onchange="toggleSubtask('${task.id}', '${st.id}', this.checked)">
                                     <label for="subtask-${st.id}">${st.title}</label>
                                 </div>
                             `,
@@ -105,7 +106,7 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                     <img src="../assets/icons/delete.svg" alt="delete"> Delete
                 </button>
                 <div id="footerBetween"></div>
-                <button class="btn-edit" onclick="openEditTask(${task.id})">
+                <button class="btn-edit" onclick="showEditTaskModule('${task.id}')">
                     <img src="../assets/icons/edit.svg" alt="edit"> Edit
                 </button>
             </div>

@@ -14,8 +14,17 @@ let names = [];
 async function init() {
   await Promise.all([getUserTasks("/tasks"), getUsers("/users")]);
   displayTasks(tickets);
+  document.getElementById("myDialog").addEventListener("click", (e) => {
+    if (e.target.id === "myDialog") e.target.close();
+  });
 }
 
+async function reloadBoard() {
+  await getUserTasks("/tasks");
+  displayTasks(tickets);
+}
+
+document.addEventListener("tasksChanged", reloadBoard);
 // Hole Daten von Firebase
 async function getUserTasks(path = "") {
   try {
@@ -105,12 +114,18 @@ function findUsers(task) {
 }
 
 function getTaskColor(task) {
-  //let getColorTask = Object.entries(task.category);
-  if (task.category == "User Story") {
-    return "rgba(0, 56, 255, 1)";
-  } else if (task.category == "Technical") {
-    return "rgba(31, 215, 193, 1)";
-  }
+  if (task.category === "User Story") return "rgba(0, 56, 255, 1)";
+  return "rgba(31, 215, 193, 1)";
+}
+
+async function toggleSubtask(taskId, subId, isDone) {
+  await fetch(`${BASE_URL}tasks/${taskId}/subtasks/${subId}.json`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isDone }),
+  });
+  tickets.find((t) => t.id === taskId).subtasks[subId].isDone = isDone;
+  displayTasks(tickets);
 }
 
 function getUserOnTask(userOnTask) {
@@ -163,31 +178,25 @@ function closeEditTask() {
 
 // Dialog Functions
 function openTaskDialog(event) {
-  // Prevent drag-and-drop from triggering the dialog
-  if (event.target.closest(".dragging")) return;
-  const taskId = event.currentTarget.getAttribute("data-task-id");
+  const taskId = event.currentTarget.getAttribute("data-id");
   const task = tickets.find((t) => t.id === taskId);
   if (!task) return;
   const dialog = document.getElementById("myDialog");
   dialog.innerHTML = createTaskDetailTemplate(task);
   dialog.showModal();
-  // Close dialog when clicking outside
-  dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) {
-      dialog.close();
-    }
-  });
 }
 
 function showSubtasks(task) {
-  //let subtask = document.getElementById("showSubtask");
-  const subtask = Object.keys(task.subtasks || {});
-  //document.getElementById("showSubtask").innerHTML+=
+  const subs = Object.values(task.subtasks || {});
+  if (!subs.length) return "";
+  const done = subs.filter((s) => s.isDone).length;
+  return `${done}/${subs.length}`;
+}
 
-  for (let index = 0; index < subtask.length; index++) {
-    let element = subtask[index];
-    return `0/${subtask.length}`;
-  }
+function getProgressValue(task) {
+  const subs = Object.values(task.subtasks || {});
+  if (!subs.length) return 0;
+  return (subs.filter((s) => s.isDone).length / subs.length) * 100;
 }
 
 function createTaskDetailTemplate(task) {
@@ -208,17 +217,10 @@ function getAssignedUsersArray(task) {
   });
 }
 
-async function deleteTask(path = "") {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "DELETE",
-  });
-
-  // if (confirm("Are you sure you want to delete this task?")) {
-  // console.log("Delete task:", taskId);
-  // Add delete logic here
-  document.getElementById("myDialog").close();
-
-  return (responseToJson = await response.json());
+async function deleteTask(taskId) {
+  await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
+  closeDialogTask();
+  await reloadBoard();
 }
 
 function editTask(taskId) {
@@ -255,6 +257,8 @@ function getDragAfrerElement(container, y) {
   ).element;
 }
 
+let dropZonesReady = false;
+
 function initDragAndDrop() {
   const draggables = document.querySelectorAll(".draggable");
   const cardContainers = document.querySelectorAll(".cards-container");
@@ -267,7 +271,31 @@ function initDragAndDrop() {
       saveCardStatus(draggable);
     });
   });
+  if (dropZonesReady) return;
   cartContainersFun(cardContainers);
+  dropZonesReady = true;
+}
+
+function cartContainersFun(cardContainers) {
+  cardContainers.forEach((container) => {
+    container.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      const draggable = document.querySelector(".dragging");
+      if (!draggable) return;
+      container.classList.add("drag-over");
+      container.querySelector(".no-tasks-card")?.remove();
+      const afterElement = getDragAfrerElement(container, e.clientY);
+      if (afterElement == null) container.appendChild(draggable);
+      else container.insertBefore(draggable, afterElement);
+    });
+    container.addEventListener("dragleave", (e) => {
+      if (!container.contains(e.relatedTarget))
+        container.classList.remove("drag-over");
+    });
+    container.addEventListener("drop", () =>
+      container.classList.remove("drag-over"),
+    );
+  });
 }
 
 function cartContainersFun(cardContainers) {
@@ -299,7 +327,7 @@ async function saveCardStatus(card) {
     if (task) {
       task.status = newStatus;
     }
-    updateStatusFirebase(cardId, newStatus);
+    await updateStatusFirebase(cardId, newStatus);
     clearAllContainers();
   } catch (error) {
     console.error("Status konnte nicht gespeichert werden:", error);
@@ -320,13 +348,10 @@ async function updateStatusFirebase(cardId, newStatus) {
 function clearAllContainers() {
   clearTheTaskPreview();
   displayTasks(tickets);
-  // Dann Drag & Drop initialisieren
-  initDragAndDrop();
 }
 
 function searchCards() {
   let cardSearchText = document.getElementById("search-task").value;
-  console.log(cardSearchText);
   filterItems(tickets, cardSearchText);
   if (cardSearchText == "") {
     displayTasks(tickets);
@@ -338,21 +363,16 @@ function filterItems(arr, query) {
     el.title.toLowerCase().includes(query.toLowerCase()),
   );
   let getCartDescription = arr.filter((el) =>
-    el.description.toLowerCase().includes(query.toLowerCase()),
+    (el.description || "").toLowerCase().includes(query.toLowerCase()),
   );
   checkIfExist(getCartTitle, getCartDescription);
 }
 
 function checkIfExist(getCartTitle, getCartDescription) {
-  if (!getCartTitle.length == 0 || !getCartDescription.length == 0) {
-    document.getElementById("to-do-cards-container").innerHTML = "";
-    document.getElementById("in-progress-cards-container").innerHTML = "";
-    document.getElementById("await-feedback-cards-container").innerHTML = "";
-    document.getElementById("done-cards-container").innerHTML = "";
-    iterarCards(getCartTitle, getCartDescription);
-  } else {
-    return;
-  }
+  clearTheTaskPreview();
+  iterarCards(getCartTitle, getCartDescription);
+  checkIfBoardEmpty();
+  initDragAndDrop();
 }
 
 function iterarCards(getCartTitle, getCartDescription) {

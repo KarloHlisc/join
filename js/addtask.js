@@ -26,9 +26,15 @@ import {
   selectedUserIds,
   getUserList,
   filterUserList,
+  renderSelectedBadges,
 } from "./addtask/addtask_assign.js";
-import { buildTaskData, registerTask } from "./addtask/addtask_save.js";
+import {
+  buildTaskData,
+  registerTask,
+  updateTask,
+} from "./addtask/addtask_save.js";
 
+let editTaskId = null;
 let existSignUpForm;
 let errEL;
 let taskStatus = "todo";
@@ -199,15 +205,11 @@ function setupPriorityButtons() {
 function saveTask() {
   const btn = document.getElementById("createTask");
   btn.disabled = true;
-  registerTask(buildTaskData(), taskStatus)
-    .then(() => {
-      resetForm();
-      showSuccessModal();
-    })
-    .catch((err) => {
-      btn.disabled = false;
-      if (errEL) errEL.textContent = err.message;
-    });
+  const data = buildTaskData();
+  const request = editTaskId? updateTask(editTaskId, data): registerTask(data, taskStatus);
+  request
+    .then(() => {resetForm();showSuccessModal();})
+    .catch((err) => {btn.disabled = false;if (errEL) errEL.textContent = err.message;});
 }
 
 /**
@@ -275,14 +277,44 @@ function showSuccessModal() {
  * @param {function|null} [onCreated=null] - Callback after a task was created.
  * @returns {void}
  */
-export function setupTaskForm(status = "todo", onCreated = null) {
+export function setupTaskForm(status = "todo", onCreated = null, task = null) {
   taskStatus = status.replace(/-/g, "");
   onTaskCreated = onCreated;
+  editTaskId = task ? task.id : null;
   selectedUserIds.clear();
   setupEventListeners();
   buttonVisability();
   setupFormSubmit();
   setupPriorityButtons();
+  if (task) {
+    fillTaskForm(task);
+    setEditLabels();
+  }
+}
+
+function fillTaskForm(task) {
+  const set = (id, v) => (document.getElementById(id).value = v || "");
+  set("formTitle", task.title);
+  set("description", task.description);
+  set("duedate", task.duedate);
+  document.getElementById("categorySelectedText").innerText = task.category;
+  selectPriority(task.priority || "medium");
+  fillAssignedAndSubtasks(task);
+}
+
+function fillAssignedAndSubtasks(task) {
+  Object.keys(task.assignedTo || {}).forEach((id) => selectedUserIds.add(id));
+  renderSelectedBadges();
+  const list = document.getElementById("subTaskList");
+  Object.values(task.subtasks || {}).forEach((s) =>
+    list.append(createSubtaskItem(s.title, s.isDone)),
+  );
+}
+
+function setEditLabels() {
+  document.querySelector("#add-task-title h1").innerText = "Edit Task";
+  document.getElementById("createTask").childNodes[0].textContent =
+    "Save Task ";
 }
 
 /**

@@ -69,7 +69,9 @@ export function clearErrors() {
  */
 export function checkVali(e) {
   clearErrors();
-  const valid = validateTitle() && validateDate() && validateCategory();
+  const valid = [validateTitle(), validateDate(), validateCategory()].every(
+    Boolean,
+  );
   if (!valid) e.preventDefault();
   return valid;
 }

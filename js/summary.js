@@ -110,24 +110,29 @@ async function getUrgentDeadline() {
   try {
     const response = await fetch(BASE_URL + "tasks.json");
     const data = await response.json();
-     showTaskArra(data); 
+    return showTaskArra(data);
   } catch (error) {
     console.error("Fehler beim Laden des nächsten Deadlines:", error);
     return null;
   }
 }
 
-
-function showTaskArra(data){
-  const taskArray = Object.entries(data || {}).map(([id, task]) => ({id, ...task,}));
-    const urgentTasks = taskArray.filter(
-      (task) => task.priority?.toLowerCase() === "urgent" && task.duedate,
-    );
-    if (urgentTasks.length === 0) {
-      return null;
-    }
-    urgentTasks.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
-    return urgentTasks[0].duedate;
+function showTaskArra(data) {
+  const taskArray = Object.entries(data || {}).map(([id, task]) => ({
+    id,
+    ...task,
+  }));
+  const urgentTasks = taskArray.filter(
+    (task) =>
+      task.priority?.toLowerCase() === "urgent" &&
+      task.status !== "done" &&
+      task.duedate,
+  );
+  if (urgentTasks.length === 0) {
+    return null;
+  }
+  urgentTasks.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
+  return urgentTasks[0].duedate;
 }
 
 /**
@@ -137,13 +142,13 @@ async function displaySummary() {
   const counts = await getTaskCountsByStatus();
   const deadline = await getUrgentDeadline();
   updateSummaryData(counts); // Update the summary boxes
-  if (deadline) {
-    // Update deadline if urgent task exists
-    const dateObj = new Date(deadline);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = dateObj.toLocaleDateString("en-US", options);
-    document.getElementById("card-deadline").textContent = formattedDate;
-  }
+  document.getElementById("card-deadline").textContent = deadline
+    ? new Date(deadline).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "No deadline";
 }
 
 function updateSummaryData(counts) {
