@@ -218,8 +218,7 @@ function findUsersByTask(task) {
     .map((userId) => {
       const user = users.find((u) => u.id === userId);
       return user ? user.name : "Unknown";
-    })
-    .join(", ");
+    }).join(", ");
 }
 
 /**
@@ -302,10 +301,7 @@ function getProgressValue(task) {
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
-    id,
-    ...st,
-  }));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id, ...st,}));
   return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
