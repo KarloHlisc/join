@@ -214,8 +214,12 @@ const handleFormSubmit = async (e) => {
   e.preventDefault();
   const values = readContactForm();
   if (!showContactErrors(validateContactFields(values))) return;
-  if (await checkEmail(values.email))
+  const btn = document.getElementById("create-contact");
+  btn.disabled = true;
+  if (await checkEmail(values.email)) {
+    btn.disabled = false;
     return showContactErrors({ email: "Email is already registered" });
+  }
   await registerUser(values.email, values.name, values.phone);
   closeAddContactModule();
   toggleShowSuccessModal("congrats");
@@ -231,10 +235,14 @@ async function handleEditSubmit(e, userId) {
   e.preventDefault();
   const values = readContactForm();
   if (!showContactErrors(validateContactFields(values))) return;
+  const btn = document.getElementById("edit-contact");
+  btn.disabled = true;
   const currentData = (await get(ref(database, `users/${userId}`))).val();
   const existing = await checkEmail(values.email);
-  if (existing && existing.email !== currentData?.email)
+  if (existing && existing.email !== currentData?.email) {
+    btn.disabled = false;
     return showContactErrors({ email: "Email is already registered" });
+  }
   await saveEditedUser(userId, currentData, values);
 }
 
@@ -270,6 +278,7 @@ async function saveEditedUser(userId, currentData, values) {
     return curr;
   });
   syncLoggedInUser(userId, updated);
+  showDetails({ userId, ...updated });
   closeAddContactModule();
   toggleShowSuccessModal("edited");
 }

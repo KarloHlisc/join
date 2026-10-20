@@ -145,21 +145,6 @@ function cartTemplate(task) {
 }
 
 /**
- * Gets the IDs of the users assigned to a task and passes them to
- * `getUserOnTask` for further processing.
- * @param {Object} task Task with an optional `assignedTo` property.
- * @returns {void}
- */
-function findUsers(task) {
-  let userOnTask = Object.keys(task.assignedTo || "");
-  if (userOnTask == "") {
-    return;
-  } else {
-    getUserOnTask(userOnTask);
-  }
-}
-
-/**
  * Returns the color associated with a task's category.
  * @param {Object} task Task with a `category` property.
  * @returns {string} An RGBA color value.
@@ -187,73 +172,12 @@ async function toggleSubtask(taskId, subId, isDone) {
 }
 
 /**
- * Gets initials for the users assigned to a task based on their IDs.
- * @param {string[]} userOnTask IDs of users assigned to the task.
- * @returns {string|undefined} The initials of a matching user, or `undefined`.
- */
-function getUserOnTask(userOnTask) {
-  for (let i = 0; i <= userOnTask.length; i++) {
-    let found = users.find((u) => u.id == userOnTask[i]);
-    if (found != undefined) {
-      let userN = found.name;
-      const userName = userN.split(" ");
-      const firstInitial = userName[0].charAt(0);
-      const lastInitial = userName[userName.length - 1].charAt(0) || "";
-      return firstInitial + lastInitial;
-    } else {
-      return;
-    }
-  }
-}
-
-/**
- * Returns the names of the users assigned to a task.
- * @param {Object} task Task with an optional `assignedTo` property.
- * @returns {string} Assigned users' names, separated by commas, or an empty string.
- */
-function findUsersByTask(task) {
-  const userIds = Object.keys(task.assignedTo || {});
-  if (userIds.length === 0) return "";
-  return userIds
-    .map((userId) => {
-      const user = users.find((u) => u.id === userId);
-      return user ? user.name : "Unknown";
-    }).join(", ");
-}
-
-/**
- * Opens the task editing dialog and sets its form content.
- * @param {Object} task Task to edit.
- * @returns {void}
- */
-function openEditTask(task) {
-  const dialogEdit = document.getElementById("myAddTask");
-  dialogEdit.innerHTML = getTaskFormTemplate(task.id);
-  dialogEdit.showModal();
-  closeDialogTask();
-  dialogEdit.addEventListener("click", (e) => {
-    if (e.target === dialogEdit) {
-      dialogEdit.close();
-    }
-  });
-}
-
-/**
  * Closes the task details dialog.
  * @returns {void}
  */
 function closeDialogTask() {
   const taskDialog = document.getElementById("myDialog");
   taskDialog.close();
-}
-
-/**
- * Closes the dialog used to add or edit a task.
- * @returns {void}
- */
-function closeEditTask() {
-  const dialogEdit = document.getElementById("myAddTask");
-  dialogEdit.close();
 }
 
 /**
@@ -301,7 +225,10 @@ function getProgressValue(task) {
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id, ...st,}));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
+    id,
+    ...st,
+  }));
   return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
@@ -328,17 +255,6 @@ async function deleteTask(taskId) {
   await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
   closeDialogTask();
   await reloadBoard();
-}
-
-/**
- * Opens the task editing module and closes the details dialog.
- * @param {string} taskId ID of the task to edit.
- * @returns {void}
- */
-function editTask(taskId) {
-  showEditTaskModule(taskId);
-  console.log("Edit task:", taskId);
-  document.getElementById("myDialog").close();
 }
 
 /**

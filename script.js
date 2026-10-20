@@ -138,10 +138,12 @@ async function handleLoginSubmit(e) {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
   if (!validateLoginFields(email, password)) return;
+  setLoginLoading(true);
   try {
     await attemptLogin(email, password);
   } catch (err) {
     showLoginError(err.message);
+    setLoginLoading(false);
   }
 }
 
@@ -149,21 +151,32 @@ if (existLoginForm)
   existLoginForm.addEventListener("submit", handleLoginSubmit);
 
 /**
+ * Disables or enables the login buttons while a request is running.
+ * @param {boolean} isLoading - True while the request runs.
+ * @returns {void}
+ */
+function setLoginLoading(isLoading) {
+  document.getElementById("login-button").disabled = isLoading;
+  document.getElementById("guest-button").disabled = isLoading;
+}
+
+/**
  * Logs in with a fixed guest account for demo purposes.
  * @returns {Promise<void>}
  */
 async function logInAsGuest() {
-  if (existLoginForm) {
-    errEL.textContent = "";
-    try {
-      document.getElementById("email").value = "guest@test.com";
-      document.getElementById("password").value = "Test123!";
-      const user = await findUser("guest@test.com", "Test123!");
-      if (!user) throw new Error("Account not found.");
-      loginSuccess(user);
-    } catch (err) {
-      errEL.textContent = err.message;
-    }
+  if (!existLoginForm) return;
+  errEL.textContent = "";
+  setLoginLoading(true);
+  try {
+    document.getElementById("email").value = "guest@test.com";
+    document.getElementById("password").value = "Test123!";
+    const user = await findUser("guest@test.com", "Test123!");
+    if (!user) throw new Error("Account not found.");
+    loginSuccess(user);
+  } catch (err) {
+    errEL.textContent = err.message;
+    setLoginLoading(false);
   }
 }
 

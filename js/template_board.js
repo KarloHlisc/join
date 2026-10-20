@@ -1,16 +1,35 @@
+/**
+ * Escapes HTML special characters.
+ * @param {string} str - The raw text.
+ * @returns {string} The escaped text.
+ */
+function escapeHtml(str = "") {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Builds the HTML markup of a task card on the board.
+ * @param {Object} task - The task to render.
+ * @returns {string} HTML markup of the card.
+ */
 function getCartTemplate(task) {
   return `
-        <button role="button"  data-id="${task.id}"  class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)" >
+        <div role="button" tabindex="0" data-id="${task.id}" class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)">
             <div class="level-story">
                 <p style="background-color: ${getTaskColor(task)}">${task.category || "User Story"}</p>
             </div>
             <div class="title-story">
-                <h4>${task.title || "Keine Beschreibung"}</h4>
-                <p>${task.description || ""}</p>
+                <h4>${escapeHtml(task.title) || "Keine Beschreibung"}</h4>
+                <p>${escapeHtml(task.description) || ""}</p>
             </div>
             <div class="cart-progress">
                 <progress value="${getProgressValue(task)}" max="100"></progress>
-                <span id="showSubtask">${showSubtasks(task) || 0} Subtasks</span>
+                <span class="subtask-count">${showSubtasks(task) || 0} Subtasks</span>
             </div>
             <div class="cart-assigment">
             <div class="users-together">
@@ -21,21 +40,33 @@ function getCartTemplate(task) {
                     <img src="${getPriorityImage(task.priority)}" alt="${task.priority}" class="priority-icon-small">
                 </div>
             </div>
-        </button>
+        </div>
     `;
 }
 
+/**
+ * Builds the avatar chips of all users assigned to a task.
+ * @param {Object} task - The task with an optional assignedTo list.
+ * @returns {string} HTML markup of the avatars.
+ */
 function getUsersOnCart(task) {
   return `${getAssignedUsersArray(task)
     .map(
       (
         user,
-      ) => `<div class="user-chip"><div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
+      ) => `<div class="user-chip"><div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(escapeHtml(user.name))}</div>
        </div>`,
     )
     .join("")}`;
 }
 
+/**
+ * Builds the HTML markup of the task detail dialog.
+ * @param {Object} task - The task to show.
+ * @param {Array<Object>} assignedUsers - Users assigned to the task.
+ * @param {Array<Object>} subtaskArray - The task's subtasks with IDs.
+ * @returns {string} HTML markup of the dialog.
+ */
 function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
   return `
         <div class="dialog-content">
@@ -45,8 +76,8 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
             </div>
             
             <div class="dialog-body">
-                <h2 class="task-title">${task.title}</h2>
-                <p class="task-description">${task.description || ""}</p>
+                <h2 class="task-title">${escapeHtml(task.title)}</h2>
+                <p class="task-description">${escapeHtml(task.description) || ""}</p>
                 
                 <div class="task-details">
                     <div class="detail-row">
@@ -70,8 +101,8 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                           .map(
                             (user) => `
                             <div class="user-chip">
-                                <div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(user.name)}</div>
-                                <span>${user.name}</span>
+                                <div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(escapeHtml(user.name))}</div>
+                                <span>${escapeHtml(user.name)}</span>
                             </div>
                         `,
                           )
@@ -90,7 +121,7 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                                 <div class="subtask-item">
                                     <input type="checkbox" id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
                                      onchange="toggleSubtask('${task.id}', '${st.id}', this.checked)">
-                                    <label for="subtask-${st.id}">${st.title}</label>
+                                    <label for="subtask-${st.id}">${escapeHtml(st.title)}</label>
                                 </div>
                             `,
                                 )
@@ -112,70 +143,4 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
             </div>
         </div>
     `;
-}
-
-function getTaskFormTemplate(task) {
-  return `
-<div id="form-container">
-  <div id="add-task-title"><h1>Add Task</h1></div>
-  <form id="addTaskForm" novalidate>
-    <div id="form-body">
-      <div id="leftSide">
-        <label for="formTitle">Title<span class="red-star">*</span></label>
-        <input type="text" id="formTitle" placeholder=""/><span>${task.title}</span>
-        <div id="errorTitle" style="color: red"></div>
-        <label for="description">Description</label>
-        <textarea id="description" placeholder="${task.description}" value=""></textarea>
-        <label for="duedate">Due date<span class="red-star">*</span></label>
-        <input type="date" id="duedate"  placeholder="${task.duedate}"  />
-        <div id="errorDate" style="color: red"></div>
-      </div>
-      <div id="rightSide">
-        <span class="form-label">Priority</span>
-        <div id="priority-buttons">
-          <button type="button" class="priority-btn" id="urgent-btn" data-value="urgent">Urgent <img src="../assets/icons/urgent.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="medium-btn" data-value="medium">Medium <img src="../assets/icons/medium.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="low-btn" data-value="low">Low <img src="../assets/icons/low.svg" alt="" aria-hidden="true" /></button>
-        </div>
-        <label for="searchInput">Assigned to</label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header-input-wrapper">
-            <input type="text" id="searchInput" placeholder="Select contacts to assign" autocomplete="off" />
-            <button type="button" id="dropdownToggle" class="dropdown-btn" aria-label="Benutzerliste anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="dropdownArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="dropdownList"></ul>
-        </div>
-        <div id="assignedUsersContainer" class="assigned-users"></div>
-        <ul class="assigned-users"></ul>
-        <label for="categoryToggle">Category<span class="red-star">*</span></label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header" id="categoryHeader">
-            <span id="categorySelectedText">Select task category</span>
-            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="categoryList">
-            <li class="user-item" data-value="Technical"><span >Technical</span></li>
-            <li class="user-item" data-value="User Story"><span >User Story</span></li>
-          </ul>
-          <div id="errorCategory" style="color: red"></div>
-        </div>
-        <label for="subtaskInput">Subtasks</label>
-        <div class="subtask-container">
-          <input type="text" id="subtaskInput" placeholder="Add new Subtasks" />
-          <button type="button" id="addSubtaskBtn"><img src="../assets/icons/darkcheck.svg" alt="Add Subtask" /></button>
-          <button type="button" id="clearSubtaskBtn"><img src="../assets/icons/delete.svg" alt="Clear input" /></button>
-        </div>
-        <ul id="subTaskList"></ul>
-      </div>
-    </div>
-    <div id="createTaskBtn-container">
-      <span class="required-hint"><span class="red-star">*</span>This field is required</span>
-      <div id="btn-container">
-        <button type="reset" id="clear" onclick="closeEditTask()">Cancel <img src="../assets/icons/vector.svg" alt="" aria-hidden="true"  /></button>
-        <button type="submit" id="createTask">Save Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
-      </div>
-    </div>
-  </form>
-</div>
-`;
 }
