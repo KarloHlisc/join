@@ -1,6 +1,6 @@
 "use strict";
 
-import { escapeHtml } from "./utils.js";
+import { escapeHtml, isGuestUser } from "./utils.js";
 
 /**
  * Builds the sidebar navigation buttons shown after the login.
@@ -104,7 +104,7 @@ export function userDetailTemplate(user, initials) {
           <div class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="name-and-button">
             <span>${escapeHtml(user.name)}</span>
-            <div id="edit-delete"><button id="edit" onclick="showEditContactModule('${user.userId}')"><img src="../assets/icons/edit.svg" alt="edit-btn" />Edit</button><button id="delete" onclick="deleteUser('${user.userId}')"><img src="../assets/icons/delete.svg" alt="delete-btn" />Delete</button></div>
+            <div id="edit-delete"><button id="edit" onclick="showEditContactModule('${user.userId}')"><img src="../assets/icons/edit.svg" alt="edit-btn" />Edit</button>${isGuestUser(user) ? "" : `<button id="delete" onclick="deleteUser('${user.userId}')"><img src="../assets/icons/delete.svg" alt="delete-btn" />Delete</button>`}</div>
           </div>
         </div>
         <span id="contact-info">Contact information</span>
@@ -137,9 +137,9 @@ export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" ${isGuestUser(user) ? "readonly" : ""} /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
             <div class="button-container">
-              <button type="button"  class="edit-delete"onclick="deleteUser('${user.userId}')">Delete</button>
+              ${isGuestUser(user) ? "" : `<button type="button" class="edit-delete" onclick="deleteUser('${user.userId}')">Delete</button>`}
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
             </div>
           </form></div></div></div></div></div>`;
