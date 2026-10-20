@@ -1,20 +1,17 @@
 "use strict";
 
 /** HTML markup for the policy template, injected into main-container. */
-const policyTemplate = `     <h1>Privacy Policy</h1>
-      <h3>Subtitle</h3>
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Exercitationem
-        quidem neque nesciunt, esse ullam reiciendis sapiente fugit magnam
-        molestiae nihil eum rem harum numquam maiores aspernatur corporis
-        quisquam, animi necessitatibus!
-      </p>
-      <h3>Subtitle</h3>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo, rerum hic
-        excepturi velit fugit deserunt rem laboriosam provident asperiores quasi
-        beatae ab, ratione architecto autem accusantium ut ea qui quaerat.
-      </p>`;
+const policyTemplate = `<h1>Privacy Policy</h1>
+      <h3>Responsible parties</h3>
+      <p>Sandro Spirig, Gartenstrasse 3, 8000 Zürich, and Karlo H, PilgStr 5, 8133 Munich. Contact: sandro.spirig@example.com</p>
+      <h3>Which data we store</h3>
+      <p>When you sign up we store your name, email address and password. For contacts we store name, email address and phone number. Tasks (title, description, due date, priority, category, assigned contacts, subtasks) are stored as well.</p>
+      <h3>Where data is stored</h3>
+      <p>All data is stored in a Google Firebase Realtime Database (region asia-southeast1). The Firebase SDK is loaded from Google servers (gstatic.com), so your IP address is transmitted to Google when you open Join.</p>
+      <h3>Browser storage</h3>
+      <p>After login your user data is kept in the session storage of your browser until you log out or close the tab.</p>
+      <h3>Purpose and your rights</h3>
+      <p>Join is an educational project. You can request information about, correction of, or deletion of your data at any time by email.</p>`;
 
 /**
  * Returns the shared privacy policy markup used on all privacy policy pages.
@@ -26,7 +23,7 @@ export function getPolicyTemplate() {
 
 /** HTML markup for the legal template, injected into main-container. */
 const legalTemplate = ` <h1>Legal Notice</h1>
-      <h4>Subtitle</h4>
+      <h4>Adresse</h4>
       <ul>
         <li>Sandro Spirig</li>
         <li>Gartenstrasse 3</li>
@@ -37,7 +34,7 @@ const legalTemplate = ` <h1>Legal Notice</h1>
         <li>PilgStr 5</li>
         <li>8133 Munich</li>
       </ul>
-      <h4>Exploring the Board</h4>
+      <h4>Contacts</h4>
       <p>Email: sandro.spirig@example.com</p>
       <p>Email: karlo.h@example.com</p>
       <h4>Acceptance of terms</h4>
@@ -94,7 +91,7 @@ const legalTemplate = ` <h1>Legal Notice</h1>
         demand, loss, damage, cost, or liability (including reasonable legal
         fees) arising out of or relating to your use of Join and/or your breach
         of this Legal Notice. For any questions or notices, please contact us at
-        [Contact Email]. Date: July 26, 2023
+        sandro.spirig@example.com. Date: October 20, 2026
       </p>`;
 
 /**

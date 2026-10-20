@@ -43,6 +43,12 @@ button {
   outline: inherit;
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
 button,
 a,
 .user-btn {
@@ -338,4 +344,13 @@ ol {
 #legal-after-login-container h1 {
   font-size: 61px;
   margin: 0;
+}
+
+.cart,
+.title-story,
+.user-name,
+.user-email,
+.subtask-text,
+#contact-details-container span {
+  overflow-wrap: anywhere;
 }
