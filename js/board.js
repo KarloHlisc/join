@@ -355,27 +355,3 @@ function getPriorityImage(priority) {
   return images[priority?.toLowerCase()] || "../assets/icons/low.svg";
 }
 
-/**
- * Finds the card element before which a dragged card should be inserted,
- * based on the pointer's vertical position.
- * @param {Element} container Container holding the cards.
- * @param {number} y Pointer's vertical position in the viewport.
- * @returns {Element|undefined} The next card element, or `undefined`.
- */
-function getDragAfrerElement(container, y) {
-  const draggableElements = [
-    ...container.querySelectorAll(".draggable:not(.dragging)"),
-  ];
-  return draggableElements.reduce(
-    (closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY },
-  ).element;
-}
