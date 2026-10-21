@@ -210,7 +210,9 @@
 
 #clear:hover {
   border: 3px solid #2a3647;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    inset 0 0 0 2px #2a3647,
+    0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 #createTask {

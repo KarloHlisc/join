@@ -97,3 +97,14 @@ export async function checkEmail(email) {
   const users = data.exists() ? data.val() : {};
   return Object.values(users).find((u) => u.email === email);
 }
+
+export const GUEST_EMAIL = "guest@test.com";
+
+/**
+ * Checks whether a user is the shared guest account.
+ * @param {object} user - The user data.
+ * @returns {boolean} True if it is the guest account.
+ */
+export function isGuestUser(user) {
+  return user?.email === GUEST_EMAIL;
+}

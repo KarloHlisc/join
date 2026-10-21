@@ -27,67 +27,26 @@ function greetings() {
   if (nameEl) nameEl.innerText = isUser ? user.name : "";
 }
 
-/**
- * Retrieves the logged-in username from session storage and renders it in the DOM.
- * Aborts early if the DOM element does not exist or no user data is found.
- * @returns {void}
- */
-function getUserName() {
-  const name = document.getElementById("greeting-name");
-  const stored = sessionStorage.getItem("loggedInUser");
-  if (!name || !stored) return;
-  const user = JSON.parse(stored);
-  if (!user.name) return;
-  name.innerText = user.name;
-}
-
-/*
-async function findUser(email, password) {
-    const data = await get(child(ref(database), "users"));
-    const users = data.exists() ? data.val() : {};
-    return Object.values(users).find(
-        (u) => u.email === email && u.password === password,
-    );
-}
-
-findUser();
-
-
 // ============ NEW: Task Summary Functions ============
 
 /**
- * Get task counts by status and priority
+ * Returns a counter object with all values set to zero.
+ * @returns {Object} The empty counters.
  */
+function getEmptyCounts() {
+  return { todo: 0, inprogress: 0, feedback: 0, done: 0, urgent: 0, total: 0 };
+}
+
 async function getTaskCountsByStatus() {
   try {
     const response = await fetch(BASE_URL + "tasks.json");
     const data = await response.json();
-    const taskArray = Object.entries(data || {}).map(([id, task]) => ({
-      id,
-      ...task,
-    }));
-    const counts = {
-      todo: 0,
-      inprogress: 0,
-      feedback: 0,
-      done: 0,
-      urgent: 0,
-      total: 0,
-    };
-    taskArray.forEach((task) => {
-      taskCounter(counts, task);
-    });
+    const counts = getEmptyCounts();
+    Object.values(data || {}).forEach((task) => taskCounter(counts, task));
     return counts;
   } catch (error) {
     console.error("Fehler beim Laden der Task-Counts:", error);
-    return {
-      todo: 0,
-      inprogress: 0,
-      feedback: 0,
-      done: 0,
-      urgent: 0,
-      total: 0,
-    };
+    return getEmptyCounts();
   }
 }
 

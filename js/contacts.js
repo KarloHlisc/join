@@ -20,6 +20,7 @@ import {
   getInitials,
   createEl,
   generateNextUserId,
+  isGuestUser,
 } from "./utils.js";
 
 import {
@@ -214,12 +215,31 @@ const handleFormSubmit = async (e) => {
   e.preventDefault();
   const values = readContactForm();
   if (!showContactErrors(validateContactFields(values))) return;
-  if (await checkEmail(values.email))
+  const btn = document.getElementById("create-contact");
+  btn.disabled = true;
+  if (await checkEmail(values.email)) {
+    btn.disabled = false;
     return showContactErrors({ email: "Email is already registered" });
+  }
   await registerUser(values.email, values.name, values.phone);
   closeAddContactModule();
   toggleShowSuccessModal("congrats");
 };
+
+/**
+ * Checks the edited email for guest protection and duplicates.
+ * @param {{email: string}} values - The form values.
+ * @param {object} currentData - The contact's stored data.
+ * @returns {Promise<string>} An error message, or an empty string.
+ */
+async function getEmailError(values, currentData) {
+  if (isGuestUser(currentData) && values.email !== currentData.email)
+    return "The guest email cannot be changed.";
+  const existing = await checkEmail(values.email);
+  if (existing && existing.email !== currentData?.email)
+    return "Email is already registered";
+  return "";
+}
 
 /**
  * Handles the "Edit contact" form submission.
@@ -231,10 +251,14 @@ async function handleEditSubmit(e, userId) {
   e.preventDefault();
   const values = readContactForm();
   if (!showContactErrors(validateContactFields(values))) return;
+  const btn = document.getElementById("edit-contact");
+  btn.disabled = true;
   const currentData = (await get(ref(database, `users/${userId}`))).val();
-  const existing = await checkEmail(values.email);
-  if (existing && existing.email !== currentData?.email)
-    return showContactErrors({ email: "Email is already registered" });
+  const emailError = await getEmailError(values, currentData);
+  if (emailError) {
+    btn.disabled = false;
+    return showContactErrors({ email: emailError });
+  }
   await saveEditedUser(userId, currentData, values);
 }
 
@@ -270,6 +294,7 @@ async function saveEditedUser(userId, currentData, values) {
     return curr;
   });
   syncLoggedInUser(userId, updated);
+  showDetails({ userId, ...updated });
   closeAddContactModule();
   toggleShowSuccessModal("edited");
 }
@@ -306,12 +331,23 @@ async function removeUserFromTasks(userId) {
 }
 
 /**
+ * Checks whether the contact with the given ID is the guest account.
+ * @param {string} userId - The Firebase key of the contact.
+ * @returns {Promise<boolean>} True if it is the guest account.
+ */
+async function isGuestId(userId) {
+  const snap = await get(ref(database, `users/${userId}`));
+  return isGuestUser(snap.val());
+}
+
+/**
  * Deletes a contact and removes it from all tasks.
  * @param {string} userId - The Firebase key of the contact.
  * @returns {Promise<void>}
  */
 async function deleteUser(userId) {
   try {
+    if (await isGuestId(userId)) return;
     await removeUserFromTasks(userId);
     await remove(ref(database, `users/${userId}`));
     document.getElementById("contact-details-container").innerHTML = "";

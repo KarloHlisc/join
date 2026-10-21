@@ -72,9 +72,15 @@ function validateSignupFields({name,email,password,confirmPassword,checkbox,}) {
  * @returns {Promise<void>}
  */
 async function submitSignup({ name, email, password }) {
-  if (await checkEmail(email)) throw new Error("Email is already registered");
-  await registerUser(email, name, password);
-  showSuccessModal();
+  document.getElementById("signup-button").disabled = true;
+  try {
+    if (await checkEmail(email)) throw new Error("Email is already registered");
+    await registerUser(email, name, password);
+    showSuccessModal();
+  } catch (err) {
+    updateSignupButton();
+    throw err;
+  }
 }
 
 /**

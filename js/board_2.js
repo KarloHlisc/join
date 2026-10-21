@@ -1,26 +1,32 @@
 "use strict";
 
 let dropZonesReady = false;
+let lastDragX = 0;
 
 /**
  * Registers drag-and-drop listeners for cards and board columns.
  * @returns {void}
  */
 function initDragAndDrop() {
-  const draggables = document.querySelectorAll(".draggable");
-  const cardContainers = document.querySelectorAll(".cards-container");
-  draggables.forEach((draggable) => {
-    draggable.addEventListener("dragstart", () => {
-      draggable.classList.add("dragging");
-    });
-    draggable.addEventListener("dragend", () => {
-      draggable.classList.remove("dragging");
-      saveCardStatus(draggable);
-    });
-  });
+  document.querySelectorAll(".draggable").forEach(addDragListeners);
   if (dropZonesReady) return;
-  cartContainersFun(cardContainers);
+  cartContainersFun(document.querySelectorAll(".cards-container"));
   dropZonesReady = true;
+}
+
+/**
+ * Registers the drag start and end listeners on one card.
+ * @param {HTMLElement} draggable - The task card.
+ * @returns {void}
+ */
+function addDragListeners(draggable) {
+  draggable.addEventListener("dragstart", () =>
+    draggable.classList.add("dragging"),
+  );
+  draggable.addEventListener("dragend", () => {
+    draggable.classList.remove("dragging");
+    saveCardStatus(draggable);
+  });
 }
 
 /**
@@ -30,16 +36,7 @@ function initDragAndDrop() {
  */
 function cartContainersFun(cardContainers) {
   cardContainers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      const draggable = document.querySelector(".dragging");
-      if (!draggable) return;
-      container.classList.add("drag-over");
-      container.querySelector(".no-tasks-card")?.remove();
-      const afterElement = getDragAfrerElement(container, e.clientY);
-      if (afterElement == null) container.appendChild(draggable);
-      else container.insertBefore(draggable, afterElement);
-    });
+    container.addEventListener("dragover", (e) => handleDragOver(e, container));
     container.addEventListener("dragleave", (e) => {
       if (!container.contains(e.relatedTarget))
         container.classList.remove("drag-over");
@@ -50,21 +47,34 @@ function cartContainersFun(cardContainers) {
   });
 }
 
-/**hide this */
-function cartContainersFun(cardContainers) {
-  cardContainers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      const draggable = document.querySelector(".dragging");
-      if (!draggable) return;
-      const afterElement = getDragAfrerElement(container, e.clientY);
-      if (afterElement == null) {
-        container.appendChild(draggable);
-      } else {
-        container.insertBefore(draggable, afterElement);
-      }
-    });
-  });
+/**
+ * Moves the dragged card inside the column and highlights the column.
+ * @param {DragEvent} e - The dragover event.
+ * @param {HTMLElement} container - The column under the pointer.
+ * @returns {void}
+ */
+function handleDragOver(e, container) {
+  e.preventDefault();
+  const draggable = document.querySelector(".dragging");
+  if (!draggable) return;
+  setTilt(draggable, e.clientX);
+  container.classList.add("drag-over");
+  container.querySelector(".no-tasks-card")?.remove();
+  const afterElement = getDragAfrerElement(container, e.clientY);
+  if (afterElement == null) container.appendChild(draggable);
+  else container.insertBefore(draggable, afterElement);
+}
+
+/**
+ * Tilts the dragged card in the direction of the pointer movement.
+ * @param {HTMLElement} card - The dragged card.
+ * @param {number} x - The current horizontal pointer position.
+ * @returns {void}
+ */
+function setTilt(card, x) {
+  if (x === lastDragX) return;
+  card.style.setProperty("--tilt", x > lastDragX ? "3deg" : "-3deg");
+  lastDragX = x;
 }
 
 /**
@@ -74,17 +84,11 @@ function cartContainersFun(cardContainers) {
  */
 async function saveCardStatus(card) {
   const cardId = card.dataset.id;
-  const container = card.closest(".cards-container");
-  const newStatus = container?.dataset.status;
-  if (!cardId || !newStatus) {
-    console.error("Karte braucht data-id und Spalte braucht data-status.");
-    return;
-  }
+  const newStatus = card.closest(".cards-container")?.dataset.status;
+  if (!cardId || !newStatus) return;
+  const task = tickets.find((t) => t.id === cardId);
+  if (task) task.status = newStatus;
   try {
-    const task = tickets.find((t) => t.id === cardId);
-    if (task) {
-      task.status = newStatus;
-    }
     await updateStatusFirebase(cardId, newStatus);
     clearAllContainers();
   } catch (error) {
