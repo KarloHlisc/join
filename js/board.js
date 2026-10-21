@@ -5,8 +5,7 @@ const cartInProgres = document.getElementById("in-progress-cards-container");
 const cartAwait = document.getElementById("await-feedback-cards-container");
 const cartDone = document.getElementById("done-cards-container");
 
-const BASE_URL =
-  "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
+const BASE_URL ="https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
 let tickets = [];
 let users = [];
 let names = [];
@@ -45,10 +44,7 @@ async function getUserTasks(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    tickets = Object.entries(data || {}).map(([id, task]) => ({
-      id,
-      ...task,
-    }));
+    tickets = Object.entries(data || {}).map(([id, task]) => ({id,...task,  }));
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -64,10 +60,7 @@ async function getUsers(path = "") {
     const response = await fetch(BASE_URL + path + ".json");
     const data = await response.json();
     // Umwandle in Array
-    users = Object.entries(data || {}).map(([id, user]) => ({
-      id,
-      ...user,
-    }));
+    users = Object.entries(data || {}).map(([id, user]) => ({id, ...user, }));
   } catch (error) {
     console.error("Fehler beim Laden:", error);
   }
@@ -102,20 +95,16 @@ function displayTasks(tickets) {
  */
 function checkIfBoardEmpty() {
   if (cartToDo.childNodes[1] === undefined) {
-    cartToDo.innerHTML =
-      '<div class="no-tasks-card" data-id="notodo">No tasks To do</div>';
+    cartToDo.innerHTML ='<div class="no-tasks-card" data-id="notodo">No tasks To do</div>';
   }
   if (cartInProgres.childNodes[1] === undefined) {
-    cartInProgres.innerHTML =
-      '<div class="no-tasks-card" data-id="noinprogress">No tasks In progress</div>';
+    cartInProgres.innerHTML ='<div class="no-tasks-card" data-id="noinprogress">No tasks In progress</div>';
   }
   if (cartAwait.childNodes[1] === undefined) {
-    cartAwait.innerHTML =
-      '<div class="no-tasks-card" data-id="noawaitfeedback">No tasks Await feedback</div>';
+    cartAwait.innerHTML ='<div class="no-tasks-card" data-id="noawaitfeedback">No tasks Await feedback</div>';
   }
   if (cartDone.childNodes[1] === undefined) {
-    cartDone.innerHTML =
-      '<div class="no-tasks-card" data-id="nodone">No tasks Done</div>';
+    cartDone.innerHTML = '<div class="no-tasks-card" data-id="nodone">No tasks Done</div>';
   }
 }
 
@@ -165,8 +154,7 @@ async function toggleSubtask(taskId, subId, isDone) {
   await fetch(`${BASE_URL}tasks/${taskId}/subtasks/${subId}.json`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ isDone }),
-  });
+    body: JSON.stringify({ isDone }),  });
   tickets.find((t) => t.id === taskId).subtasks[subId].isDone = isDone;
   displayTasks(tickets);
 }
@@ -225,10 +213,7 @@ function getProgressValue(task) {
 function createTaskDetailTemplate(task) {
   const assignedUsers = getAssignedUsersArray(task);
   const subtasks = task.subtasks || {};
-  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({
-    id,
-    ...st,
-  }));
+  const subtaskArray = Object.entries(subtasks).map(([id, st]) => ({id,...st, }));
   return getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray);
 }
 
@@ -271,3 +256,128 @@ function getPriorityImage(priority) {
   return images[priority?.toLowerCase()] || "../assets/icons/low.svg";
 }
 
+let dropZonesReady = false;
+let lastDragX = 0;
+let pointerDrag = null;
+
+/**
+ * Finds the card element before which a dragged card should be inserted,
+ * based on the pointer's vertical position.
+ * @param {Element} container Container holding the cards.
+ * @param {number} y Pointer's vertical position in the viewport.
+ * @returns {Element|undefined} The next card element, or `undefined`.
+ */
+function getDragAfrerElement(container, y) {
+  const draggableElements = [...container.querySelectorAll(".draggable:not(.dragging)"),];
+  return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }},
+    { offset: Number.NEGATIVE_INFINITY },).element;
+}
+
+const draggables = document.querySelectorAll(".draggable");
+const cardContainers = document.querySelectorAll(".cards-container");
+
+/**
+ * Registers desktop drag-and-drop listeners and mobile pointer handlers.
+ */
+function initDragAndDrop() {
+  draggables.forEach((card) => {
+    if (card.dataset.dragListenersReady === "true") return;
+    card.dataset.dragListenersReady = "true";
+    card.addEventListener("dragstart", () => {
+      card.classList.add("dragging");
+    });
+      card.addEventListener("dragend", () => {
+      card.classList.remove("dragging");
+      saveCardStatus(card);
+    });
+    card.addEventListener("pointerdown", startPointerDrag);
+  });
+  checkIfDropZoneReady();
+}
+
+/**
+ * Registers drag-and-drop listeners for the card containers once.
+ * If the drop zones are already ready, this function does nothing.
+ * Otherwise, it registers the listeners and marks the drop zones as ready.
+ * @returns {void}
+ */
+ function checkIfDropZoneReady(){
+   if (dropZonesReady) return;
+  registerCardContainerListeners(cardContainers);
+  dropZonesReady = true;
+ }
+
+/**
+ * Registers the drag start and end listeners on one card.
+ * @param {HTMLElement} draggable - The task card.
+ * @returns {void}
+ */
+function addDragListeners(draggable) {
+  draggable.addEventListener("dragstart", () =>
+    draggable.classList.add("dragging"),
+  );
+  draggable.addEventListener("dragend", () => {
+    draggable.classList.remove("dragging");
+    saveCardStatus(draggable);
+  });
+}
+
+/**
+ * Adds drag-and-drop event listeners to each card container.
+ * Prevents the default behavior during `dragover`, updates the container's
+ * drag-over state and card position, clears the state when the pointer leaves,
+ * and removes the drag-over styling after a drop.
+ * @param {Iterable<Element>} cardContainers - The containers to attach listeners to.
+ * @returns {void}
+ */
+function cartContainersFun(cardContainers) {
+  cardContainers.forEach((container) => {
+    container.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      setDragOverFunktionality(container, e);
+    });
+    container.addEventListener("dragleave", (e) => {
+     checkIfPointerIsOutsideContainer(container, e);
+    });
+    container.addEventListener("drop", () =>
+      container.classList.remove("drag-over"),
+    );
+  });
+}
+
+/**
+ * Moves the currently dragged element within a container based on the pointer's
+ * vertical position and marks the container as a drop target.
+ * Removes any `.no-tasks-card` placeholder before placing the dragged element.
+ * @param {Element} container - The container receiving the dragged element.
+ * @param {DragEvent} e - The drag event, used to determine the pointer's vertical position.
+ * @returns {void}
+ */
+function setDragOverFunktionality(container, e) {
+  const draggable = document.querySelector(".dragging");
+  if (!draggable) return;
+  container.classList.add("drag-over");
+  container.querySelector(".no-tasks-card")?.remove();
+  const afterElement = getDragAfrerElement(container, e.clientY);
+  if (afterElement == null) container.appendChild(draggable);
+  else container.insertBefore(draggable, afterElement);
+}
+
+/**
+ * Removes the drag-over styling when the pointer leaves the container.
+ * @param {Element} container - The container to check.
+ * @param {DragEvent} e - The drag event, whose `relatedTarget` is the element entered.
+ * @returns {void}
+ */
+function checkIfPointerIsOutsideContainer(container, e) {
+  if (!container.contains(e.relatedTarget)) {
+    container.classList.remove("drag-over");
+  }
+}
