@@ -23,7 +23,7 @@ The board groups tasks into **To do**, **In progress**, **Await feedback**, and 
 
 ## Screenshot
 
-![Join app screenshot](./assets/images/join-preview.png)
+![Join app screenshot](./assets/images/join-preview.PNG)
 
 ## Tech stack
 
