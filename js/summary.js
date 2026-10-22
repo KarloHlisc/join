@@ -146,4 +146,23 @@ function updateSummaryData(counts) {
   document.getElementById("awaiting-feedback").textContent = counts.feedback;
 }
 
-//document.addEventListener("DOMContentLoaded", displaySummary); // Call on page load
+const toDoCardBtn = document.getElementById("to-do-card-btn");
+const doneCardBtn = document.getElementById("done-card-btn");
+const imgToDo = document.getElementById("img-to-do");
+const imgDone = document.getElementById("img-done");
+
+toDoCardBtn.addEventListener("mouseover", () => {
+  imgToDo.src = "../assets/icons/todo_edit_white.svg";
+});
+
+toDoCardBtn.addEventListener("mouseout", () => {
+  imgToDo.src = "../assets/icons/to-do-edit.svg";
+}); 
+
+doneCardBtn.addEventListener("mouseover", () => {
+   imgDone.src = "../assets/icons/done_white.svg";
+});
+
+doneCardBtn.addEventListener("mouseout", () => {
+ imgDone.src = "../assets/icons/done-edit.svg";
+});
