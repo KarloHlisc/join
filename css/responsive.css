@@ -15,8 +15,8 @@
   #main-container.details-open #contact-details-container {
     display: block;
     position: fixed;
-    top: 101px;
-    left: 232px;
+    top: 82px;
+    /*left: 232px;*/
     right: 0;
     bottom: 0;
     margin: 0;
@@ -25,7 +25,7 @@
     background-color: #ffffff;
     z-index: 20;
   }
-
+  
   #details-back {
     position: absolute;
     top: 16px;
@@ -42,8 +42,8 @@
   #add-new-contact,
   #mobile-menu-btn {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    right: 10px;
+    bottom: 90px;
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -74,15 +74,15 @@
   #contact-menu {
     display: none;
     position: fixed;
-    right: 24px;
+    right: 10px;
     bottom: 88px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
     padding: 20px;
     border-radius: 20px 20px 0 20px;
-    background-color: #2a3647;
-    color: #ffffff;
+    background-color:#ffffff ;
+    color:#2a3647 ;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 31;
   }
@@ -386,12 +386,12 @@
 
   #person-icon {
     position: absolute;
-    top: 295px;
+    top: 280px;
   }
 
   #details-icon {
     position: absolute;
-    top: 215px;
+    top: 280px;
   }
 
   #add-contact-form {
