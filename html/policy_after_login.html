@@ -29,7 +29,7 @@
           <img src="../assets/icons/contacts.png" alt="" /> Contacts
         </button>
       </div>
-      <div class="aside-footer">
+      <div id="mobile-footer" class="aside-footer">
         <button
           class="nav-policy-btn"
           onclick="location.href = './policy_after_login.html'"
@@ -62,8 +62,13 @@
     </header>
     <main>
       <div id="main-container">
-        <div id="policy-after-login-container">
-          <h1>Privacy Policy</h1>
+      <div class="pol-legal-header">
+        <h1>Privacy Policy</h1>
+        <button class="btn-back-to-main" onclick="history.back()">
+          <img src="../assets/icons/arrow-left-line.png" alt="Back" />
+        </button>
+      </div>
+          
           <h3>Responsible parties</h3>
           <p>
             Sandro Spirig, Gartenstrasse 3, 8000 Zürich, and Karlo Hlisc,

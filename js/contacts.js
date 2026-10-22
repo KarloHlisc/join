@@ -107,7 +107,7 @@ function createTextContainer(user) {
 }
 
 /**
- * Renders the detail view for the selected contact.
+ * Renders the detail view for the selected contact and opens it on small screens.
  * @param {object} user - The contact's data.
  * @returns {void}
  */
@@ -115,6 +115,34 @@ function showDetails(user) {
   const container = document.getElementById("contact-details-container");
   const initials = getInitials(user.name);
   if (container) container.innerHTML = userDetailTemplate(user, initials);
+  document.getElementById("main-container")?.classList.add("details-open");
+}
+
+/**
+ * Closes the detail view on small screens and the contact menu.
+ * @returns {void}
+ */
+function closeContactDetails() {
+  document.getElementById("main-container")?.classList.remove("details-open");
+  closeContactMenu();
+}
+
+/**
+ * Opens or closes the edit/delete menu of the detail view.
+ * @param {MouseEvent} e - The click event.
+ * @returns {void}
+ */
+function toggleContactMenu(e) {
+  e.stopPropagation();
+  document.getElementById("contact-menu")?.classList.toggle("open");
+}
+
+/**
+ * Closes the edit/delete menu.
+ * @returns {void}
+ */
+function closeContactMenu() {
+  document.getElementById("contact-menu")?.classList.remove("open");
 }
 
 /**
@@ -349,6 +377,7 @@ async function deleteUser(userId) {
     await removeUserFromTasks(userId);
     await remove(ref(database, `users/${userId}`));
     document.getElementById("contact-details-container").innerHTML = "";
+    closeContactDetails();
     closeAddContactModule();
     addContactButton();
     toggleShowSuccessModal("deleted");
@@ -374,5 +403,9 @@ window.addContactButton = addContactButton;
 window.getUserList = getUserList;
 window.showAddContactModule = showAddContactModule;
 window.closeAddContactModule = closeAddContactModule;
-
+window.closeContactDetails = closeContactDetails;
+window.toggleContactMenu = toggleContactMenu;
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#contact-menu")) closeContactMenu();
+});
 document.addEventListener("DOMContentLoaded", init);

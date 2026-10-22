@@ -26,6 +26,7 @@ export function getLogoutModule() {
  */
 export function userDetailTemplate(user, initials) {
   return `<div id="details-header"><h1>Contacts</h1><span>Better with a team</span></div>
+        <button id="details-back" onclick="closeContactDetails()"><img src="../assets/icons/arrow-left-line.png" alt="Back" /></button>
         <div id="icon-name-and-details">
           <div class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
           <div id="name-and-button">
@@ -34,7 +35,7 @@ export function userDetailTemplate(user, initials) {
           </div>
         </div>
         <span id="contact-info">Contact information</span>
-        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div>`;
+        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div><button id="mobile-menu-btn" onclick="toggleContactMenu(event)">&#8942;</button><div id="contact-menu"><button onclick="showEditContactModule('${user.userId}')">Edit</button>${isGuestUser(user) ? "" : `<button onclick="deleteUser('${user.userId}')">Delete</button>`}</div>`;
 }
 
 /**
