@@ -35,7 +35,7 @@ export function userDetailTemplate(user, initials) {
           </div>
         </div>
         <span id="contact-info">Contact information</span>
-        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div><button id="mobile-menu-btn" onclick="toggleContactMenu(event)">&#8942;</button><div id="contact-menu"><button onclick="showEditContactModule('${user.userId}')">Edit</button>${isGuestUser(user) ? "" : `<button onclick="deleteUser('${user.userId}')">Delete</button>`}</div>`;
+        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div><button id="mobile-menu-btn" onclick="toggleContactMenu(event)">&#8942;</button><div id="contact-menu" role="button" onclick="showEditContactModule('${user.userId}')"><div class="mobile-menu-contacts"><img id="mobile-menu-edit" src="../assets/icons/edit.svg" alt="edit image"> <button onclick="showEditContactModule('${user.userId}')">Edit</button></div>${isGuestUser(user) ? "" : `<div class="mobile-menu-contacts" role="button" onclick="deleteUser('${user.userId}')"><img id="mobile-menu-delete" src="../assets/icons/delete.svg" alt="delete image"> <button onclick="deleteUser('${user.userId}')">Delete</button></div>`}</div>`;
 }
 
 /**
