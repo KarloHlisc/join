@@ -12,6 +12,55 @@
     <script src="../script.js" type="module"></script>
   </head>
   <body onload="init()">
+    <aside class="side-bar-wrapper">
+      <div class="aside-logo">
+        <img src="../assets/img/join_white.svg" alt="Logo" />
+      </div>
+      <div class="aside-menu">
+        <button id="nav-summary" onclick="location.href = './summary.html'">
+          <img src="../assets/icons/summary.png" alt="" /> Summary
+        </button>
+        <button id="nav-add_task" onclick="location.href = './add_task.html'">
+          <img src="../assets/icons/add_task.png" alt="" /> Add Task
+        </button>
+        <button id="nav-board" onclick="location.href = './board.html'">
+          <img src="../assets/icons/board.png" alt="" /> Board
+        </button>
+        <button id="nav-contacts" onclick="location.href = './contacts.html'">
+          <img src="../assets/icons/contacts.png" alt="" /> Contacts
+        </button>
+      </div>
+      <div class="aside-footer">
+        <button
+          class="nav-policy-btn"
+          onclick="location.href = './policy_after_login.html'"
+        >
+          Privacy Policy
+        </button>
+        <button
+          class="nav-legal-btn"
+          onclick="location.href = './legal_after_login.html'"
+        >
+          Legal notice
+        </button>
+      </div>
+    </aside>
+    <header>
+      <p>Kanban Project Management Tool</p>
+      <div class="user-and-help">
+        <button class="help-btn help" onclick="location.href = './help.html'">
+          <img src="../assets/icons/help.png" alt="help-icon" />
+        </button>
+        <div class="user-icon-wrapper">
+          <button
+            class="user-icon"
+            id="header-icon"
+            onclick="showLogoutModule()"
+          ></button>
+          <div id="logout-container"></div>
+        </div>
+      </div>
+    </header>
     <main>
       <div id="main-container">
         <div id="summary-container">
@@ -61,7 +110,7 @@
                 >
                   <div class="card-icon urgent">
                     <img
-                      src="../assets/icons/urgend-red.svg"
+                      src="../assets/icons/urgent-red.svg"
                       alt="icon stat level"
                     />
                   </div>

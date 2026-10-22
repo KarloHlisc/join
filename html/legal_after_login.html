@@ -11,9 +11,132 @@
     <script src="../script.js" type="module"></script>
   </head>
   <body>
+    <aside class="side-bar-wrapper">
+      <div class="aside-logo">
+        <img src="../assets/img/join_white.svg" alt="Logo" />
+      </div>
+      <div class="aside-menu">
+        <button id="nav-summary" onclick="location.href = './summary.html'">
+          <img src="../assets/icons/summary.png" alt="" /> Summary
+        </button>
+        <button id="nav-add_task" onclick="location.href = './add_task.html'">
+          <img src="../assets/icons/add_task.png" alt="" /> Add Task
+        </button>
+        <button id="nav-board" onclick="location.href = './board.html'">
+          <img src="../assets/icons/board.png" alt="" /> Board
+        </button>
+        <button id="nav-contacts" onclick="location.href = './contacts.html'">
+          <img src="../assets/icons/contacts.png" alt="" /> Contacts
+        </button>
+      </div>
+      <div class="aside-footer">
+        <button
+          class="nav-policy-btn"
+          onclick="location.href = './policy_after_login.html'"
+        >
+          Privacy Policy
+        </button>
+        <button
+          class="nav-legal-btn"
+          onclick="location.href = './legal_after_login.html'"
+        >
+          Legal notice
+        </button>
+      </div>
+    </aside>
+    <header>
+      <p>Kanban Project Management Tool</p>
+      <div class="user-and-help">
+        <button class="help-btn help" onclick="location.href = './help.html'">
+          <img src="../assets/icons/help.png" alt="help-icon" />
+        </button>
+        <div class="user-icon-wrapper">
+          <button
+            class="user-icon"
+            id="header-icon"
+            onclick="showLogoutModule()"
+          ></button>
+          <div id="logout-container"></div>
+        </div>
+      </div>
+    </header>
     <main>
       <div id="main-container">
-        <div id="legal-after-login-container"></div>
+        <div id="legal-after-login-container">
+          <h1>Legal Notice</h1>
+          <h4>Adresse</h4>
+          <ul>
+            <li>Sandro Spirig</li>
+            <li>Gartenstrasse 3</li>
+            <li>8000 Zürich</li>
+          </ul>
+          <ul>
+            <li>Karlo Hlisc</li>
+            <li>PilgStrasse 5</li>
+            <li>8133 Munich</li>
+          </ul>
+          <h4>Contacts</h4>
+          <p>Email: sandro.spirig@example.com</p>
+          <p>Email: karlo.h@example.com</p>
+          <h4>Acceptance of terms</h4>
+          <p>
+            By accessing and using Join (Product), you acknowledge and agree to
+            the following terms and conditions, and any policies, guidelines, or
+            amendments thereto that may be presented to you from time to time.
+            We, the listed students, may update or change the terms and
+            conditions from time to time without notice.
+          </p>
+          <h4>Scope and ownership of the product</h4>
+          <p>
+            Join has been developed as part of a student group project in a web
+            development bootcamp at the Developer Akademie GmbH. It has an
+            educational purpose and is not intended for extensive personal &amp;
+            business usage. As such, we cannot guarantee consistent
+            availability, reliability, accuracy, or any other aspect of quality
+            regarding this Product. The design of Join is owned by the Developer
+            Akademie GmbH. Unauthorized use, reproduction, modification,
+            distribution, or replication of the design is strictly prohibited.
+          </p>
+          <h4>Proprietary rights</h4>
+          <p>
+            Aside from the design owned by Developer Akademie GmbH, we, the
+            listed students, retain all proprietary rights in Join, including
+            any associated copyrighted material, trademarks, and other
+            proprietary information.
+          </p>
+          <h4>Use of the product</h4>
+          <p>
+            Join is intended to be used for lawful purposes only, in accordance
+            with all applicable laws and regulations. Any use of Join for
+            illegal activities, or to harass, harm, threaten, or intimidate
+            another person, is strictly prohibited. You are solely responsible
+            for your interactions with other users of Join.
+          </p>
+          <h4>Disclaimer of warranties and limitation of liability</h4>
+          <p>
+            Join is provided "as is" without warranty of any kind, whether
+            express or implied, including but not limited to the implied
+            warranties of merchantability, fitness for a particular purpose, and
+            non-infringement. In no event will we, the listed students, or the
+            Developer Akademie, be liable for any direct, indirect, incidental,
+            special, consequential or exemplary damages, including but not
+            limited to, damages for loss of profits, goodwill, use, data, or
+            other intangible losses, even if we have been advised of the
+            possibility of such damages, arising out of or in connection with
+            the use or performance of Join.
+          </p>
+          <h4>Indemnity</h4>
+          <p>
+            You agree to indemnify, defend and hold harmless us, the listed
+            students, the Developer Akademie, and our affiliates, partners,
+            officers, directors, agents, and employees, from and against any
+            claim, demand, loss, damage, cost, or liability (including
+            reasonable legal fees) arising out of or relating to your use of
+            Join and/or your breach of this Legal Notice. For any questions or
+            notices, please contact us at sandro.spirig@example.com. Date:
+            October 20, 2026
+          </p>
+        </div>
       </div>
       <div id="help-container"></div>
     </main>

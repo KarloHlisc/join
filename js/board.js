@@ -136,11 +136,9 @@ function showCards(task) {
 
 /**
  * Creates the HTML markup for a task card.
- * @param {Object} task Task to render.
  * @returns {string} The task card's HTML markup.
  */
 function cartTemplate(task) {
-  const taskId = `task-${task.id}`;
   return getCartTemplate(task);
 }
 
@@ -192,18 +190,6 @@ function openTaskDialog(event) {
   const dialog = document.getElementById("myDialog");
   dialog.innerHTML = createTaskDetailTemplate(task);
   dialog.showModal();
-}
-
-/**
- * Returns the number of completed subtasks and the total number of subtasks.
- * @param {Object} task Task with optional subtasks.
- * @returns {string} Progress in the format "completed/total", or an empty string.
- */
-function showSubtasks(task) {
-  const subs = Object.values(task.subtasks || {});
-  if (!subs.length) return "";
-  const done = subs.filter((s) => s.isDone).length;
-  return `${done}/${subs.length}`;
 }
 
 /**
@@ -272,26 +258,28 @@ function getPriorityImage(priority) {
 }
 
 /**
- * Finds the card element before which a dragged card should be inserted,
- * based on the pointer's vertical position.
+ * Finds the card before which a dragged card should be inserted.
  * @param {Element} container Container holding the cards.
  * @param {number} y Pointer's vertical position in the viewport.
- * @returns {Element|undefined} The next card element, or `undefined`.
+ * @returns {Element|undefined} The next card element, or undefined.
  */
-function getDragAfrerElement(container, y) {
-  const draggableElements = [
-    ...container.querySelectorAll(".draggable:not(.dragging)"),
-  ];
-  return draggableElements.reduce(
-    (closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY },
-  ).element;
+function getDragAfterElement(container, y) {
+  const cards = [...container.querySelectorAll(".draggable:not(.dragging)")];
+  return cards.reduce(closestCard(y), { offset: Number.NEGATIVE_INFINITY })
+    .element;
+}
+
+/**
+ * Creates a reducer that keeps the card closest below the pointer.
+ * @param {number} y Pointer's vertical position in the viewport.
+ * @returns {function} The reducer function.
+ */
+function closestCard(y) {
+  return (closest, card) => {
+    const box = card.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    return offset < 0 && offset > closest.offset
+      ? { offset, element: card }
+      : closest;
+  };
 }

@@ -271,10 +271,8 @@ async function handleEditSubmit(e, userId) {
 function syncLoggedInUser(userId, updated) {
   const stored = JSON.parse(sessionStorage.getItem("loggedInUser") || "{}");
   if (stored.userId !== userId) return;
-  sessionStorage.setItem(
-    "loggedInUser",
-    JSON.stringify({ ...updated, userId }),
-  );
+  const { password, ...safe } = updated;
+  sessionStorage.setItem("loggedInUser", JSON.stringify({ ...safe, userId }));
   const icon = document.getElementById("header-icon");
   if (icon) icon.innerText = getInitials(updated.name);
 }

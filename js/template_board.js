@@ -23,14 +23,12 @@ function getCartTemplate(task) {
             <div class="level-story">
                 <p style="background-color: ${getTaskColor(task)}">${task.category || "User Story"}</p>
             </div>
+            ${getMoveMenuHtml(task)}
             <div class="title-story">
                 <h4>${escapeHtml(task.title) || "Keine Beschreibung"}</h4>
                 <p>${escapeHtml(task.description) || ""}</p>
             </div>
-            <div class="cart-progress">
-                <progress value="${getProgressValue(task)}" max="100"></progress>
-                <span class="subtask-count">${showSubtasks(task) || 0} Subtasks</span>
-            </div>
+            ${getProgressHtml(task)}
             <div class="cart-assigment">
             <div class="users-together">
                 <div class="assigned-users">
@@ -143,4 +141,52 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
             </div>
         </div>
     `;
+}
+
+/**
+ * Builds the subtask progress bar of a task card.
+ * Returns an empty string when the task has no subtasks.
+ * @param {Object} task - The task with optional subtasks.
+ * @returns {string} HTML markup of the progress bar.
+ */
+function getProgressHtml(task) {
+  const subs = Object.values(task.subtasks || {});
+  if (!subs.length) return "";
+  const done = subs.filter((s) => s.isDone).length;
+  return `<div class="cart-progress" title="${done} von ${subs.length} Subtasks erledigt">
+    <progress value="${getProgressValue(task)}" max="100"></progress>
+    <span class="subtask-count">${done}/${subs.length} Subtasks</span></div>`;
+}
+
+/**
+ * Builds the arrow button and popup menu to move a task to another column.
+ * @param {Object} task - The task to render the menu for.
+ * @returns {string} HTML markup of the move menu.
+ */
+function getMoveMenuHtml(task) {
+  const items = getMoveMenuItems(task);
+  return `<div class="move-wrap">
+    <button class="move-btn" onclick="event.stopPropagation(); toggleMoveMenu('${task.id}')">&#8599;</button>
+    <div class="move-menu hidden" id="menu-${task.id}">${items}</div></div>`;
+}
+
+/**
+ * Builds the menu buttons for all columns except the task's current one.
+ * @param {Object} task - The task to render the buttons for.
+ * @returns {string} HTML markup of the menu buttons.
+ */
+function getMoveMenuItems(task) {
+  const cols = {
+    todo: "To do",
+    inprogress: "In progress",
+    awaitfeedback: "Await feedback",
+    done: "Done",
+  };
+  return Object.entries(cols)
+    .filter(([status]) => status !== (task.status || "todo"))
+    .map(
+      ([status, label]) =>
+        `<button onclick="event.stopPropagation(); moveTaskTo('${task.id}','${status}')">${label}</button>`,
+    )
+    .join("");
 }

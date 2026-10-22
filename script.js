@@ -7,34 +7,12 @@ import {
   child,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-import { getLayoutHtml, getLogoutModule, helpTemplate } from "./js/template.js";
-
-import {
-  getPolicyTemplate,
-  getLegalTemplate,
-} from "./js/legal_policy_templates.js";
+import { getLogoutModule } from "./js/template.js";
 
 import { isValidEmail, getInitials } from "./js/utils.js";
 
-/**
- * renders the shared policy notice markup injected into policy-after-login-container .
- */
-function renderPolicyPage() {
-  const container = document.getElementById("policy-after-login-container");
-  if (container) container.innerHTML = getPolicyTemplate();
-}
-
-/**
- * renders the shared legal notice markup injected into legal-after-login-container .
- */
-function renderLegalPage() {
-  const container = document.getElementById("legal-after-login-container");
-  if (container) container.innerHTML = getLegalTemplate();
-}
-
 const existLoginForm = document.getElementById("login-form");
 const errEL = document.getElementById("errorMessage");
-let currentPage = "main-container";
 
 const publicPages = ["signup.html", "legal_login.html", "policy_login.html"];
 
@@ -80,7 +58,8 @@ async function findUser(email, password) {
  * @returns {void}
  */
 function loginSuccess(user) {
-  sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+  const { password, ...safeUser } = user;
+  sessionStorage.setItem("loggedInUser", JSON.stringify(safeUser));
   window.location.href = "./html/summary.html";
 }
 
@@ -237,7 +216,7 @@ function setActivePage() {
 }
 
 /**
- * Renders the logged-in layout on pages that require it.
+ * Marks the active sidebar button and renders the user avatar.
  * @returns {void}
  */
 function initLayout() {
@@ -246,38 +225,9 @@ function initLayout() {
     !existLoginForm &&
     !document.body.classList.contains("no-sidebar")
   ) {
-    document.body.insertAdjacentHTML("afterbegin", getLayoutHtml());
-    renderPolicyPage();
-    renderLegalPage();
     setActivePage();
     userIcon();
   }
-}
-
-/**
- * Opens the static help page and hides the main content.
- * @returns {void}
- */
-function openHelpPage() {
-  const main = document.getElementById(currentPage);
-  if (main) main.style.display = "none";
-  const helpContainer = document.getElementById("help-container");
-  if (helpContainer) helpContainer.innerHTML = helpTemplate();
-  const helpBtn = document.getElementById("help-btn");
-  if (helpBtn) helpBtn.style.display = "none";
-}
-
-/**
- * Closes the help page and restores the main content.
- * @returns {void}
- */
-function closeHelpPage() {
-  const helpContainer = document.getElementById("help-container");
-  if (helpContainer) helpContainer.innerHTML = "";
-  const main = document.getElementById(currentPage);
-  if (main) main.style.display = "block";
-  const helpBtn = document.getElementById("help-btn");
-  if (helpBtn) helpBtn.style.display = "inline-block";
 }
 
 /**
@@ -356,8 +306,6 @@ window.togglePasswordVisibility = togglePasswordVisibility;
 window.showLogoutModule = showLogoutModule;
 window.closeLogoutModule = closeLogoutModule;
 window.logoutFromAccount = logoutFromAccount;
-window.openHelpPage = openHelpPage;
-window.closeHelpPage = closeHelpPage;
 
 document.addEventListener("DOMContentLoaded", () => {
   initLayout();

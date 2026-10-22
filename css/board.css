@@ -33,6 +33,7 @@ h1 {
 #board-content {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
 }
 
 .cart-assigment {
@@ -64,7 +65,13 @@ h1 {
   gap: 16px;
   min-height: 200px;
   height: 100%;
-  width: 250px;
+  width: 100%;
+}
+
+.cards-container.drag-over {
+  outline: 2px dashed #a8a8a8;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 #add-task-btn {
@@ -80,7 +87,6 @@ h1 {
 
 .cart {
   text-align: center;
-  max-width: 250px;
   height: auto;
   border-radius: 8px;
   background-color: white;
@@ -503,4 +509,42 @@ progress {
   position: absolute;
   top: 24px;
   right: 24px;
+}
+
+.cart {
+  position: relative;
+}
+
+.move-wrap {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.move-btn {
+  font-size: 20px;
+  padding: 4px 8px;
+}
+
+.move-menu {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+}
+
+.move-menu button {
+  padding: 8px 14px;
+  white-space: nowrap;
+  text-align: left;
+}
+
+#board-content > section {
+  flex: 1;
+  min-width: 0;
 }

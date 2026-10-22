@@ -1,6 +1,11 @@
 "use strict";
 import { escapeHtml } from "../utils.js";
 
+/**
+ * Builds the inner HTML of a subtask list item.
+ * @param {string} text - The subtask text.
+ * @returns {string} HTML markup of the subtask.
+ */
 function subTaskText(text) {
   return `<div><span>•</span><span class="subtask-text">${escapeHtml(text)}</span></div><input type="text" class="subtask-edit-input" /><div class="subtask-actions"><button type="button" class="edit-btn"><img src="../assets/icons/edit.svg" alt="Edit" /></button><button type="button" class="delete-btn"><img src="../assets/icons/delete.svg" alt="Delete" /></button></div>`;
 }
@@ -53,6 +58,7 @@ export function saveSubtaskEdit(li) {
 
 /**
  * Creates a subtask list item with edit and delete controls.
+ * @param {boolean} [isDone=false]
  * @param {string} text - The subtask text.
  * @returns {HTMLElement} The subtask list item.
  */
