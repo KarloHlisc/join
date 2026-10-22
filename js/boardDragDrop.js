@@ -60,7 +60,7 @@ function handleDragOver(e, container) {
   setTilt(draggable, e.clientX);
   container.classList.add("drag-over");
   container.querySelector(".no-tasks-card")?.remove();
-  const afterElement = getDragAfrerElement(container, e.clientY);
+  const afterElement = getDragAfterElement(container, e.clientY);
   if (afterElement == null) container.appendChild(draggable);
   else container.insertBefore(draggable, afterElement);
 }
@@ -153,15 +153,35 @@ function filterItems(arr, query) {
 
 /**
  * Clears the board, displays the matching tasks, and initializes drag and drop.
- * @param {Array<Object>} getCartTitle Tasks with a title match.
- * @param {Array<Object>} getCartDescription Tasks with a description match.
+ * @param {Array<Object>} titleHits Tasks with a title match.
+ * @param {Array<Object>} descHits Tasks with a description match.
  * @returns {void}
  */
-function checkIfExist(getCartTitle, getCartDescription) {
+function checkIfExist(titleHits, descHits) {
   clearTheTaskPreview();
-  iterarCards(getCartTitle, getCartDescription);
+  iterarCards(titleHits, descHits);
   checkIfBoardEmpty();
   initDragAndDrop();
+  toggleNoResults(titleHits, descHits);
+}
+
+/**
+ * Shows the "no results" message when a search finds no task.
+ * @param {Array<Object>} titleHits Tasks with a title match.
+ * @param {Array<Object>} descHits Tasks with a description match.
+ * @returns {void}
+ */
+function toggleNoResults(titleHits, descHits) {
+  const none = new Set([...titleHits, ...descHits]).size === 0;
+  document.getElementById("no-results").classList.toggle("hidden", !none);
+}
+
+/**
+ * Re-renders the board while keeping the current search filter.
+ * @returns {void}
+ */
+function clearAllContainers() {
+  searchCards();
 }
 
 /**
@@ -192,4 +212,30 @@ function getInitials(name) {
   const first = parts[0].charAt(0).toUpperCase();
   const last = parts[parts.length - 1].charAt(0).toUpperCase();
   return first + last;
+}
+
+/**
+ * Opens or closes the move menu of a task card.
+ * @param {string} id - The task ID.
+ * @returns {void}
+ */
+function toggleMoveMenu(id) {
+  document.querySelectorAll(".move-menu").forEach((menu) => {
+    if (menu.id !== `menu-${id}`) menu.classList.add("hidden");
+  });
+  document.getElementById(`menu-${id}`).classList.toggle("hidden");
+}
+
+/**
+ * Moves a task to another column, saves the status and re-renders the board.
+ * @param {string} id - The task ID.
+ * @param {string} status - The new status.
+ * @returns {Promise<void>}
+ */
+async function moveTaskTo(id, status) {
+  const task = tickets.find((t) => t.id === id);
+  if (!task) return;
+  task.status = status;
+  await updateStatusFirebase(id, status);
+  searchCards();
 }

@@ -201,15 +201,43 @@ function setupPriorityButtons() {
  * Saves the task to Firebase and disables the submit button while loading.
  * @returns {void}
  */
-/* prettier-ignore */
 function saveTask() {
   const btn = document.getElementById("createTask");
   btn.disabled = true;
-  const data = buildTaskData();
-  const request = editTaskId? updateTask(editTaskId, data): registerTask(data, taskStatus);
-  request
-    .then(() => {resetForm();showSuccessModal();})
-    .catch((err) => {btn.disabled = false;if (errEL) errEL.textContent = err.message;});
+  sendTask(buildTaskData())
+    .then(onTaskSaved)
+    .catch((err) => onTaskSaveError(btn, err));
+}
+
+/**
+ * Updates or registers a task depending on the form mode.
+ * @param {Object} data - The task data.
+ * @returns {Promise<void>}
+ */
+function sendTask(data) {
+  return editTaskId
+    ? updateTask(editTaskId, data)
+    : registerTask(data, taskStatus);
+}
+
+/**
+ * Resets the form and shows the success toast.
+ * @returns {void}
+ */
+function onTaskSaved() {
+  resetForm();
+  showSuccessModal();
+}
+
+/**
+ * Re-enables the submit button and shows the error.
+ * @param {HTMLButtonElement} btn - The submit button.
+ * @param {Error} err - The error that occurred.
+ * @returns {void}
+ */
+function onTaskSaveError(btn, err) {
+  btn.disabled = false;
+  if (errEL) errEL.textContent = err.message;
 }
 
 /**
@@ -263,6 +291,9 @@ function redirectToBoard() {
  */
 function showSuccessModal() {
   const modal = document.getElementById("congrats-modal");
+  modal.querySelector("p").textContent = editTaskId
+    ? "Task updated"
+    : "task added to board";
   modal.classList.add("active");
   if (onTaskCreated) onTaskCreated();
   setTimeout(() => {
@@ -292,6 +323,11 @@ export function setupTaskForm(status = "todo", onCreated = null, task = null) {
   }
 }
 
+/**
+ * Fills the task form with the data of an existing task.
+ * @param {Object} task - The task to edit.
+ * @returns {void}
+ */
 function fillTaskForm(task) {
   const set = (id, v) => (document.getElementById(id).value = v || "");
   set("formTitle", task.title);
@@ -302,6 +338,11 @@ function fillTaskForm(task) {
   fillAssignedAndSubtasks(task);
 }
 
+/**
+ * Preselects the assigned users and renders the subtasks of a task.
+ * @param {Object} task - The task to edit.
+ * @returns {void}
+ */
 function fillAssignedAndSubtasks(task) {
   Object.keys(task.assignedTo || {}).forEach((id) => selectedUserIds.add(id));
   renderSelectedBadges();
@@ -311,6 +352,10 @@ function fillAssignedAndSubtasks(task) {
   );
 }
 
+/**
+ * Switches title and button text of the form to edit mode.
+ * @returns {void}
+ */
 function setEditLabels() {
   document.querySelector("#add-task-title h1").innerText = "Edit Task";
   document.getElementById("createTask").childNodes[0].textContent =

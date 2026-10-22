@@ -11,9 +11,89 @@
     <script src="../script.js" type="module"></script>
   </head>
   <body>
+    <aside class="side-bar-wrapper">
+      <div class="aside-logo">
+        <img src="../assets/img/join_white.svg" alt="Logo" />
+      </div>
+      <div class="aside-menu">
+        <button id="nav-summary" onclick="location.href = './summary.html'">
+          <img src="../assets/icons/summary.png" alt="" /> Summary
+        </button>
+        <button id="nav-add_task" onclick="location.href = './add_task.html'">
+          <img src="../assets/icons/add_task.png" alt="" /> Add Task
+        </button>
+        <button id="nav-board" onclick="location.href = './board.html'">
+          <img src="../assets/icons/board.png" alt="" /> Board
+        </button>
+        <button id="nav-contacts" onclick="location.href = './contacts.html'">
+          <img src="../assets/icons/contacts.png" alt="" /> Contacts
+        </button>
+      </div>
+      <div class="aside-footer">
+        <button
+          class="nav-policy-btn"
+          onclick="location.href = './policy_after_login.html'"
+        >
+          Privacy Policy
+        </button>
+        <button
+          class="nav-legal-btn"
+          onclick="location.href = './legal_after_login.html'"
+        >
+          Legal notice
+        </button>
+      </div>
+    </aside>
+    <header>
+      <p>Kanban Project Management Tool</p>
+      <div class="user-and-help">
+        <button class="help-btn help" onclick="location.href = './help.html'">
+          <img src="../assets/icons/help.png" alt="help-icon" />
+        </button>
+        <div class="user-icon-wrapper">
+          <button
+            class="user-icon"
+            id="header-icon"
+            onclick="showLogoutModule()"
+          ></button>
+          <div id="logout-container"></div>
+        </div>
+      </div>
+    </header>
     <main>
       <div id="main-container">
-        <div id="policy-after-login-container"></div>
+        <div id="policy-after-login-container">
+          <h1>Privacy Policy</h1>
+          <h3>Responsible parties</h3>
+          <p>
+            Sandro Spirig, Gartenstrasse 3, 8000 Zürich, and Karlo Hlisc,
+            PilgStrasse 5, 8133 Munich. Contact: sandro.spirig@example.com
+          </p>
+          <h3>Which data we store</h3>
+          <p>
+            When you sign up we store your name, email address and password. For
+            contacts we store name, email address and phone number. Tasks
+            (title, description, due date, priority, category, assigned
+            contacts, subtasks) are stored as well.
+          </p>
+          <h3>Where data is stored</h3>
+          <p>
+            All data is stored in a Google Firebase Realtime Database (region
+            asia-southeast1). The Firebase SDK is loaded from Google servers
+            (gstatic.com), so your IP address is transmitted to Google when you
+            open Join.
+          </p>
+          <h3>Browser storage</h3>
+          <p>
+            After login your user data is kept in the session storage of your
+            browser until you log out or close the tab.
+          </p>
+          <h3>Purpose and your rights</h3>
+          <p>
+            Join is an educational project. You can request information about,
+            correction of, or deletion of your data at any time by email.
+          </p>
+        </div>
       </div>
       <div id="help-container"></div>
     </main>

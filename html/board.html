@@ -8,19 +8,68 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/help.css" />
     <link rel="stylesheet" href="../css/board.css" />
-     <link rel="stylesheet" href="../css/board2.css" />
-    <link rel="stylesheet" href="../css/addTask1.css" />
-    <link rel="stylesheet" href="../css/addTask2.css" />
+    <link rel="stylesheet" href="../css/addTaskForm.css" />
+    <link rel="stylesheet" href="../css/addTaskComponents.css" />
     <link rel="stylesheet" href="../css/responsive.css" />
     <script src="../script.js" type="module"></script>
     <script src="../js/template_board.js"></script>
-    <script src="../js/board/addtask-board.js" type="module"></script>
-    <script src="../js/board/edittask-board.js" type="module"></script>
+    <script src="../js/board/addTaskBoard.js" type="module"></script>
+    <script src="../js/board/editTaskBoard.js" type="module"></script>
   </head>
   <body onload="init()">
+    <aside class="side-bar-wrapper">
+      <div class="aside-logo">
+        <img src="../assets/img/join_white.svg" alt="Logo" />
+      </div>
+      <div class="aside-menu">
+        <button id="nav-summary" onclick="location.href = './summary.html'">
+          <img src="../assets/icons/summary.png" alt="" /> Summary
+        </button>
+        <button id="nav-add_task" onclick="location.href = './add_task.html'">
+          <img src="../assets/icons/add_task.png" alt="" /> Add Task
+        </button>
+        <button id="nav-board" onclick="location.href = './board.html'">
+          <img src="../assets/icons/board.png" alt="" /> Board
+        </button>
+        <button id="nav-contacts" onclick="location.href = './contacts.html'">
+          <img src="../assets/icons/contacts.png" alt="" /> Contacts
+        </button>
+      </div>
+      <div class="aside-footer">
+        <button
+          class="nav-policy-btn"
+          onclick="location.href = './policy_after_login.html'"
+        >
+          Privacy Policy
+        </button>
+        <button
+          class="nav-legal-btn"
+          onclick="location.href = './legal_after_login.html'"
+        >
+          Legal notice
+        </button>
+      </div>
+    </aside>
+    <header>
+      <p>Kanban Project Management Tool</p>
+      <div class="user-and-help">
+        <button class="help-btn help" onclick="location.href = './help.html'">
+          <img src="../assets/icons/help.png" alt="help-icon" />
+        </button>
+        <div class="user-icon-wrapper">
+          <button
+            class="user-icon"
+            id="header-icon"
+            onclick="showLogoutModule()"
+          ></button>
+          <div id="logout-container"></div>
+        </div>
+      </div>
+    </header>
     <main>
       <div id="main-container">
         <section id="board-header">
+          <p id="no-results" class="hidden">Keine Ergebnisse gefunden</p>
           <div id="board-title-container">
             <h1 id="board-title">Board</h1>
           </div>
@@ -123,6 +172,6 @@
       <img src="../assets/icons/board.png" alt="" />
     </div>
     <script src="../js/board.js"></script>
-    <script src="../js/board_2.js"></script>
+    <script src="../js/boardDragDrop.js"></script>
   </body>
 </html>

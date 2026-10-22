@@ -3,6 +3,10 @@
 const BASE_URL =
   "https://join-bd9bf-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
+/**
+ * Initializes the summary page: greeting and task numbers.
+ * @returns {void}
+ */
 function init() {
   greetings();
   displaySummary();
@@ -37,6 +41,10 @@ function getEmptyCounts() {
   return { todo: 0, inprogress: 0, feedback: 0, done: 0, urgent: 0, total: 0 };
 }
 
+/**
+ * Loads all tasks and counts them per status.
+ * @returns {Promise<Object>} The counters, all zero on error.
+ */
 async function getTaskCountsByStatus() {
   try {
     const response = await fetch(BASE_URL + "tasks.json");
@@ -50,6 +58,12 @@ async function getTaskCountsByStatus() {
   }
 }
 
+/**
+ * Adds one task to the matching counters.
+ * @param {Object} counts - The counter object to update.
+ * @param {Object} task - The task to count.
+ * @returns {void}
+ */
 function taskCounter(counts, task) {
   counts.total++;
   const status = task.status?.toLowerCase() || "todo";
@@ -63,7 +77,8 @@ function taskCounter(counts, task) {
 }
 
 /**
- * Get the closest deadline from urgent tasks
+ * Loads all tasks and returns the nearest urgent deadline.
+ * @returns {Promise<string|null>} The due date, or null.
  */
 async function getUrgentDeadline() {
   try {
@@ -76,22 +91,29 @@ async function getUrgentDeadline() {
   }
 }
 
+/**
+ * Returns the due date of the nearest open urgent task.
+ * @param {Object} data - The tasks object from Firebase.
+ * @returns {string|null} The due date, or null if none exists.
+ */
 function showTaskArra(data) {
-  const taskArray = Object.entries(data || {}).map(([id, task]) => ({
-    id,
-    ...task,
-  }));
-  const urgentTasks = taskArray.filter(
-    (task) =>
-      task.priority?.toLowerCase() === "urgent" &&
-      task.status !== "done" &&
-      task.duedate,
+  const urgent = Object.values(data || {}).filter(isOpenUrgent);
+  if (!urgent.length) return null;
+  urgent.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
+  return urgent[0].duedate;
+}
+
+/**
+ * Checks whether a task is urgent, not done and has a due date.
+ * @param {Object} task - The task to check.
+ * @returns {boolean} True if the task counts for the deadline card.
+ */
+function isOpenUrgent(task) {
+  return (
+    task.priority?.toLowerCase() === "urgent" &&
+    task.status !== "done" &&
+    !!task.duedate
   );
-  if (urgentTasks.length === 0) {
-    return null;
-  }
-  urgentTasks.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
-  return urgentTasks[0].duedate;
 }
 
 /**
@@ -110,6 +132,11 @@ async function displaySummary() {
     : "No deadline";
 }
 
+/**
+ * Writes the counters into the summary cards.
+ * @param {Object} counts - The counters from getTaskCountsByStatus.
+ * @returns {void}
+ */
 function updateSummaryData(counts) {
   document.getElementById("card-number-to-do").textContent = counts.todo;
   document.getElementById("card-number-done").textContent = counts.done;

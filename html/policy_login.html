@@ -6,11 +6,67 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/responsive.css" />
     <script src="../script.js" type="module"></script>
-    <script src="../js/templates_login.js" type="module"></script>
     <title>Join</title>
     <link rel="icon" type="image/x-icon" href="../assets/icons/favicon.png" />
   </head>
   <body class="no-sidebar">
-    <main id="main-policylogin"></main>
+    <aside class="side-bar-wrapper">
+      <div class="aside-logo">
+        <img src="../assets/img/join_white.svg" alt="Logo" />
+      </div>
+      <div class="aside-menu">
+        <button onclick="location.href = '../index.html'">
+          <img src="../assets/icons/login.png" alt="" /> Log in
+        </button>
+      </div>
+      <div class="aside-footer">
+        <button
+          id="nav-policy_login"
+          class="active-site"
+          onclick="location.href = './policy_login.html'"
+        >
+          Privacy Policy
+        </button>
+        <button
+          id="nav-legal_login"
+          onclick="location.href = './legal_login.html'"
+        >
+          Legal notice
+        </button>
+      </div>
+    </aside>
+    <header><p>Kanban Project Management Tool</p></header>
+    <main id="main-policylogin">
+      <h1>Privacy Policy</h1>
+      <h3>Responsible parties</h3>
+      <p>
+        Sandro Spirig, Gartenstrasse 3, 8000 Zürich, and Karlo Hlisc,
+        PilgStrasse 5, 8133 Munich. Contact: sandro.spirig@example.com
+      </p>
+      <h3>Which data we store</h3>
+      <p>
+        When you sign up we store your name, email address and password. For
+        contacts we store name, email address and phone number. Tasks (title,
+        description, due date, priority, category, assigned contacts, subtasks)
+        are stored as well.
+      </p>
+      <h3>Where data is stored</h3>
+      <p>
+        All data is stored in a Google Firebase Realtime Database (region
+        asia-southeast1). The Firebase SDK is loaded from Google servers
+        (gstatic.com), so your IP address is transmitted to Google when you open
+        Join.
+      </p>
+      <h3>Browser storage</h3>
+      <p>
+        After login your user data is kept in the session storage of your
+        browser until you log out or close the tab.
+      </p>
+      <h3>Purpose and your rights</h3>
+      <p>
+        Join is an educational project. You can request information about,
+        correction of, or deletion of your data at any time by email.
+      </p>
+    </main>
   </body>
 </html>
