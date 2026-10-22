@@ -92,6 +92,15 @@
   }
 }
 
+#mobile-menu-contacts{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  size: 16px;
+}
+
 @media (min-width: 1201px) {
   #details-back,
   #mobile-menu-btn,
@@ -121,6 +130,7 @@
   header:not(#main-header) {
     grid-column: 1;
     height: 80px;
+    position: fixed;
   }
 
   header:not(#main-header) p {
