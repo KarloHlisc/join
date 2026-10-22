@@ -58,9 +58,12 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  transition: transform 0.2s ease;
+  
 }
 
 .card:hover {
+  transform: scale(1.05);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   background-color: #2d3e50;
   .card-number,
@@ -83,16 +86,6 @@
   flex-shrink: 0;
 }
 
-.card-icon.todo {
-  background-color: #2d3e50;
-  color: white;
-}
-
-.card-icon.done {
-  background-color: #2d3e50;
-  color: white;
-}
-
 .card-stats-level {
   background: white;
   border: 1px solid #e5e5e5;
@@ -109,10 +102,13 @@
   margin-bottom: 20px;
   width: 100%;
   max-width: 560px;
+  transition: transform 0.2s ease;
+  
 }
 
 .card-stats-level:hover {
   background-color: #2d3e50;
+  transform: scale(1.05);
   .card-number,
   .card-label,
   .card-deadline-date,
@@ -197,9 +193,11 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease;
 }
 
 .stat-card:hover {
+  transform: scale(1.05);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   background-color: #2d3e50;
@@ -251,7 +249,7 @@
 
 @media (max-width: 768px) {
   .container {
-    grid-template-columns: 1fr;
+   /* grid-template-columns: 1fr; */
     gap: 20px;
   }
 
@@ -260,12 +258,43 @@
     margin-top: 20px;
   }
 
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
+  
 
   .stats-row {
-    grid-template-columns: 1fr;
+    gap: 12px;
+  /*  grid-template-columns: 1fr;
+  
+  */}
+
+
+  .container{
+    display: flex;
+  }
+
+  .stat-number,  .card-number {
+  font-size: 47px;
+  font-weight: 600;
+  }
+  .stat-label, .card-deadline {
+  font-size: 16px;
+  }
+
+  .card-icon img {
+  width: 40px;
+  height: 40px;
+  }
+
+  #card-content-urgent-line {
+  border: 1px solid #999;
+  height: 68px;
+  border-radius: 2px;
+  }
+  .card-label {
+  font-size: 16px;
+  }
+
+  .card-deadline-date {
+  font-size: 14px;
   }
 
   .header h1 {
