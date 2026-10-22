@@ -354,3 +354,7 @@ ol {
 #contact-details-container span {
   overflow-wrap: anywhere;
 }
+
+.pol-legal-header {
+  display: none;
+}

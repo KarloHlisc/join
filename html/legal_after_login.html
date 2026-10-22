@@ -29,7 +29,7 @@
           <img src="../assets/icons/contacts.png" alt="" /> Contacts
         </button>
       </div>
-      <div class="aside-footer">
+      <div id="mobile-footer" class="aside-footer">
         <button
           class="nav-policy-btn"
           onclick="location.href = './policy_after_login.html'"
@@ -63,7 +63,12 @@
     <main>
       <div id="main-container">
         <div id="legal-after-login-container">
-          <h1>Legal Notice</h1>
+          <div class="pol-legal-header">
+            <h1>Legal Notice</h1>
+            <button class="btn-back-to-main" onclick="history.back()">
+              <img src="../assets/icons/arrow-left-line.png" alt="Back" />
+            </button>
+          </div>
           <h4>Adresse</h4>
           <ul>
             <li>Sandro Spirig</li>
