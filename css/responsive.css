@@ -8,6 +8,31 @@
     display: none;
   }
 
+  #details-header {
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+  }
+
+  #details-header span {
+    position: relative;
+    padding-top: 0;
+  }
+
+  #details-header h1::after {
+    display: none;
+  }
+
+  #details-header span::after {
+    content: "";
+    position: absolute;
+    top: 45px;
+    left: 20%;
+    transform: translateX(-50%);
+    width: 90px;
+    border-bottom: 3px solid #29abe2;
+  }
+
   #edit-delete {
     display: none;
   }
@@ -32,7 +57,7 @@
 
   #details-back {
     position: absolute;
-    top: 16px;
+    top: 100px;
     right: 16px;
     width: 32px;
     height: 32px;
@@ -222,7 +247,7 @@
   #policy-after-login-container h1,
   #legal-after-login-container h1,
   .task-title {
-    font-size: 40px;
+    font-size: 47px;
   }
 
   body {
@@ -342,7 +367,7 @@
   /* Summary */
   #details-header {
     flex-wrap: wrap;
-    gap: 16px;
+
     margin: 16px 0 24px;
   }
 
@@ -453,6 +478,11 @@
     margin: 24px 16px 0;
   }
 
+  #details-header span::after {
+    top: 35px;
+    left: 30%;
+  }
+
   /* Add Task */
   [data-page="add-task"] #main-container {
     padding: 16px;
@@ -528,7 +558,6 @@
   }
   h1 {
     font-size: 47px !important;
-    margin-bottom: 32px;
   }
 }
 
