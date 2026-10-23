@@ -15,6 +15,7 @@
 }
 #details-header span {
   font-size: 27px;
+  padding-top: 25px;
 }
 
 #details-header h1::after {
