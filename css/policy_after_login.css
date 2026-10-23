@@ -1,101 +1,67 @@
-
 .text-content {
-    background-color: rgba(246, 247, 248, 0.466);
-    padding: 80px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  background-color: rgba(246, 247, 248, 0.466);
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .back-arrow {
-    position: absolute;
-    padding: 4px 4px 0px 4px;
-    border-radius: 100px;
-    top: 224px;
-    right: 80px;
+  position: absolute;
+  padding: 4px 4px 0px 4px;
+  border-radius: 100px;
+  top: 224px;
+  right: 80px;
 }
 
 .back-arrow:hover {
-    cursor: pointer;
-    background-color: rgba(238, 238, 238, 1);
-    transform: scale(1.1);
+  cursor: pointer;
+  background-color: rgba(238, 238, 238, 1);
+  transform: scale(1.1);
 }
 
 .back-arrow img {
-    height: 20.74px;
-    width: 21.33px;
+  height: 20.74px;
+  width: 21.33px;
 }
 
 a {
-    color: rgba(41, 171, 226, 1);
+  color: rgba(41, 171, 226, 1);
 }
 
 h1 {
-    font-size: 61px;
-    margin-bottom: 24px;
+  font-size: 61px;
+  margin-bottom: 24px;
 }
 
 h2 {
-    font-size: 27px;
-    margin-block: 8.4px;
+  font-size: 27px;
+  margin-block: 8.4px;
 }
 
 h3 {
-    font-size: 20px;
-    margin: 0;
+  font-size: 20px;
+  margin: 0;
 }
 
 .step {
-    display: flex;
-    gap: 35px;
+  display: flex;
+  gap: 35px;
 }
 
 .step h2 {
-    margin: 0;
+  margin: 0;
 }
 
 .end-space {
-    padding-bottom: 60px;
+  padding-bottom: 60px;
 }
 
 .dots {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .dots div {
-    padding-left: 10px;
-}
-
-
-@media (max-width: 1024px) {
-    .text-content {
-        padding: 144px 40px 96px 40px;
-    }
-    .back-arrow {
-        top: 160px;
-        right: 40px;
-    }
-}
-@media (max-width: 768px) {
-    .text-content {
-        padding: 128px 40px 80px 40px;
-    }
-    .back-arrow {
-        top: 128px;
-        right: 40px;
-    }
-    h1 {
-        font-size: 47px;
-        margin-bottom: 32px;
-    }
-}
-@media (max-width: 425px) {
-    .text-content {
-        padding: 128px 16px 80px 24px;
-    }
-    .back-arrow {
-        top: 128px;
-        right: 16px;
-    }
+  padding-left: 10px;
 }
