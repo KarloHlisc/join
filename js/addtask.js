@@ -8,20 +8,10 @@ import {
 } from "./addtask/addtask_dropdown.js";
 import {
   clearSubtaskInput,
-  toggleSubtaskEdit,
-  saveSubtaskEdit,
   createSubtaskItem,
   addSubtask,
-  getSubtasksData,
 } from "./addtask/addtask_subtask.js";
-import {
-  setFieldError,
-  validateTitle,
-  validateDate,
-  validateCategory,
-  clearErrors,
-  checkVali,
-} from "./addtask/addtask_validate.js";
+import { checkVali } from "./addtask/addtask_validate.js";
 import {
   selectedUserIds,
   getUserList,
@@ -371,22 +361,6 @@ function init() {
   setupTaskForm();
 }
 
-window.setFieldError = setFieldError;
-window.validateTitle = validateTitle;
-window.validateDate = validateDate;
-window.validateCategory = validateCategory;
-window.clearErrors = clearErrors;
-window.checkVali = checkVali;
-window.clearSubtaskInput = clearSubtaskInput;
-window.toggleSubtaskEdit = toggleSubtaskEdit;
-window.saveSubtaskEdit = saveSubtaskEdit;
-window.createSubtaskItem = createSubtaskItem;
-window.addSubtask = addSubtask;
-window.getSubtasksData = getSubtasksData;
-window.closeAllDropdowns = closeAllDropdowns;
-window.toggleDropdown = toggleDropdown;
-window.openUserDropdown = openUserDropdown;
-window.renderTaskForm = renderTaskForm;
 if (document.body.dataset.page === "add-task") {
   document.addEventListener("DOMContentLoaded", init);
 }

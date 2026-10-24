@@ -57,22 +57,49 @@ export function saveSubtaskEdit(li) {
 }
 
 /**
+ * Registers the edit button: saves when editing, otherwise starts editing.
+ * @param {HTMLElement} li - The subtask list item.
+ * @returns {void}
+ */
+function setupEditButton(li) {
+  const btn = li.querySelector(".edit-btn");
+  btn.addEventListener("mousedown", (e) => e.preventDefault());
+  btn.addEventListener("click", () =>
+    li.classList.contains("editing")
+      ? saveSubtaskEdit(li)
+      : toggleSubtaskEdit(li, true),
+  );
+}
+
+/**
+ * Registers Enter and blur handlers on the subtask edit input.
+ * @param {HTMLElement} li - The subtask list item.
+ * @returns {void}
+ */
+function setupEditInput(li) {
+  const input = li.querySelector(".subtask-edit-input");
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    saveSubtaskEdit(li);
+  });
+  input.addEventListener("blur", () => saveSubtaskEdit(li));
+}
+
+/**
  * Creates a subtask list item with edit and delete controls.
- * @param {boolean} [isDone=false]
  * @param {string} text - The subtask text.
+ * @param {boolean} [isDone=false] - Whether the subtask is done.
  * @returns {HTMLElement} The subtask list item.
  */
-/* prettier-ignore */
 export function createSubtaskItem(text, isDone = false) {
   const li = document.createElement("li");
   li.classList.add("subtask-item");
   li.innerHTML = subTaskText(text);
   li.addEventListener("dblclick", () => toggleSubtaskEdit(li, true));
-  li.querySelector(".edit-btn").addEventListener("click", () => toggleSubtaskEdit(li, true));
   li.querySelector(".delete-btn").addEventListener("click", () => li.remove());
-  const input = li.querySelector(".subtask-edit-input");
-  input.addEventListener("keydown", (e) => { if (e.key !== "Enter") return;e.preventDefault();saveSubtaskEdit(li);});
-  input.addEventListener("blur", () => saveSubtaskEdit(li));
+  setupEditButton(li);
+  setupEditInput(li);
   li.dataset.done = isDone;
   return li;
 }

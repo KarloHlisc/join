@@ -83,17 +83,48 @@ function setTilt(card, x) {
  * @returns {Promise<void>}
  */
 async function saveCardStatus(card) {
-  const cardId = card.dataset.id;
-  const newStatus = card.closest(".cards-container")?.dataset.status;
-  if (!cardId || !newStatus) return;
-  const task = tickets.find((t) => t.id === cardId);
+  const container = card.closest(".cards-container");
+  const newStatus = container?.dataset.status;
+  if (!card.dataset.id || !newStatus) return;
+  const task = tickets.find((t) => t.id === card.dataset.id);
   if (task) task.status = newStatus;
   try {
-    await updateStatusFirebase(cardId, newStatus);
-    clearAllContainers();
+    await updateStatusFirebase(card.dataset.id, newStatus);
+    await saveColumnOrder(container);
+    checkIfBoardEmpty();
   } catch (error) {
     console.error("Status konnte nicht gespeichert werden:", error);
   }
+}
+
+/**
+ * Saves the card order of one column.
+ * @param {HTMLElement} container - The column.
+ * @returns {Promise<void>}
+ */
+async function saveColumnOrder(container) {
+  const cards = [...container.querySelectorAll(".draggable")];
+  await Promise.all(
+    cards.map((card, i) => {
+      const task = tickets.find((t) => t.id === card.dataset.id);
+      if (task) task.order = i;
+      return patchTask(card.dataset.id, { order: i });
+    }),
+  );
+}
+
+/**
+ * Patches a task in Firebase.
+ * @param {string} id - The task ID.
+ * @param {Object} data - The fields to update.
+ * @returns {Promise<Response>}
+ */
+function patchTask(id, data) {
+  return fetch(`${BASE_URL}tasks/${id}.json`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 }
 
 /**
@@ -112,15 +143,6 @@ async function updateStatusFirebase(cardId, newStatus) {
   if (!response.ok) {
     throw new Error(`Firebase-Error: ${response.status}`);
   }
-}
-
-/**
- * Clears the board columns and renders the board from the local task array.
- * @returns {void}
- */
-function clearAllContainers() {
-  clearTheTaskPreview();
-  displayTasks(tickets);
 }
 
 /**
@@ -174,14 +196,6 @@ function checkIfExist(titleHits, descHits) {
 function toggleNoResults(titleHits, descHits) {
   const none = new Set([...titleHits, ...descHits]).size === 0;
   document.getElementById("no-results").classList.toggle("hidden", !none);
-}
-
-/**
- * Re-renders the board while keeping the current search filter.
- * @returns {void}
- */
-function clearAllContainers() {
-  searchCards();
 }
 
 /**

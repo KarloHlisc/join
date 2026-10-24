@@ -25,7 +25,7 @@ function getCartTemplate(task) {
             </div>
             ${getMoveMenuHtml(task)}
             <div class="title-story">
-                <h4>${escapeHtml(task.title) || "Keine Beschreibung"}</h4>
+                <h4>${escapeHtml(task.title) || "Untitled"}</h4>
                 <p>${escapeHtml(task.description) || ""}</p>
             </div>
             ${getProgressHtml(task)}
