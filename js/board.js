@@ -91,6 +91,7 @@ function clearTheTaskPreview() {
  */
 function displayTasks(tickets) {
   clearTheTaskPreview();
+  tickets.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   tickets.forEach((task) => showCards(task));
   initDragAndDrop();
   checkIfBoardEmpty();
@@ -101,22 +102,16 @@ function displayTasks(tickets) {
  * @returns {void}
  */
 function checkIfBoardEmpty() {
-  if (cartToDo.childNodes[1] === undefined) {
-    cartToDo.innerHTML =
-      '<div class="no-tasks-card" data-id="notodo">No tasks To do</div>';
-  }
-  if (cartInProgres.childNodes[1] === undefined) {
-    cartInProgres.innerHTML =
-      '<div class="no-tasks-card" data-id="noinprogress">No tasks In progress</div>';
-  }
-  if (cartAwait.childNodes[1] === undefined) {
-    cartAwait.innerHTML =
-      '<div class="no-tasks-card" data-id="noawaitfeedback">No tasks Await feedback</div>';
-  }
-  if (cartDone.childNodes[1] === undefined) {
-    cartDone.innerHTML =
-      '<div class="no-tasks-card" data-id="nodone">No tasks Done</div>';
-  }
+  const columns = [
+    [cartToDo, "notodo", "To do"],
+    [cartInProgres, "noinprogress", "In progress"],
+    [cartAwait, "noawaitfeedback", "Await feedback"],
+    [cartDone, "nodone", "Done"],
+  ];
+  columns.forEach(([el, id, label]) => {
+    if (!el.querySelector(".draggable"))
+      el.innerHTML = `<div class="no-tasks-card" data-id="${id}">No tasks ${label}</div>`;
+  });
 }
 
 /**
@@ -241,6 +236,19 @@ async function deleteTask(taskId) {
   await fetch(`${BASE_URL}tasks/${taskId}.json`, { method: "DELETE" });
   closeDialogTask();
   await reloadBoard();
+  showToast("Task deleted");
+}
+
+/**
+ * Shows the toast with the given text for 1.5 seconds.
+ * @param {string} text - The message.
+ * @returns {void}
+ */
+function showToast(text) {
+  const toast = document.getElementById("congrats-modal");
+  toast.querySelector("p").textContent = text;
+  toast.classList.add("active");
+  setTimeout(() => toast.classList.remove("active"), 1500);
 }
 
 /**
