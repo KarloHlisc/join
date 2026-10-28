@@ -150,7 +150,7 @@ const toDoCardBtn = document.getElementById("to-do-card-btn");
 const doneCardBtn = document.getElementById("done-card-btn");
 const imgToDo = document.getElementById("img-to-do");
 const imgDone = document.getElementById("img-done");
-
+/*
 toDoCardBtn.addEventListener("mouseover", () => {
   imgToDo.src = "../assets/icons/todo_edit_white.svg";
 });
@@ -165,4 +165,38 @@ doneCardBtn.addEventListener("mouseover", () => {
 
 doneCardBtn.addEventListener("mouseout", () => {
  imgDone.src = "../assets/icons/done-edit.svg";
+});
+*/
+// To-Do Card Button
+toDoCardBtn.addEventListener("mouseover", () => {
+  imgToDo.src = "../assets/icons/todo_edit_white.svg";
+});
+
+toDoCardBtn.addEventListener("mouseout", () => {
+  imgToDo.src = "../assets/icons/to-do-edit.svg";
+});
+
+toDoCardBtn.addEventListener("touchstart", () => {
+  imgToDo.src = "../assets/icons/todo_edit_white.svg";
+});
+
+toDoCardBtn.addEventListener("touchend", () => {
+  imgToDo.src = "../assets/icons/to-do-edit.svg";
+});
+
+// Done Card Button
+doneCardBtn.addEventListener("mouseover", () => {
+  imgDone.src = "../assets/icons/done_white.svg";
+});
+
+doneCardBtn.addEventListener("mouseout", () => {
+  imgDone.src = "../assets/icons/done-edit.svg";
+});
+
+doneCardBtn.addEventListener("touchstart", () => {
+  imgDone.src = "../assets/icons/done_white.svg";
+});
+
+doneCardBtn.addEventListener("touchend", () => {
+  imgDone.src = "../assets/icons/done-edit.svg";
 });
