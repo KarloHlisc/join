@@ -248,6 +248,10 @@ progress {
   padding: 24px;
 }
 
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 .task-title {
   font-size: 61px;
   font-weight: 700;
@@ -388,3 +392,4 @@ progress {
   color: #999;
   margin: 0;
 }
+
