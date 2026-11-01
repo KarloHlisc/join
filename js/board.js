@@ -291,3 +291,15 @@ function closestCard(y) {
       : closest;
   };
 }
+
+function changeCheckedButton() {
+  document.querySelectorAll('.subtask-item').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        this.style.backgroundImage = 'url("../assets/icons/checked_button.svg")';
+      } else {
+        this.style.backgroundImage = 'url("../assets/icons/unchecked_button.svg")';
+      }
+    }); 
+});
+}

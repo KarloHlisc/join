@@ -116,8 +116,8 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                             ? subtaskArray
                                 .map(
                                   (st) => `
-                                <div class="subtask-item">
-                                    <input type="checkbox" id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
+                                <div class="subtask-item" onclick="changeCheckedButton()">
+                                    <input type="checkbox"  id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
                                      onchange="toggleSubtask('${task.id}', '${st.id}', this.checked)">
                                     <label for="subtask-${st.id}">${escapeHtml(st.title)}</label>
                                 </div>
