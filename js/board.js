@@ -292,14 +292,22 @@ function closestCard(y) {
   };
 }
 
-function changeCheckedButton() {
-  document.querySelectorAll('.subtask-item').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
+
+/*
+
+function changeCheckedButton(isDone, checkbox) {
+  checkbox.style.backgroundImage = isDone
+    ? 'url("../assets/icons/checked_button.svg")'
+    : 'url("../assets/icons/unchecked_button.svg")';
+}
+
+
+function changeCheckedButton(isDone) {
+  document.querySelectorAll('.subtask-item').innerHTML
       if (this.checked) {
         this.style.backgroundImage = 'url("../assets/icons/checked_button.svg")';
       } else {
         this.style.backgroundImage = 'url("../assets/icons/unchecked_button.svg")';
       }
-    }); 
-});
 }
+*/
