@@ -201,6 +201,7 @@
 
   .container {
     margin: 0;
+    overflow-x: auto;
   }
 
   .card-stats-level {
