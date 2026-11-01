@@ -96,8 +96,12 @@
     align-items: flex-start;
   }
 
+
+  
+
   #board-task-container {
     flex-wrap: wrap;
+    width: 100%;
   }
 
   #board-content {
@@ -141,18 +145,35 @@
     overflow-y: auto;
   }
 
-  #myDialog:open {
-    .user-chip:not(:first-child){
-    margin-left: 0;
+  .align-imte-button {
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  width: 100%;
+}
+
+ .task-title{
+  font-size: 36px;
   }
-.assigned-users{
-    flex-direction: column;
-    gap: 8px;
-  }}
+ 
 
-  
+.search-task-container > input{
+  flex: 1;
+}
 
+#search-task-container{
+  width: 100%;
+}
   
+.none {
+  display: flex;
+} 
+  
+.add-task-btn2{
+  display:none;
+}
 
   /* Summary */
   #details-header {

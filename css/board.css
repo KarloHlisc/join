@@ -10,11 +10,11 @@
   min-height: calc(100vh - 101px);
   background-color: rgba(246, 247, 248, 1);
 }
-
+/*
 #board-title-container {
   margin: 20px 0 40px 25px;
 }
-
+*/
 h1 {
   font-size: 61px;
   margin: 0px;
@@ -56,6 +56,8 @@ h1 {
   padding: 20px;
   color: rgba(104, 104, 104, 1);
   background-color: rgba(231, 231, 231, 1);
+  height: 70px;
+  text-align: center;
 }
 
 .cards-container {
@@ -74,7 +76,7 @@ h1 {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-#add-task-btn {
+#add-task-btn1,#add-task-btn2 {
   background-color: rgba(42, 54, 71, 1);
   border-radius: 5px;
   color: white;
@@ -84,6 +86,7 @@ h1 {
   padding: 10px;
   gap: 10px;
 }
+
 
 .cart {
   text-align: center;
@@ -100,7 +103,7 @@ h1 {
 
 .level-story p {
   background-color: blue;
-  width: 50%;
+  width: 70%;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -170,7 +173,6 @@ progress {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   width: 95%;
   max-width: 550px;
-  height: auto;
   max-height: 90vh;
   overflow-y: auto;
   padding: 0;
@@ -289,6 +291,9 @@ body:has(dialog[open]) {
   color: #000;
   font-weight: 500;
 }
+.detail-value:first-letter {
+    text-transform: uppercase;
+}
 
 .priority-display {
   display: flex;
@@ -348,8 +353,7 @@ body:has(dialog[open]) {
 .subtasks-title {
   font-size: 20px;
   color: #665;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 400;
   letter-spacing: 0.5px;
   margin: 0 0 16px 0;
 }
@@ -365,13 +369,20 @@ body:has(dialog[open]) {
   align-items: center;
   gap: 12px;
   padding: 8px 0;
+  justify-content: start !important;
+}
+
+  #search-task-container > input{
+  border: none;
+  flex: 1;
 }
 
 .subtask-item input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #2d8cff;
+ 
+  background-image: url("../assets/icons/checked_button.svg");
 }
 
 .subtask-item label {
@@ -384,7 +395,6 @@ body:has(dialog[open]) {
 
 .subtask-item input[type="checkbox"]:checked + label {
   color: #999;
-  text-decoration: line-through;
 }
 
 .no-subtasks {
@@ -392,4 +402,3 @@ body:has(dialog[open]) {
   color: #999;
   margin: 0;
 }
-
