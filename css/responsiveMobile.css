@@ -123,6 +123,7 @@
   .cards-container {
     min-height: 80px;
     flex-direction: row;
+     height: 350px;
   }
 
   .cart{
@@ -178,7 +179,6 @@
   /* Summary */
   #details-header {
     flex-wrap: wrap;
-
     margin: 16px 0 24px;
   }
 
@@ -191,22 +191,28 @@
     font-size: 18px;
   }
 
+  .greeting-section{
+    display: none;
+  }
+
+  .card{
+    padding: 8px;
+  }
+
   .container {
     margin: 0;
-    overflow-x: auto;
-  height: 350px;
   }
 
   .card-stats-level {
     width: 100%;
-    flex-wrap: wrap;
     gap: 8px;
+    padding: 10px;
   }
 
   .stat-card {
     width: 100%;
     height: auto;
-    padding: 16px 0;
+    padding: 8px 0;
   }
 
   .greeting-section {

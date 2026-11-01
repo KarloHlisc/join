@@ -381,7 +381,6 @@ body:has(dialog[open]) {
   width: 18px;
   height: 18px;
   cursor: pointer;
- 
   background-image: url("../assets/icons/checked_button.svg");
 }
 
