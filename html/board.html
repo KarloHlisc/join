@@ -77,8 +77,14 @@
       <div id="main-container">
         <section id="board-header">
           <p id="no-results" class="hidden">No results found</p>
-          <div id="board-title-container">
+          <div class="align-imte-button" style="display: flex;justify-content: space-between;align-items: center;text-align: center;gap: 20px;width: 100%;"><div id="board-title-container">
             <h1 id="board-title">Board</h1>
+         </div>
+          <div class="add-task-btn-container none">
+              <button id="add-task-btn1" onclick="showAddTaskModule('todo')">
+                <img src="../assets/icons/add-btn.svg" alt="add task button">
+              </button>
+            </div>
           </div>
           <div id="board-task-container">
             <div id="search-task-container">
@@ -88,13 +94,13 @@
                 id="search-task"
                 placeholder="Find Task"
                 onkeyup="searchCards()"
-              />
+              /><div id="footerBetween"></div>
               <button id="button-search" onclick="searchCards()">
                 <img src="../assets/icons/search-btn.svg" alt="button-search" />
               </button>
             </div>
-            <div id="add-task-btn-container">
-              <button id="add-task-btn" onclick="showAddTaskModule('todo')">
+            <div class="add-task-btn-container add-task-btn2" >
+              <button id="add-task-btn2" onclick="showAddTaskModule('todo')">
                 Add task
                 <img src="../assets/icons/add-btn.svg" alt="add task button" />
               </button>
