@@ -67,7 +67,7 @@ export function clearErrors() {
  * @param {SubmitEvent} e - The form submit event.
  * @returns {boolean} True if the form is valid.
  */
-export function checkVali(e) {
+export function validateForm(e) {
   clearErrors();
   const valid = [validateTitle(), validateDate(), validateCategory()].every(
     Boolean,

@@ -121,20 +121,12 @@ function checkIfBoardEmpty() {
  */
 function showCards(task) {
   const status = task.status?.toLowerCase() || "todo";
-  if (status === "todo") cartToDo.innerHTML += cartTemplate(task);
+  if (status === "todo") cartToDo.innerHTML += getCardTemplate(task);
   else if (status === "inprogress")
-    cartInProgres.innerHTML += cartTemplate(task);
+    cartInProgres.innerHTML += getCardTemplate(task);
   else if (status === "awaitfeedback")
-    cartAwait.innerHTML += cartTemplate(task);
-  else if (status === "done") cartDone.innerHTML += cartTemplate(task);
-}
-
-/**
- * Creates the HTML markup for a task card.
- * @returns {string} The task card's HTML markup.
- */
-function cartTemplate(task) {
-  return getCartTemplate(task);
+    cartAwait.innerHTML += getCardTemplate(task);
+  else if (status === "done") cartDone.innerHTML += getCardTemplate(task);
 }
 
 /**
@@ -291,23 +283,3 @@ function closestCard(y) {
       : closest;
   };
 }
-
-
-/*
-
-function changeCheckedButton(isDone, checkbox) {
-  checkbox.style.backgroundImage = isDone
-    ? 'url("../assets/icons/checked_button.svg")'
-    : 'url("../assets/icons/unchecked_button.svg")';
-}
-
-
-function changeCheckedButton(isDone) {
-  document.querySelectorAll('.subtask-item').innerHTML
-      if (this.checked) {
-        this.style.backgroundImage = 'url("../assets/icons/checked_button.svg")';
-      } else {
-        this.style.backgroundImage = 'url("../assets/icons/unchecked_button.svg")';
-      }
-}
-*/

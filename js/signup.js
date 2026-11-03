@@ -4,8 +4,6 @@ import { database } from "./config.js";
 import {
   ref,
   runTransaction,
-  get,
-  child,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 import {
   isValidEmail,

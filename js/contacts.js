@@ -1,5 +1,5 @@
 "use strict";
-import { database } from "../js/config.js";
+import { database } from "./js/config.js";
 import {
   remove,
   ref,
@@ -12,7 +12,7 @@ import {
   getAddContactModule,
   userDetailTemplate,
   getEditContactModule,
-} from "./template.js";
+} from "./templates/template.js";
 
 import {
   buildUser,

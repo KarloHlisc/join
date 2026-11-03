@@ -7,7 +7,7 @@ import {
   child,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
-import { getLogoutModule } from "./js/template.js";
+import { getLogoutModule } from "./js/templates/template.js";
 
 import { isValidEmail, getInitials } from "./js/utils.js";
 

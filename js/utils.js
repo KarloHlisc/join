@@ -108,3 +108,13 @@ export const GUEST_EMAIL = "guest@test.com";
 export function isGuestUser(user) {
   return user?.email === GUEST_EMAIL;
 }
+
+/**
+ * Loads the add-task form markup from add_task.html.
+ * @returns {Promise<string>} The form HTML.
+ */
+export async function loadTaskFormHtml() {
+  const res = await fetch("./add_task.html");
+  const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+  return doc.getElementById("form-container").outerHTML;
+}

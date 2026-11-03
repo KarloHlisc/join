@@ -78,14 +78,6 @@
   padding-left: 0;
 }
 
-#subtaskInputfield {
-  height: 32px;
-  border-radius: 0 !important;
-  outline: 0;
-  border-width: 0 0 2px;
-  border-color: blue;
-}
-
 .subtask-item {
   position: relative;
   display: flex;
