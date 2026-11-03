@@ -181,7 +181,7 @@ function filterItems(arr, query) {
  */
 function checkIfExist(titleHits, descHits) {
   clearTheTaskPreview();
-  iterarCards(titleHits, descHits);
+  renderCards(titleHits, descHits);
   checkIfBoardEmpty();
   initDragAndDrop();
   toggleNoResults(titleHits, descHits);
@@ -204,7 +204,7 @@ function toggleNoResults(titleHits, descHits) {
  * @param {Array<Object>} getCartDescription Tasks with a description match.
  * @returns {void}
  */
-function iterarCards(getCartTitle, getCartDescription) {
+function renderCards(getCartTitle, getCartDescription) {
   const search = [...new Set([...getCartTitle, ...getCartDescription])];
   if (search.length != 0) {
     for (let index = 0; index < search.length; index++) {

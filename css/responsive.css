@@ -121,13 +121,11 @@
   }
 }
 
-#mobile-menu-contacts {
+.mobile-menu-contacts {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
   gap: 8px;
-  size: 16px;
+  cursor: pointer;
 }
 
 @media (min-width: 1201px) {

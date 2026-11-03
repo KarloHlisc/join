@@ -1,4 +1,3 @@
-
 .dialog-footer {
   display: flex;
   justify-content: end;
@@ -51,42 +50,6 @@
   height: 16px;
 }
 
-#task-modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.1s ease,
-    visibility 0.1s ease;
-}
-
-#task-modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-#task-modal-panel {
-  position: relative;
-  width: min(1200px, 95vw);
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 20px 40px 40px;
-  border-radius: 30px;
-  background-color: #ffffff;
-}
-
-#close-task-modal {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-}
-
 #add-task-container {
   position: fixed;
   inset: 0;
@@ -96,7 +59,7 @@
   transition: opacity 0.1s ease;
 }
 
-#add-task-btn2{
+#add-task-btn2 {
   width: 160px;
   height: 48px;
 }
@@ -134,8 +97,8 @@
 .cart {
   position: relative;
   min-width: 250px;
-    max-height: 300px;
-    width: 260px;
+  max-height: 300px;
+  width: 260px;
 }
 
 .move-wrap {
@@ -174,9 +137,9 @@
 
 .none {
   display: none;
-} 
+}
 
-#search-task-container{
+#search-task-container {
   width: 100%;
   border: 1px solid #ababab;
   border-radius: 10px;
@@ -190,24 +153,25 @@
 }
 
 #myDialog {
-    overflow-y: auto;
-  }
+  overflow-y: auto;
+}
 
- #myDialog:open {
-    .user-chip:not(:first-child){
+#myDialog:open {
+  .user-chip:not(:first-child) {
     margin-left: 0;
   }
-.assigned-users{
+  .assigned-users {
     flex-direction: column;
     gap: 8px;
-  }}
-
+  }
+}
 
 @media (max-width: 1375px) {
-  #board-content{
+  #board-content {
     flex-direction: column;
   }
-  .cards-container{
+  .cards-container {
     flex-direction: row;
+    overflow-x: auto;
   }
 }

@@ -1,15 +1,17 @@
 "use strict";
 import { setupTaskForm } from "../addtask.js";
-import { getAddTaskModule } from "../template.js";
+import { getAddTaskModule } from "../templates/template.js";
+import { loadTaskFormHtml } from "../utils.js";
+
 /**
  * Opens the "Add Task" modal and prepares the form for the given status.
  * @param {string} [status="todo"] - Status assigned to the new task.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function showAddTaskModule(status = "todo") {
+async function showAddTaskModule(status = "todo") {
   const container = document.getElementById("add-task-container");
   if (!container) return;
-  container.innerHTML = getAddTaskModule();
+  container.innerHTML = getAddTaskModule(await loadTaskFormHtml());
   setupTaskForm(status, handleTaskCreated);
   setTimeout(() => container.classList.add("active"), 20);
 }

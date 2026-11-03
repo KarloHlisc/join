@@ -1,18 +1,19 @@
 "use strict";
 import { setupTaskForm } from "../addtask.js";
-import { getAddTaskModule } from "../template.js";
+import { getAddTaskModule } from "../templates/template.js";
+import { loadTaskFormHtml } from "../utils.js";
 
 /**
  * Opens the task form prefilled with an existing task.
  * @param {string} taskId - The task ID.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function showEditTaskModule(taskId) {
+async function showEditTaskModule(taskId) {
   const task = tickets.find((t) => t.id === taskId);
   const container = document.getElementById("add-task-container");
   if (!task || !container) return;
   document.getElementById("myDialog").close();
-  container.innerHTML = getAddTaskModule();
+  container.innerHTML = getAddTaskModule(await loadTaskFormHtml());
   setupTaskForm(task.status, handleTaskUpdated, task);
   setTimeout(() => container.classList.add("active"), 20);
 }

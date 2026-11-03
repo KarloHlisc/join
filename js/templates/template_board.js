@@ -17,7 +17,7 @@ function escapeHtml(str = "") {
  * @param {Object} task - The task to render.
  * @returns {string} HTML markup of the card.
  */
-function getCartTemplate(task) {
+function getCardTemplate(task) {
   return `
         <div role="button" tabindex="0" data-id="${task.id}" class="cart draggable" id="${task.id}" draggable="true" onclick="openTaskDialog(event)">
             <div class="level-story">
@@ -116,11 +116,11 @@ function getCreateTaskDetailTemplate(task, assignedUsers, subtaskArray) {
                             ? subtaskArray
                                 .map(
                                   (st) => `
-                                <div class="subtask-item" onclick="changeCheckedButton()">
-                                    <input type="checkbox"  id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
+                               <div class="detail-subtask">
+                                    <input type="checkbox" id="subtask-${st.id}" ${st.isDone ? "checked" : ""}
                                      onchange="toggleSubtask('${task.id}', '${st.id}', this.checked)">
                                     <label for="subtask-${st.id}">${escapeHtml(st.title)}</label>
-                                </div>
+                               </div>
                             `,
                                 )
                                 .join("")

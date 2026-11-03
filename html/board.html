@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../css/responsive.css" />
     <link rel="stylesheet" href="../css/responsiveMobile.css" />
     <script src="../script.js" type="module"></script>
-    <script src="../js/template_board.js"></script>
+    <script src="../js/templates/template_board.js"></script>
     <script src="../js/board/addTaskBoard.js" type="module"></script>
     <script src="../js/board/editTaskBoard.js" type="module"></script>
   </head>
@@ -77,12 +77,23 @@
       <div id="main-container">
         <section id="board-header">
           <p id="no-results" class="hidden">No results found</p>
-          <div class="align-imte-button" style="display: flex;justify-content: space-between;align-items: center;text-align: center;gap: 20px;width: 100%;"><div id="board-title-container">
-            <h1 id="board-title">Board</h1>
-         </div>
-          <div class="add-task-btn-container none">
+          <div
+            class="align-imte-button"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              text-align: center;
+              gap: 20px;
+              width: 100%;
+            "
+          >
+            <div id="board-title-container">
+              <h1 id="board-title">Board</h1>
+            </div>
+            <div class="add-task-btn-container none">
               <button id="add-task-btn1" onclick="showAddTaskModule('todo')">
-                <img src="../assets/icons/add-btn.svg" alt="add task button">
+                <img src="../assets/icons/add-btn.svg" alt="add task button" />
               </button>
             </div>
           </div>
@@ -94,12 +105,13 @@
                 id="search-task"
                 placeholder="Find Task"
                 onkeyup="searchCards()"
-              /><div id="footerBetween"></div>
+              />
+              <div id="footerBetween"></div>
               <button id="button-search" onclick="searchCards()">
                 <img src="../assets/icons/search-btn.svg" alt="button-search" />
               </button>
             </div>
-            <div class="add-task-btn-container add-task-btn2" >
+            <div class="add-task-btn-container add-task-btn2">
               <button id="add-task-btn2" onclick="showAddTaskModule('todo')">
                 Add task
                 <img src="../assets/icons/add-btn.svg" alt="add task button" />

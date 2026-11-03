@@ -1,6 +1,5 @@
 "use strict";
 
-import { taskFormTemplate } from "./template.js";
 import {
   closeAllDropdowns,
   toggleDropdown,
@@ -11,7 +10,7 @@ import {
   createSubtaskItem,
   addSubtask,
 } from "./addtask/addtask_subtask.js";
-import { checkVali } from "./addtask/addtask_validate.js";
+import { validateForm } from "./addtask/addtask_validate.js";
 import {
   selectedUserIds,
   getUserList,
@@ -29,17 +28,6 @@ let existSignUpForm;
 let errEL;
 let taskStatus = "todo";
 let onTaskCreated = null;
-
-/**
- * Renders the Add Task form into the given container.
- * @param {string} [targetId="main-container"] - ID of the target container.
- * @returns {void}
- */
-export function renderTaskForm(targetId = "main-container") {
-  const target = document.getElementById(targetId);
-  if (!target) return;
-  target.innerHTML = taskFormTemplate;
-}
 
 /**
  * Wires up click handlers for selecting a task category.
@@ -253,7 +241,7 @@ function handleFormSubmitEvent(e) {
   existSignUpForm
     .querySelectorAll(".input-error")
     .forEach((el) => el.classList.remove("input-error"));
-  if (!checkVali(e)) return;
+  if (!validateForm(e)) return;
   saveTask();
 }
 
@@ -357,7 +345,6 @@ function setEditLabels() {
  * @returns {void}
  */
 function init() {
-  renderTaskForm();
   setupTaskForm();
 }
 

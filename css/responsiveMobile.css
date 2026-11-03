@@ -96,9 +96,6 @@
     align-items: flex-start;
   }
 
-
-  
-
   #board-task-container {
     flex-wrap: wrap;
     width: 100%;
@@ -123,21 +120,22 @@
   .cards-container {
     min-height: 80px;
     flex-direction: row;
-     height: 350px;
+    height: 350px;
+    overflow-x: auto;
   }
 
-  .cart{
+  .cart {
     min-width: 250px;
-  max-height: 300px;
-  width: 250px;
+    max-height: 300px;
+    width: 250px;
   }
 
-  .no-tasks-card{
+  .no-tasks-card {
     display: flex;
-  align-items: center;
-  height: 30px;
-  max-width: 250px;
-  justify-content: center;
+    align-items: center;
+    height: 30px;
+    max-width: 250px;
+    justify-content: center;
   }
 
   #myDialog {
@@ -147,34 +145,33 @@
   }
 
   .align-imte-button {
- display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-  gap: 20px;
-  width: 100%;
-}
-
- .task-title{
-  font-size: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    width: 100%;
   }
- 
 
-.search-task-container > input{
-  flex: 1;
-}
+  .task-title {
+    font-size: 36px;
+  }
 
-#search-task-container{
-  width: 100%;
-}
-  
-.none {
-  display: flex;
-} 
-  
-.add-task-btn2{
-  display:none;
-}
+  .search-task-container > input {
+    flex: 1;
+  }
+
+  #search-task-container {
+    width: 100%;
+  }
+
+  .none {
+    display: flex;
+  }
+
+  .add-task-btn2 {
+    display: none;
+  }
 
   /* Summary */
   #details-header {
@@ -191,11 +188,11 @@
     font-size: 18px;
   }
 
-  .greeting-section{
+  .greeting-section {
     display: none;
   }
 
-  .card{
+  .card {
     padding: 8px;
   }
 

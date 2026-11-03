@@ -1,6 +1,6 @@
 "use strict";
 
-import { escapeHtml, isGuestUser } from "./utils.js";
+import { escapeHtml, isGuestUser } from "../utils.js";
 
 /**
  * Builds the logout dropdown module with help, legal, and logout actions.
@@ -35,7 +35,7 @@ export function userDetailTemplate(user, initials) {
           </div>
         </div>
         <span id="contact-info">Contact information</span>
-        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div><button id="mobile-menu-btn" onclick="toggleContactMenu(event)">&#8942;</button><div id="contact-menu" role="button" onclick="showEditContactModule('${user.userId}')"><div class="mobile-menu-contacts"><img id="mobile-menu-edit" src="../assets/icons/edit.svg" alt="edit image"> <button onclick="showEditContactModule('${user.userId}')">Edit</button></div>${isGuestUser(user) ? "" : `<div class="mobile-menu-contacts" role="button" onclick="deleteUser('${user.userId}')"><img id="mobile-menu-delete" src="../assets/icons/delete.svg" alt="delete image"> <button onclick="deleteUser('${user.userId}')">Delete</button></div>`}</div>`;
+        <div id="details"><span ><strong>Email</strong></span><span class="user-email">${escapeHtml(user.email)}</span><span><strong>Phone</strong></span><span>${escapeHtml(user.phone)}</span></div><button id="mobile-menu-btn" onclick="toggleContactMenu(event)">&#8942;</button><div id="contact-menu"><div class="mobile-menu-contacts" onclick="showEditContactModule('${user.userId}')"><img id="mobile-menu-edit" src="../assets/icons/edit.svg" alt="edit image"> <button type="button">Edit</button></div>${isGuestUser(user) ? "" : `<div class="mobile-menu-contacts" onclick="deleteUser('${user.userId}')"><img id="mobile-menu-delete" src="../assets/icons/delete.svg" alt="delete image"> <button type="button">Delete</button></div>`}</div>`;
 }
 
 /**
@@ -74,78 +74,14 @@ export function getEditContactModule(user, initials) {
 
 /**
  * Builds the "Add Task" modal wrapper around the task form.
+ * @param {string} formHtml - The markup of the task form.
  * @returns {string} HTML markup for the add-task modal.
  */
-export function getAddTaskModule() {
+export function getAddTaskModule(formHtml) {
   return `<div id="add-task-overlay" onmousedown="if (event.target === this) closeAddTaskModule()">
     <div id="add-task-module">
       <button type="button" id="close-task-module" onclick="closeAddTaskModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button>
-      ${taskFormTemplate}
+      ${formHtml}
     </div>
   </div>`;
 }
-
-/** HTML markup for the Add Task form, injected into #main-container. */
-export const taskFormTemplate = `
-<div id="form-container">
-  <div id="add-task-title"><h1>Add Task</h1></div>
-  <form id="addTaskForm" novalidate>
-    <div id="form-body">
-      <div id="leftSide">
-        <label for="formTitle">Title<span class="red-star">*</span></label>
-        <input type="text" id="formTitle" placeholder="Enter a title" />
-        <div id="errorTitle" style="color: red"></div>
-        <label for="description">Description</label>
-        <textarea id="description" placeholder="Enter a description"></textarea>
-        <label for="duedate">Due date<span class="red-star">*</span></label>
-        <input type="date" id="duedate"  placeholder="dd/mm/yy"  />
-        <div id="errorDate" style="color: red"></div>
-      </div>
-      <div id="rightSide">
-        <span class="form-label">Priority</span>
-        <div id="priority-buttons">
-          <button type="button" class="priority-btn" id="urgent-btn" data-value="urgent">Urgent <img src="../assets/icons/urgent.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="medium-btn" data-value="medium">Medium <img src="../assets/icons/medium.svg" alt="" aria-hidden="true" /></button>
-          <button type="button" class="priority-btn" id="low-btn" data-value="low">Low <img src="../assets/icons/low.svg" alt="" aria-hidden="true" /></button>
-        </div>
-        <label for="searchInput">Assigned to</label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header-input-wrapper">
-            <input type="text" id="searchInput" placeholder="Select contacts to assign" autocomplete="off" />
-            <button type="button" id="dropdownToggle" class="dropdown-btn" aria-label="Benutzerliste anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="dropdownArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="dropdownList"></ul>
-        </div>
-        <div id="assignedUsersContainer" class="assigned-users"></div>
-        <ul class="assigned-users"></ul>
-        <label for="categoryToggle">Category<span class="red-star">*</span></label>
-        <div class="custom-dropdown">
-          <div class="dropdown-header" id="categoryHeader">
-            <span id="categorySelectedText">Select task category</span>
-            <button type="button" id="categoryToggle" class="dropdown-btn" aria-label="Kategorie anzeigen"><img src="../assets/icons/arrow-drop-down.svg" alt="Pfeil unten" class="dropdown-img" id="categoryArrowImg" /></button>
-          </div>
-          <ul class="dropdown-list hidden" id="categoryList">
-            <li class="user-item" data-value="Technical Tasks"><span >Technical Tasks</span></li>
-            <li class="user-item" data-value="User Story"><span >User Story</span></li>
-          </ul>
-          <div id="errorCategory" style="color: red"></div>
-        </div>
-        <label for="subtaskInput">Subtasks</label>
-        <div class="subtask-container">
-          <input type="text" id="subtaskInput" placeholder="Add new Subtasks" />
-          <button type="button" id="addSubtaskBtn"><img src="../assets/icons/darkcheck.svg" alt="Add Subtask" /></button>
-          <button type="button" id="clearSubtaskBtn"><img src="../assets/icons/delete.svg" alt="Clear input" /></button>
-        </div>
-        <ul id="subTaskList"></ul>
-      </div>
-    </div>
-    <div id="createTaskBtn-container">
-      <span class="required-hint"><span class="red-star">*</span>This field is required</span>
-      <div id="btn-container">
-        <button type="reset" id="clear">Clear <img src="../assets/icons/vector.svg" alt="" aria-hidden="true" /></button>
-        <button type="submit" id="createTask">Create Task <img src="../assets/icons/check.svg" alt="" aria-hidden="true" /></button>
-      </div>
-    </div>
-  </form>
-</div>
-`;

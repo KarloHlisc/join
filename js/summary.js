@@ -31,7 +31,7 @@ function greetings() {
   if (nameEl) nameEl.innerText = isUser ? user.name : "";
 }
 
-// ============ NEW: Task Summary Functions ============
+// NEW: Task Summary Functions
 
 /**
  * Returns a counter object with all values set to zero.
@@ -42,20 +42,45 @@ function getEmptyCounts() {
 }
 
 /**
- * Loads all tasks and counts them per status.
- * @returns {Promise<Object>} The counters, all zero on error.
+ * Loads all tasks from Firebase.
+ * @returns {Promise<Object>} The tasks object, empty on error.
  */
-async function getTaskCountsByStatus() {
+async function loadTasks() {
   try {
     const response = await fetch(BASE_URL + "tasks.json");
-    const data = await response.json();
-    const counts = getEmptyCounts();
-    Object.values(data || {}).forEach((task) => taskCounter(counts, task));
-    return counts;
+    return (await response.json()) || {};
   } catch (error) {
-    console.error("Fehler beim Laden der Task-Counts:", error);
-    return getEmptyCounts();
+    console.error("Fehler beim Laden der Tasks:", error);
+    return {};
   }
+}
+
+/**
+ * Counts the tasks per status.
+ * @param {Object} data - The tasks object from Firebase.
+ * @returns {Object} The counters.
+ */
+function countTasks(data) {
+  const counts = getEmptyCounts();
+  Object.values(data).forEach((task) => taskCounter(counts, task));
+  return counts;
+}
+
+/**
+ * Loads the tasks and writes counters and deadline into the summary cards.
+ * @returns {Promise<void>}
+ */
+async function displaySummary() {
+  const data = await loadTasks();
+  const deadline = getNextUrgentDeadline(data);
+  updateSummaryData(countTasks(data));
+  document.getElementById("card-deadline").textContent = deadline
+    ? new Date(deadline).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "No deadline";
 }
 
 /**
@@ -71,24 +96,8 @@ function taskCounter(counts, task) {
   else if (status === "inprogress") counts.inprogress++;
   else if (status === "awaitfeedback") counts.feedback++;
   else if (status === "done") counts.done++;
-  if (task.priority?.toLowerCase() === "urgent") {
+  if (task.priority?.toLowerCase() === "urgent" && status !== "done")
     counts.urgent++;
-  }
-}
-
-/**
- * Loads all tasks and returns the nearest urgent deadline.
- * @returns {Promise<string|null>} The due date, or null.
- */
-async function getUrgentDeadline() {
-  try {
-    const response = await fetch(BASE_URL + "tasks.json");
-    const data = await response.json();
-    return showTaskArra(data);
-  } catch (error) {
-    console.error("Fehler beim Laden des nächsten Deadlines:", error);
-    return null;
-  }
 }
 
 /**
@@ -96,7 +105,7 @@ async function getUrgentDeadline() {
  * @param {Object} data - The tasks object from Firebase.
  * @returns {string|null} The due date, or null if none exists.
  */
-function showTaskArra(data) {
+function getNextUrgentDeadline(data) {
   const urgent = Object.values(data || {}).filter(isOpenUrgent);
   if (!urgent.length) return null;
   urgent.sort((a, b) => new Date(a.duedate) - new Date(b.duedate));
@@ -117,22 +126,6 @@ function isOpenUrgent(task) {
 }
 
 /**
- * Display counts on summary page
- */
-async function displaySummary() {
-  const counts = await getTaskCountsByStatus();
-  const deadline = await getUrgentDeadline();
-  updateSummaryData(counts); // Update the summary boxes
-  document.getElementById("card-deadline").textContent = deadline
-    ? new Date(deadline).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "No deadline";
-}
-
-/**
  * Writes the counters into the summary cards.
  * @param {Object} counts - The counters from getTaskCountsByStatus.
  * @returns {void}
@@ -150,23 +143,7 @@ const toDoCardBtn = document.getElementById("to-do-card-btn");
 const doneCardBtn = document.getElementById("done-card-btn");
 const imgToDo = document.getElementById("img-to-do");
 const imgDone = document.getElementById("img-done");
-/*
-toDoCardBtn.addEventListener("mouseover", () => {
-  imgToDo.src = "../assets/icons/todo_edit_white.svg";
-});
 
-toDoCardBtn.addEventListener("mouseout", () => {
-  imgToDo.src = "../assets/icons/to-do-edit.svg";
-}); 
-
-doneCardBtn.addEventListener("mouseover", () => {
-   imgDone.src = "../assets/icons/done_white.svg";
-});
-
-doneCardBtn.addEventListener("mouseout", () => {
- imgDone.src = "../assets/icons/done-edit.svg";
-});
-*/
 // To-Do Card Button
 toDoCardBtn.addEventListener("mouseover", () => {
   imgToDo.src = "../assets/icons/todo_edit_white.svg";
