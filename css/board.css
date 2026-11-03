@@ -103,16 +103,20 @@ h1 {
   padding: 2px;
 }
 
-.level-story p {
-  background-color: blue;
-  width: 70%;
-  border-radius: 10px;
+.level-story{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: 10px 0px 0px 16px;
+  margin-right: 16px;
+  margin-top: 10px;
+  margin-left:16px;
+}
+.level-story p {
   color: white;
   padding: 4px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 progress {
@@ -214,14 +218,11 @@ progress {
 }
 
 .category-badge {
-  background-color: #2d8cff;
   color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 4px 24px;
+  border-radius: 8px;
+  font-size: 23px;
+  font-weight: 400;
 }
 
 .close-btn {
