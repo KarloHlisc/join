@@ -99,19 +99,24 @@ h1 {
   gap: 24px;
   -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: move;
+  cursor: grab;
+  padding: 2px;
 }
 
-.level-story p {
-  background-color: blue;
-  width: 70%;
-  border-radius: 10px;
+.level-story{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: 10px 0px 0px 16px;
+  margin-right: 16px;
+  margin-top: 10px;
+  margin-left:16px;
+}
+.level-story p {
   color: white;
   padding: 4px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 progress {
@@ -129,6 +134,7 @@ progress {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-align: start;
 }
 
 .title-story p {
@@ -161,10 +167,6 @@ progress {
 
 .draggable.dragging {
   transform: rotate(var(--tilt, 3deg));
-}
-
-.cart {
-  cursor: grab;
 }
 
 #myDialog {
@@ -200,14 +202,11 @@ progress {
 }
 
 .category-badge {
-  background-color: #2d8cff;
   color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding: 4px 24px;
+  border-radius: 8px;
+  font-size: 23px;
+  font-weight: 400;
 }
 
 .close-btn {

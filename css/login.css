@@ -20,6 +20,7 @@ body.no-sidebar {
   gap: 20px;
   box-shadow: none;
   flex-shrink: 0;
+  background-color: rgba(246, 247, 248, 1);
 }
 
 header p {
@@ -34,7 +35,6 @@ body.no-sidebar main {
   margin-left: 0;
   margin-top: 0;
   flex: 1 0 auto;
-  background-color: #ffffff;
   padding: 0;
 }
 
@@ -84,13 +84,14 @@ h1::after {
 .form-container {
   height: 449px;
   width: 652px;
-  margin-top: 80px;
+  margin: 80px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  background-color: #ffffff;
 }
 
 form {
