@@ -10,6 +10,7 @@
   min-height: calc(100vh - 101px);
   background-color: rgba(246, 247, 248, 1);
 }
+
 /*
 #board-title-container {
   margin: 20px 0 40px 25px;
@@ -76,7 +77,8 @@ h1 {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-#add-task-btn1,#add-task-btn2 {
+#add-task-btn1,
+#add-task-btn2 {
   background-color: rgba(42, 54, 71, 1);
   border-radius: 5px;
   color: white;
@@ -86,7 +88,6 @@ h1 {
   padding: 10px;
   gap: 10px;
 }
-
 
 .cart {
   text-align: center;
@@ -290,7 +291,7 @@ body:has(dialog[open]) {
   font-weight: 500;
 }
 .detail-value:first-letter {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .priority-display {
@@ -370,7 +371,7 @@ body:has(dialog[open]) {
   justify-content: start !important;
 }
 
-  #search-task-container > input{
+#search-task-container > input {
   border: none;
   flex: 1;
 }
