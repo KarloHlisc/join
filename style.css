@@ -29,6 +29,13 @@ body {
   grid-template-rows: 96px 1fr;
 }
 
+main {
+  scrollbar-width: none;
+}
+
+main::-webkit-scrollbar {
+  display: none;
+}
 a {
   text-decoration: none;
 }
@@ -285,7 +292,6 @@ ol {
 
 #legal-after-login-container {
   height: calc(100vh - 96px - 5px);
-  padding: 80px;
 }
 
 .user-icon-wrapper {

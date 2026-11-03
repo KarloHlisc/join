@@ -228,6 +228,9 @@
     display: none;
   }
 
+  #legal-after-login-container {
+    padding-top: 80px;
+  }
   .text-content {
     padding: 0 80px 96px 80px !important;
   }
