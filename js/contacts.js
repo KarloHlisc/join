@@ -1,5 +1,5 @@
 "use strict";
-import { database } from "./js/config.js";
+import { database } from "./config.js";
 import {
   remove,
   ref,
