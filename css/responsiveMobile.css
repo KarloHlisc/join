@@ -83,14 +83,14 @@
   }
 
   #main-container {
-    padding: 0;
+    padding: 16px;
   }
 
   /* Board */
-
   .move-wrap {
     display: block;
   }
+  
   #board-header {
     flex-direction: column;
     align-items: flex-start;
@@ -210,7 +210,7 @@
   }
 
   .card-stats-level {
-    width: 100%;
+   width: 90vw;
     gap: 8px;
     padding: 10px;
   }
@@ -281,7 +281,6 @@
   }
 
   /* Kontakte */
-
   #main-container.details-open #contact-details-container {
     width: 100%;
     left: auto;
