@@ -17,6 +17,8 @@
   #details-header span {
     position: relative;
     padding-top: 0;
+    margin-left: 0;
+    margin-top: 0;
   }
 
   #details-header h1::after {
@@ -28,7 +30,7 @@
     position: absolute;
     top: 45px;
     left: 20%;
-    transform: translateX(-50%);
+    transform: translateX(-65%);
     width: 90px;
     border-bottom: 3px solid #29abe2;
   }
