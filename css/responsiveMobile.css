@@ -83,7 +83,7 @@
   }
 
   #main-container {
-    padding: 16px;
+    padding: 0;
   }
 
   /* Board */
@@ -103,7 +103,7 @@
 
   #board-content {
     flex-direction: column;
-    gap: 24px;
+    gap: 5px;
     overflow-x: visible;
   }
 
@@ -120,7 +120,7 @@
   .cards-container {
     min-height: 80px;
     flex-direction: row;
-    height: 350px;
+    height: 320px;
     overflow-x: auto;
   }
 
@@ -165,6 +165,14 @@
     width: 100%;
   }
 
+  .subtasks-list {
+  gap: 8px;
+  }
+
+  .detail-subtask {
+  padding: 0;
+  }
+  
   .none {
     display: flex;
   }
@@ -316,6 +324,10 @@
     width: 100%;
     min-width: 0;
     max-width: none;
+  }
+
+  #add-task-title{
+    margin: 16px 0 24px;
   }
 
   #createTaskBtn-container {

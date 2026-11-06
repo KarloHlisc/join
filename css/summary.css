@@ -1,9 +1,8 @@
-
-
 .container-summary {
   max-width: 1920px;
-  display:flex;
- gap: 40px;
+  display: flex;
+  gap: 40px;
+  margin-left: 30px;
 }
 
 .header {
@@ -21,10 +20,9 @@
 
 #main-container {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: flex-start;
   padding: 40px;
-  min-height: calc(100vh - 101px);
   background-color: rgba(246, 247, 248, 1);
 }
 
@@ -109,6 +107,7 @@
   }
   #card-content-urgent-line {
     border: 2px solid white;
+    background: white;
   }
 }
 
@@ -118,11 +117,13 @@
   justify-content: start;
   gap: 40px;
   width: 100%;
+  margin: 20px 0 40px 30px;
 }
 
 #details-header h1 {
   font-size: 61px;
   position: relative;
+  margin: 0;
 }
 
 #details-header h1::after {
@@ -206,7 +207,8 @@
   width: 88px;
 }
 
-.greeting-section {
+.greeting-section,
+.greeting-section-mobile {
   grid-column: 2;
   display: flex;
   flex-direction: column;
@@ -216,7 +218,8 @@
   min-height: 400px;
 }
 
-.greeting-text {
+.greeting-text,
+.greeting-text-mobile {
   color: #666;
   font-size: 47px;
   margin-bottom: 8px;
@@ -234,44 +237,56 @@
   color: #2d3e50;
 }
 
-#summary-container{
+#summary-container {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-@media (max-width: 1030px) {
-    
-  .greeting-section{
-    display: none;
-  }
-  
-  #summary-container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
+.greeting-section-mobile {
+  display: none;
 }
 
+@media (max-width: 1030px) {
+  .greeting-section {
+    display: none;
+  }
+
+  .container-summary {
+    margin-left: 0;
+  }
+
+   .greeting-section-mobile {
+    display: flex;
+    position: absolute;
+    background-color: rgba(246, 247, 248, 1);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  #summary-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@media(max-width:900px){
+  #main-container {
+  justify-content: center;
+  }
+}
 
 @media (max-width: 768px) {
   .container-summary {
-    /* grid-template-columns: 1fr; */
     gap: 20px;
-    
-  }
-
-  .greeting-section {
-    grid-column: 1;
-    margin-top: 20px;
   }
 
   .stats-row {
     gap: 12px;
-    /*  grid-template-columns: 1fr;
-  
-  */
   }
 
   .container-summary {
@@ -300,6 +315,7 @@
   }
   .card-label {
     font-size: 16px;
+    margin:0;
   }
 
   .card-deadline-date {
