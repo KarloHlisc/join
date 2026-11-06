@@ -4,24 +4,24 @@ import {
   closeAllDropdowns,
   toggleDropdown,
   openUserDropdown,
-} from "./addtask/addtask_dropdown.js";
+} from "./addTask/addTaskDropdown.js";
 import {
   clearSubtaskInput,
   createSubtaskItem,
   addSubtask,
-} from "./addtask/addtask_subtask.js";
-import { validateForm } from "./addtask/addtask_validate.js";
+} from "./addTask/addTaskSubtask.js";
+import { validateForm } from "./addTask/addTaskValidate.js";
 import {
   selectedUserIds,
   getUserList,
   filterUserList,
   renderSelectedBadges,
-} from "./addtask/addtask_assign.js";
+} from "./addTask/addTaskAssign.js";
 import {
   buildTaskData,
   registerTask,
   updateTask,
-} from "./addtask/addtask_save.js";
+} from "./addTask/addTaskSave.js";
 
 let editTaskId = null;
 let existSignUpForm;

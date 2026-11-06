@@ -5,8 +5,8 @@ import {
   runTransaction,
   update,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-import { getAssignedUsersObj } from "./addtask_assign.js";
-import { getSubtasksData } from "./addtask_subtask.js";
+import { getAssignedUsersObj } from "./addTaskAssign.js";
+import { getSubtasksData } from "./addTaskSubtask.js";
 
 /**
  * Updates an existing task, keeping its status.
