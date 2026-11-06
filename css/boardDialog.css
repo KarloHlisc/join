@@ -1,3 +1,12 @@
+.align-imte-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  width: 100%;
+}
+
 .dialog-footer {
   display: flex;
   justify-content: end;

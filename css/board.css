@@ -99,13 +99,13 @@ h1 {
   margin: 5px;
 }
 
-.level-story{
+.level-story {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-right: 16px;
   margin-top: 10px;
-  margin-left:16px;
+  margin-left: 16px;
 }
 .level-story p {
   color: white;
@@ -387,3 +387,8 @@ body:has(dialog[open]) {
   color: #999;
   margin: 0;
 }
+
+.no-result {
+  height: 15px;
+}
+
