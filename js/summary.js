@@ -10,7 +10,9 @@ const BASE_URL =
 function init() {
   greetings();
   displaySummary();
+  greetingsMobile();
 }
+
 // Greeting based on time of day
 /**
  * Updates the welcome text in the UI based on the current time of day.
@@ -19,8 +21,8 @@ function init() {
  * @returns {void}
  */
 function greetings() {
-  const putText = document.getElementById("greeting-text");
-  const nameEl = document.getElementById("greeting-name");
+  const putText = document.querySelector(".greeting-text");
+  const nameEl = document.querySelector(".greeting-name");
   if (!putText) return;
   const hr = new Date().getHours();
   const greet =
@@ -139,12 +141,19 @@ function updateSummaryData(counts) {
   document.getElementById("awaiting-feedback").textContent = counts.feedback;
 }
 
+/**
+ * Button and image elements used to update card icons on hover and touch.
+ * @type {HTMLElement | null}
+ */
 const toDoCardBtn = document.getElementById("to-do-card-btn");
 const doneCardBtn = document.getElementById("done-card-btn");
 const imgToDo = document.getElementById("img-to-do");
 const imgDone = document.getElementById("img-done");
 
-// To-Do Card Button
+/**
+ * Switches the to-do card icon to its highlighted version while the button
+ * is hovered or touched, then restores the default icon when interaction ends.
+ */
 toDoCardBtn.addEventListener("mouseover", () => {
   imgToDo.src = "../assets/icons/todo_edit_white.svg";
 });
@@ -161,7 +170,10 @@ toDoCardBtn.addEventListener("touchend", () => {
   imgToDo.src = "../assets/icons/to-do-edit.svg";
 });
 
-// Done Card Button
+/**
+ * Switches the done card icon to its highlighted version while the button
+ * is hovered or touched, then restores the default icon when interaction ends.
+ */
 doneCardBtn.addEventListener("mouseover", () => {
   imgDone.src = "../assets/icons/done_white.svg";
 });
@@ -177,3 +189,37 @@ doneCardBtn.addEventListener("touchstart", () => {
 doneCardBtn.addEventListener("touchend", () => {
   imgDone.src = "../assets/icons/done-edit.svg";
 });
+
+/**
+ * Displays a time-appropriate greeting in the mobile greeting elements.
+ * Uses the current hour to choose “Good Morning,” “Good Afternoon,” or
+ * “Good Evening.” If a non-guest user is stored in session storage, displays
+ * their name; otherwise, displays the greeting without a name.
+ * @returns {void}
+ */
+function greetingsMobile() {
+  const putText = document.getElementById("greeting-text-mobile");
+  const nameEl = document.getElementById("greeting-name-mobile");
+  if (!putText) return;
+  const hr = new Date().getHours();
+  const greet =
+    hr < 12 ? "Good Morning" : hr < 18 ? "Good Afternoon" : "Good Evening";
+  const user = JSON.parse(sessionStorage.getItem("loggedInUser") || "{}");
+  const isUser = user.name && user.name !== "Guest";
+  putText.innerText = `${greet}${isUser ? "," : "!"}`;
+  if (nameEl) nameEl.innerText = isUser ? user.name : "";
+}
+
+/**
+ * Timer that calls {@link showGreetingSection} after 1.5 seconds.
+ * @type {number}
+ */
+const myGreetingTimeout = setTimeout(showGreetingSection, 1500);
+
+/**
+ * Hides the mobile greeting section.
+ * @returns {void}
+ */
+function showGreetingSection() {
+  document.querySelector(".greeting-section-mobile").style.display = "none";
+}
