@@ -26,6 +26,7 @@ import {
 import {
   validateContactFields,
   showContactErrors,
+  setupContactBlurValidation,
 } from "./contacts/contactsValidate.js";
 
 /**
@@ -36,6 +37,7 @@ function showAddContactModule() {
   const container = document.getElementById("add-contact-container");
   if (!container) return;
   container.innerHTML = getAddContactModule();
+  setupContactBlurValidation();
   document
     .getElementById("add-contact-form")
     ?.addEventListener("submit", handleFormSubmit);
@@ -57,6 +59,7 @@ async function showEditContactModule(userId) {
   const container = document.getElementById("add-contact-container");
   if (!container) return;
   container.innerHTML = getEditContactModule(user, initials);
+  setupContactBlurValidation();
   document
     .getElementById("add-contact-form")
     ?.addEventListener("submit", (e) => handleEditSubmit(e, userId));

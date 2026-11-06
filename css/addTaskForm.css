@@ -154,6 +154,7 @@ select:invalid {
   border-radius: 10px;
   border: 1px solid #ccc;
   padding-left: 15px;
+  cursor: pointer;
 }
 
 #searchInput {
@@ -199,7 +200,15 @@ select:invalid {
   z-index: 100;
   margin: 0;
   padding: 8px 0;
-  list-style: none;
+  list-style: none !important;
+}
+
+#categoryList li {
+  padding: 12px 16px;
+}
+
+#categoryList li:hover {
+  background-color: #f1f1f1;
 }
 
 .rotate-180 {

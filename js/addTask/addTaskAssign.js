@@ -23,21 +23,36 @@ function createTextContainer(user) {
   return container;
 }
 
+const MAX_BADGES = 5;
+
 /**
- * Renders the initials badges for all currently selected users.
+ * Creates the initials badge of one user.
+ * @param {object} user - The user's data.
+ * @returns {HTMLElement} The badge element.
+ */
+function createBadge(user) {
+  const badge = createEl("div", "user-badge", getInitials(user.name));
+  badge.style.backgroundColor = user.backgroundColor || "#000000";
+  return badge;
+}
+
+/**
+ * Renders the initials badges, with a +N badge for the rest.
  * @param {object[]} users - All available users.
  * @param {HTMLElement} container - The badge container to render into.
  * @returns {void}
  */
 function renderAssignedIcons(users, container) {
   container.innerHTML = "";
-  selectedUserIds.forEach((id) => {
+  const ids = [...selectedUserIds];
+  ids.slice(0, MAX_BADGES).forEach((id) => {
     const user = users.find((u) => u.userId === id);
-    if (!user) return;
-    const badge = createEl("div", "user-badge", getInitials(user.name));
-    badge.style.backgroundColor = user.backgroundColor || "#000000";
-    container.append(badge);
+    if (user) container.append(createBadge(user));
   });
+  if (ids.length <= MAX_BADGES) return;
+  const more = createEl("div", "user-badge", `+${ids.length - MAX_BADGES}`);
+  more.style.backgroundColor = "#2a3647";
+  container.append(more);
 }
 
 /**

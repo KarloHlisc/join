@@ -116,6 +116,9 @@ a,
   justify-content: space-between;
   align-items: stretch;
   color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 
 .aside-logo {
@@ -364,4 +367,12 @@ ol {
 
 .pol-legal-header {
   display: none;
+}
+
+.field-error {
+  min-height: 18px;
+  margin: 4px 0 3px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #ff8190;
 }

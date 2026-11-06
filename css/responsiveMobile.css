@@ -49,6 +49,11 @@
     height: 70px;
     flex-direction: row;
     z-index: 50;
+    top: auto;
+  }
+
+  #mobile-footer {
+    display: none;
   }
 
   .aside-logo {
@@ -166,13 +171,13 @@
   }
 
   .subtasks-list {
-  gap: 8px;
+    gap: 8px;
   }
 
   .detail-subtask {
-  padding: 0;
+    padding: 0;
   }
-  
+
   .none {
     display: flex;
   }
@@ -274,10 +279,39 @@
     height: 51px;
     width: 202px;
   }
+  body.no-sidebar:has(.sign-up-container) #main-header {
+    display: contents;
+  }
 
-  #main-footer {
-    position: static;
-    margin-top: 32px;
+  body.no-sidebar:has(.sign-up-container) .header-logo {
+    align-self: flex-start;
+    margin: 24px 4% 0;
+    order: 0;
+  }
+
+  body.no-sidebar:has(.sign-up-container) main {
+    order: 1;
+  }
+
+  body.no-sidebar:has(.sign-up-container) .sign-up-container {
+    order: 2;
+    align-self: center;
+    margin: 0 auto 24px;
+  }
+
+  body.no-sidebar:has(.sign-up-container) #main-footer {
+    order: 3;
+  }
+
+  .form-container .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #login-button,
+  #guest-button {
+    width: 177px;
+    height: 48px;
   }
 
   /* Kontakte */
@@ -325,7 +359,7 @@
     max-width: none;
   }
 
-  #add-task-title{
+  #add-task-title {
     margin: 16px 0 24px;
   }
 

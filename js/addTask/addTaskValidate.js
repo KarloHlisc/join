@@ -75,3 +75,23 @@ export function validateForm(e) {
   if (!valid) e.preventDefault();
   return valid;
 }
+
+/**
+ * Clears a field error as soon as the field has a value.
+ * @returns {void}
+ */
+export function setupErrorClearing() {
+  [
+    ["formTitle", "errorTitle"],
+    ["duedate", "errorDate"],
+  ].forEach(([id, errorId]) => {
+    const input = document.getElementById(id);
+    ["input", "change"].forEach((type) =>
+      input?.addEventListener(type, () => {
+        if (!input.value.trim()) return;
+        input.classList.remove("input-error");
+        document.getElementById(errorId).textContent = "";
+      }),
+    );
+  });
+}

@@ -118,3 +118,34 @@ export async function loadTaskFormHtml() {
   const doc = new DOMParser().parseFromString(await res.text(), "text/html");
   return doc.getElementById("form-container").outerHTML;
 }
+
+/**
+ * Shows or clears the error state of one field.
+ * @param {HTMLElement} input - The input element.
+ * @param {string} message - The error message, or "" to clear it.
+ * @param {string} errorId - ID of the element that shows the message.
+ * @returns {boolean} True if the field is valid.
+ */
+export function showFieldError(input, message, errorId) {
+  input.classList.toggle("input-error", !!message);
+  const box = document.getElementById(errorId);
+  if (box) box.textContent = message;
+  return !message;
+}
+
+/**
+ * Validates a field on blur and live while it shows an error.
+ * @param {string} id - The input ID.
+ * @param {function(string): string} check - Returns an error message or "".
+ * @param {string} errorId - ID of the element that shows the message.
+ * @returns {void}
+ */
+export function bindBlurValidation(id, check, errorId) {
+  const input = document.getElementById(id);
+  if (!input) return;
+  const run = () => showFieldError(input, check(input.value.trim()), errorId);
+  input.addEventListener("blur", run);
+  input.addEventListener("input", () => {
+    if (input.classList.contains("input-error")) run();
+  });
+}

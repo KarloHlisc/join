@@ -9,7 +9,7 @@ import {
 
 import { getLogoutModule } from "./js/templates/template.js";
 
-import { isValidEmail, getInitials } from "./js/utils.js";
+import { isValidEmail, getInitials, bindBlurValidation } from "./js/utils.js";
 
 const existLoginForm = document.getElementById("login-form");
 const errEL = document.getElementById("errorMessage");
@@ -128,6 +128,13 @@ async function handleLoginSubmit(e) {
 
 if (existLoginForm)
   existLoginForm.addEventListener("submit", handleLoginSubmit);
+
+if (existLoginForm)
+  bindBlurValidation(
+    "email",
+    (v) => (isValidEmail(v) ? "" : "Please enter a valid email address."),
+    "errorMessage",
+  );
 
 /**
  * Disables or enables the login buttons while a request is running.
