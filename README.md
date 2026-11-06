@@ -41,17 +41,18 @@ The board groups tasks into **To do**, **In progress**, **Await feedback**, and 
    ```bash
    git clone https://github.com/KarloHlisc/join.git
    cd join
+   ```
+
 2. Open the project with a local development server, such as the Live Server extension in Visual Studio Code.
 3. Open the local address provided by the server in your browser.
 
 ### Firebase configuration
 
-The app connects to Firebase Realtime Database using the configuration in ```js/config.js```. To use your own Firebase project:
+The app connects to Firebase Realtime Database using the configuration in `js/config.js`. To use your own Firebase project:
 
- 1. Create a Firebase project and enable Realtime Database.
- 2. Update the Firebase configuration in ```js/config.js``` with your project settings.
- 3. Set up the database structure and access rules required by the app.
-
+1.  Create a Firebase project and enable Realtime Database.
+2.  Update the Firebase configuration in `js/config.js` with your project settings.
+3.  Set up the database structure and access rules required by the app.
 
 ## Project structure
 
@@ -63,52 +64,55 @@ The app connects to Firebase Realtime Database using the configuration in ```js/
 │   └── img/
 ├── css/
 │   ├── contact/
-│   │   ├── contact_details.css
-│   │   ├── contact_modal.css
+│   │   ├── contactDetails.css
+│   │   ├── contactModal.css
 │   │   └── contacts.css
-│   ├── addTask1.css
-│   ├── addTask2.css
+│   ├── addTaskComponents.css
+│   ├── addTaskForm.css
 │   ├── board.css
+│   ├── boardDialog.css
 │   ├── help.css
 │   ├── login.css
-│   ├── policy_signup.css
+│   ├── policyAfterLogin.css
 │   ├── responsive.css
+│   ├── responsiveMobile.css
 │   ├── signup.css
 │   └── summary.css
 ├── html/
-│   ├── add_task.html
+│   ├── addTask.html
 │   ├── board.html
 │   ├── contacts.html
-│   ├── legal_after_login.html
-│   ├── legal_login.html
-│   ├── policy_after_login.html
-│   ├── policy_login.html
+│   ├── help.html
+│   ├── legalAfterLogin.html
+│   ├── legalLogin.html
+│   ├── policyAfterLogin.html
+│   ├── policyLogin.html
 │   ├── signup.html
 │   └── summary.html
 ├── js/
-│   ├── addtask/
-│   │   ├── addtask_assign.js
-│   │   ├── addtask_dropdown.js
-│   │   ├── addtask_save.js
-│   │   ├── addtask_subtask.js
-│   │   └── addtask_validate.js
+│   ├── addTask/
+│   │   ├── addTaskAssign.js
+│   │   ├── addTaskDropdown.js
+│   │   ├── addTaskSave.js
+│   │   ├── addTaskSubtask.js
+│   │   └── addTaskValidate.js
 │   ├── board/
-│   │   ├── addtask-board.js
-│   │   └── edittask-board.js
+│   │   ├── addTaskBoard.js
+│   │   └── editTaskBoard.js
 │   ├── contacts/
-│   │   └── contacts_validate.js
-│   ├── addtask.js
+│   │   └── contactsValidate.js
+│   ├── templates/
+│   │   ├── template.js
+│   │   └── templateBoard.js
+│   ├── addTask.js
 │   ├── board.js
-│   ├── board_2.js
+│   ├── boardDragDrop.js
 │   ├── config.js
 │   ├── contacts.js
-│   ├── legal_policy_templates.js
 │   ├── signup.js
 │   ├── summary.js
-│   ├── template.js
-│   ├── template_board.js
-│   ├── templates_login.js
 │   └── utils.js
+├── .gitignore
 ├── README.md
 ├── index.html
 ├── script.js
