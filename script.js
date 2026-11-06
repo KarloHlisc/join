@@ -14,7 +14,7 @@ import { isValidEmail, getInitials } from "./js/utils.js";
 const existLoginForm = document.getElementById("login-form");
 const errEL = document.getElementById("errorMessage");
 
-const publicPages = ["signup.html", "legal_login.html", "policy_login.html"];
+const publicPages = ["signup.html", "legalLogin.html", "policyLogin.html"];
 
 /**
  * Checks whether a page may be opened without login.

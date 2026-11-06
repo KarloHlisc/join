@@ -146,10 +146,10 @@ a,
   width: 100%;
 }
 
-#nav-policy_login:hover,
-#nav-legal_login:hover,
-#nav-policy_after_login:hover,
-#nav-legal_after_login:hover,
+#nav-policyLogin:hover,
+#nav-legalLogin:hover,
+#nav-policyAfterLogin:hover,
+#nav-legalAfterLogin:hover,
 .help-logout:hover,
 #logout:hover {
   color: #124658;

@@ -11,8 +11,8 @@ export function getLogoutModule() {
     <div id="logout-overlay" class="logout-overlay" onclick="closeLogoutModule()"></div>
     <div id="logout-module">
         <button class="help-btn help help-logout" onclick="location.href='./help.html'">Help</button>
-        <button class="nav-legal-btn" onclick="location.href='./legal_after_login.html'">Legal notice</button>
-        <button class="nav-policy-btn" onclick="location.href='./policy_after_login.html'">Privacy Policy</button>
+        <button class="nav-legal-btn" onclick="location.href='./legalAfterLogin.html'">Legal notice</button>
+        <button class="nav-policy-btn" onclick="location.href='./policyAfterLogin.html'">Privacy Policy</button>
         <button id="logout" onclick="logoutFromAccount()">Logout</button>
     </div>
   `;

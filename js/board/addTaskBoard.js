@@ -1,5 +1,5 @@
 "use strict";
-import { setupTaskForm } from "../addtask.js";
+import { setupTaskForm } from "../addTask.js";
 import { getAddTaskModule } from "../templates/template.js";
 import { loadTaskFormHtml } from "../utils.js";
 

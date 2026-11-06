@@ -5,7 +5,7 @@ import {
   get,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 import { createEl, getInitials } from "../utils.js";
-import { openUserDropdown } from "./addtask_dropdown.js";
+import { openUserDropdown } from "./addTaskDropdown.js";
 
 export const selectedUserIds = new Set();
 

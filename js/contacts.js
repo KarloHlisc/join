@@ -26,7 +26,7 @@ import {
 import {
   validateContactFields,
   showContactErrors,
-} from "./contacts/contacts_validate.js";
+} from "./contacts/contactsValidate.js";
 
 /**
  * Opens the "Add contact" modal and wires up its form submit handler.
