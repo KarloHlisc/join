@@ -120,5 +120,5 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
+  gap: 0;
 }

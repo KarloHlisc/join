@@ -247,7 +247,7 @@
   display: none;
 }
 
-@media (max-width: 1030px) {
+@media (max-width: 1100px) {
   .greeting-section {
     display: none;
   }
@@ -256,7 +256,7 @@
     margin-left: 0;
   }
 
-   .greeting-section-mobile {
+  .greeting-section-mobile {
     display: flex;
     position: absolute;
     background-color: rgba(246, 247, 248, 1);
@@ -274,9 +274,9 @@
   }
 }
 
-@media(max-width:900px){
+@media (max-width: 900px) {
   #main-container {
-  justify-content: center;
+    justify-content: center;
   }
 }
 
@@ -315,7 +315,7 @@
   }
   .card-label {
     font-size: 16px;
-    margin:0;
+    margin: 0;
   }
 
   .card-deadline-date {

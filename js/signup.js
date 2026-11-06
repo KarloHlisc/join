@@ -10,6 +10,8 @@ import {
   generateNextUserId,
   getRandomColor,
   checkEmail,
+  bindBlurValidation,
+  showFieldError,
 } from "./utils.js";
 
 // sign up Users
@@ -48,20 +50,49 @@ function getSignupFormValues() {
   };
 }
 
+const signupChecks = {
+  name: (v) => (v.length >= 3 ? "" : "Please enter at least 3 characters."),
+  email: (v) => (isValidEmail(v) ? "" : "Please enter a valid email address."),
+  password: (v) => (v.length >= 6 ? "" : "Please use at least 6 characters."),
+  "confirm-password": (v) =>
+    v === document.getElementById("password").value.trim()
+      ? ""
+      : "Your passwords don't match.",
+};
+
+const signupErrorIds = {
+  name: "nameError",
+  email: "emailError",
+  password: "passwordError",
+  "confirm-password": "confirmError",
+};
+
 /**
- * Validates the signup form fields.
- * @param {object} fields - The form field values from getSignupFormValues.
- * @returns {string|null} An error message, or null if valid.
+ * Validates all signup fields and shows every error.
+ * @returns {boolean} True if all fields are valid.
  */
-/* prettier-ignore */
-function validateSignupFields({name,email,password,confirmPassword,checkbox,}) {
-  if (!name) return "Name is required.";
-  if (!isValidEmail(email)) return "Please enter a valid email address.";
-  if (!password) return "Password is required.";
-  if (password !== confirmPassword)
-    return "Your passwords don't match. Please try again.";
-  if (!checkbox.checked) return "You must accept the privacy policy.";
-  return null;
+function validateSignupFields() {
+  const results = Object.keys(signupChecks).map((id) => {
+    const input = document.getElementById(id);
+    const message = signupChecks[id](input.value.trim());
+    return showFieldError(input, message, signupErrorIds[id]);
+  });
+  return results.every(Boolean);
+}
+
+/**
+ * Registers blur validation for all signup fields.
+ * @returns {void}
+ */
+function setupBlurValidation() {
+  Object.keys(signupChecks).forEach((id) =>
+    bindBlurValidation(id, signupChecks[id], signupErrorIds[id]),
+  );
+  document.getElementById("password")?.addEventListener("input", () => {
+    const confirm = document.getElementById("confirm-password");
+    const message = signupChecks["confirm-password"](confirm.value.trim());
+    if (confirm.value) showFieldError(confirm, message, "confirmError");
+  });
 }
 
 /**
@@ -89,14 +120,13 @@ async function submitSignup({ name, email, password }) {
 async function handleSignupSubmit(e) {
   e.preventDefault();
   errEL.textContent = "";
-  const data = getSignupFormValues();
-  const errorMsg = validateSignupFields(data);
-  if (errorMsg) {
-    errEL.textContent = errorMsg;
+  if (!validateSignupFields()) return;
+  if (!document.getElementById("checkbox").checked) {
+    errEL.textContent = "You must accept the privacy policy.";
     return;
   }
   try {
-    await submitSignup(data);
+    await submitSignup(getSignupFormValues());
   } catch (err) {
     errEL.textContent = err.message;
   }
@@ -147,4 +177,5 @@ function setupSignupButtonState() {
   updateSignupButton();
 }
 
+setupBlurValidation();
 setupSignupButtonState();

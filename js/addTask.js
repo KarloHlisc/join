@@ -10,7 +10,7 @@ import {
   createSubtaskItem,
   addSubtask,
 } from "./addTask/addTaskSubtask.js";
-import { validateForm } from "./addTask/addTaskValidate.js";
+import { validateForm, setupErrorClearing } from "./addTask/addTaskValidate.js";
 import {
   selectedUserIds,
   getUserList,
@@ -41,6 +41,7 @@ function setupCategorySelection() {
       if (selectedText)
         selectedText.innerText = item.getAttribute("data-value");
       toggleDropdown("categoryList", "categoryArrowImg");
+      document.getElementById("errorCategory").textContent = "";
     });
   });
 }
@@ -100,7 +101,7 @@ function setupDropdownListeners() {
     e.stopPropagation();
     toggleDropdown("dropdownList", "dropdownArrowImg", getUserList);
   });
-  document.getElementById("categoryToggle")?.addEventListener("click", (e) => {
+  document.getElementById("categoryHeader")?.addEventListener("click", (e) => {
     e.stopPropagation();
     toggleDropdown("categoryList", "categoryArrowImg");
   });
@@ -295,6 +296,7 @@ export function setupTaskForm(status = "todo", onCreated = null, task = null) {
   buttonVisability();
   setupFormSubmit();
   setupPriorityButtons();
+  setupFormHelpers();
   if (task) {
     fillTaskForm(task);
     setEditLabels();
@@ -350,4 +352,23 @@ function init() {
 
 if (document.body.dataset.page === "add-task") {
   document.addEventListener("DOMContentLoaded", init);
+}
+
+/**
+ * Blocks past dates in the due date picker.
+ * @returns {void}
+ */
+function setMinDueDate() {
+  const input = document.getElementById("duedate");
+  const local = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+  if (input) input.min = local.toISOString().slice(0, 10);
+}
+
+/**
+ * Prepares date limit and live error clearing of the form.
+ * @returns {void}
+ */
+function setupFormHelpers() {
+  setMinDueDate();
+  setupErrorClearing();
 }

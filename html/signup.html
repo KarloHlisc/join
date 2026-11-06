@@ -32,7 +32,9 @@
         <h1>Sign up</h1>
         <form id="signup-form">
           <input type="text" placeholder="Name" id="name" />
+          <div class="field-error" id="nameError"></div>
           <input type="text" placeholder="Email" id="email" />
+          <div class="field-error" id="emailError"></div>
           <div class="input-wrapper">
             <input type="password" placeholder="Password" id="password" />
             <button
@@ -48,6 +50,7 @@
               />
             </button>
           </div>
+          <div class="field-error" id="passwordError"></div>
           <div class="input-wrapper">
             <input
               type="password"
@@ -69,6 +72,7 @@
               />
             </button>
           </div>
+          <div class="field-error" id="confirmError"></div>
           <div id="errorMessage" style="color: red"></div>
           <div id="checkbox-container">
             <input type="checkbox" id="checkbox" name="Privacy-policy" />

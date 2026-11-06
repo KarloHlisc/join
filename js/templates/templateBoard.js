@@ -43,19 +43,25 @@ function getCardTemplate(task) {
 }
 
 /**
- * Builds the avatar chips of all users assigned to a task.
+ * Builds the avatar chip of one user.
+ * @param {Object} user - The user.
+ * @returns {string} HTML markup of the avatar.
+ */
+function getAvatarHtml(user) {
+  return `<div class="user-chip"><div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(escapeHtml(user.name))}</div></div>`;
+}
+
+/**
+ * Builds the avatar chips of a task (max. 4, then a +N chip).
  * @param {Object} task - The task with an optional assignedTo list.
  * @returns {string} HTML markup of the avatars.
  */
 function getUsersOnCart(task) {
-  return `${getAssignedUsersArray(task)
-    .map(
-      (
-        user,
-      ) => `<div class="user-chip"><div class="user-avatar" style="background-color: ${user.backgroundColor}">${getInitials(escapeHtml(user.name))}</div>
-       </div>`,
-    )
-    .join("")}`;
+  const users = getAssignedUsersArray(task);
+  const shown = users.slice(0, 4).map(getAvatarHtml).join("");
+  if (users.length <= 4) return shown;
+  const rest = users.length - 4;
+  return `${shown}<div class="user-chip"><div class="user-avatar" style="background-color: #2a3647">+${rest}</div></div>`;
 }
 
 /**

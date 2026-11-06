@@ -46,7 +46,7 @@ export function getAddContactModule() {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1>Add contact</h1><span>Tasks are better with a team!</span></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="person-icon"><img src="../assets/icons/person.svg" alt="person-logo"/></div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" /><input type="text" placeholder="Email" id="email" /><input type="text" placeholder="Phone" id="phone" /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" placeholder="Name" id="name" /><div class="field-error" id="nameError"></div><input type="text" placeholder="Email" id="email" /><div class="field-error" id="emailError"></div><input type="text" placeholder="Phone" id="phone" /><div class="field-error" id="phoneError"></div>
             <div class="button-container">
               <button type="button" id="cancel-contact-module" onclick="closeAddContactModule()">Cancel <img src="../assets/icons/vector.svg" alt="x-logo" /></button>
               <button type="submit" id="create-contact">Create contact <img src="../assets/icons/check.svg" alt="check-logo"/></button>
@@ -64,7 +64,7 @@ export function getEditContactModule(user, initials) {
   return `<div id="add-overlay" onclick="closeAddContactModule()"><div id="add-module" onclick="event.stopPropagation()"> <div id="add-contact-text">
           <img src="../assets/img/join_white.svg" alt="join-logo" /><h1 class="edit-title">Edit contact</h1></div> 
           <div id="add-contact"><button id="close-contact-module" onclick="closeAddContactModule()"><img src="../assets/icons/vector.svg" alt="x-logo" /></button><div id="details-icon" class="user-icon details-icon" style="background-color: ${user.backgroundColor || "#000"}">${initials}</div>
-          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><input type="text" value="${escapeHtml(user.email)}" id="email" ${isGuestUser(user) ? "readonly" : ""} /><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div id="errorMessage" style="color: red"></div>
+          <div id="form-container"><form id="add-contact-form"><input type="text" value="${escapeHtml(user.name)}" id="name" /><div class="field-error" id="nameError"></div><input type="text" value="${escapeHtml(user.email)}" id="email" ${isGuestUser(user) ? "readonly" : ""} /><div class="field-error" id="emailError"></div><input type="text" value="${escapeHtml(user.phone)}" id="phone" /><div class="field-error" id="phoneError"></div>
             <div class="button-container">
               ${isGuestUser(user) ? "" : `<button type="button" class="edit-delete" onclick="deleteUser('${user.userId}')">Delete</button>`}
               <button type="submit" id="edit-contact">Save <img src="../assets/icons/check.svg" alt="check-logo"/></button>
