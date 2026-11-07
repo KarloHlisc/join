@@ -1,13 +1,13 @@
-#button-search{
+#button-search {
   display: flex;
   align-items: center;
 }
 
-#search-task{
+#search-task {
   font-size: 20px;
 }
 
-#add-task-btn2{
+#add-task-btn2 {
   font-size: 21px;
 }
 
@@ -186,6 +186,10 @@
     flex-direction: column;
     gap: 8px;
     padding: 6px 16px;
+  }
+
+  .task-description {
+    overflow-wrap: break-word;
   }
 }
 
