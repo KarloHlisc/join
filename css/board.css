@@ -20,6 +20,7 @@ h1 {
   flex-direction: row;
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 #search-task-container {
@@ -348,6 +349,7 @@ body:has(dialog[open]) {
 #search-task-container > input {
   border: none;
   flex: 1;
+  width: 116px;
 }
 
 .detail-subtask {

@@ -65,6 +65,7 @@ h1::after {
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
+  background-color: white;
 }
 
 form {
@@ -159,7 +160,7 @@ input {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 25px;
+  margin-top: 5px;
 }
 
 #checkbox-container {

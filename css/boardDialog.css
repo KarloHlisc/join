@@ -1,3 +1,16 @@
+#button-search{
+  display: flex;
+  align-items: center;
+}
+
+#search-task{
+  font-size: 20px;
+}
+
+#add-task-btn2{
+  font-size: 21px;
+}
+
 .align-imte-button {
   display: flex;
   justify-content: space-between;

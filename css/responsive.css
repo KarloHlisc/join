@@ -238,3 +238,14 @@
     right: 40px;
   }
 }
+
+@media  (max-width: 968px) {
+   #add-task-btn2{
+      width: 40px;
+        height: 40px;
+   }
+
+  #add-task-btn2 span {
+    display: none;
+  }
+}

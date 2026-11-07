@@ -436,7 +436,9 @@
   #preloader {
     animation: colorFade 3s forwards;
   }
-
+.btn-back-to-login {
+  left: 25px;
+}
   .logo-wrapper {
     content: url("../assets/img/join_white.svg");
   }
