@@ -125,7 +125,7 @@
   .cards-container {
     min-height: 80px;
     flex-direction: row;
-    height: 320px;
+    height: 340px;
     overflow-x: auto;
   }
 
@@ -436,7 +436,7 @@
   #preloader {
     animation: colorFade 3s forwards;
   }
-  
+
   .btn-back-to-login {
     left: 25px;
   }
