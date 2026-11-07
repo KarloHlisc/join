@@ -341,7 +341,8 @@ body:has(dialog[open]) {
 .subtasks-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  overflow-y: auto;
+  height: 110px;
 }
 
 #search-task-container > input {
@@ -353,7 +354,7 @@ body:has(dialog[open]) {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 0;
+  padding: 6px 16px;
 }
 
 .detail-subtask input[type="checkbox"] {
@@ -392,3 +393,11 @@ body:has(dialog[open]) {
   height: 15px;
 }
 
+.align-imte-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  width: 100%;
+}

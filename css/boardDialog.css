@@ -172,6 +172,7 @@
   .assigned-users {
     flex-direction: column;
     gap: 8px;
+    padding: 6px 16px;
   }
 }
 
