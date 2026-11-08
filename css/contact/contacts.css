@@ -30,6 +30,10 @@ h1 {
   width: 90%;
 }
 
+.user-btn .text-container {
+  min-width: 0;
+}
+
 .user-btn:hover {
   background-color: #dfdfdf;
 }

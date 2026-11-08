@@ -42,6 +42,7 @@ function setupCategorySelection() {
         selectedText.innerText = item.getAttribute("data-value");
       toggleDropdown("categoryList", "categoryArrowImg");
       document.getElementById("errorCategory").textContent = "";
+      document.getElementById("categoryHeader").classList.remove("input-error");
     });
   });
 }
@@ -138,6 +139,16 @@ function setupSubtaskListeners() {
 }
 
 /**
+ * Closes all dropdowns when the pointer goes down outside of them.
+ * @param {PointerEvent} e - The pointerdown event.
+ * @returns {void}
+ */
+function closeDropdownsOutside(e) {
+  if (e.target.closest(".custom-dropdown")) return;
+  closeAllDropdowns();
+}
+
+/**
  * Wires up all event listeners for the Add Task form.
  * @returns {void}
  */
@@ -147,8 +158,8 @@ function setupEventListeners() {
   setupSubtaskListeners();
   document.getElementById("clear")?.addEventListener("click", resetForm);
   setupCategorySelection();
-  document.removeEventListener("click", closeAllDropdowns);
-  document.addEventListener("click", closeAllDropdowns);
+  document.removeEventListener("pointerdown", closeDropdownsOutside);
+  document.addEventListener("pointerdown", closeDropdownsOutside);
 }
 
 /**
