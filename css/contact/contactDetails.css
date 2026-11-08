@@ -51,6 +51,10 @@
   font-size: 47px;
 }
 
+#name-and-button {
+  min-width: 0;
+}
+
 #edit-delete {
   display: flex;
   align-items: center;

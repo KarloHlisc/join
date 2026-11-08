@@ -41,13 +41,17 @@ export function validateDate() {
  * @returns {boolean} True if a category is selected.
  */
 export function validateCategory() {
+  const header = document.getElementById("categoryHeader");
   const value = document.getElementById("categorySelectedText").innerText;
   const ok = value !== "Select task category";
   document.getElementById("errorCategory").textContent = ok
     ? ""
     : "Please select a category";
+  header.classList.toggle("input-error", !ok);
   return ok;
 }
+
+document.getElementById("categoryHeader")?.classList.remove("input-error");
 
 /**
  * Clears all Add Task form validation error messages and styles.

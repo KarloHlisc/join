@@ -7,7 +7,7 @@
 }
 
 #add-task-title {
-  margin: 20px 0 40px 30px;
+  margin: 20px 0 15px 30px;
 }
 
 #form-container,
@@ -242,4 +242,14 @@ select:invalid {
   align-items: flex-start;
   flex-grow: 1;
   margin-left: 12px;
+}
+
+#errorTitle,
+#errorDate,
+#errorCategory {
+  min-height: 20px;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ff8190;
 }

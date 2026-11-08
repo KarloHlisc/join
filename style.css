@@ -376,3 +376,12 @@ ol {
   line-height: 18px;
   color: #ff8190;
 }
+
+.user-icon,
+.user-badge,
+.user-avatar,
+.user-chip,
+#person-icon,
+button img {
+  flex-shrink: 0;
+}

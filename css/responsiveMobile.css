@@ -189,7 +189,7 @@
   /* Summary */
   #details-header {
     flex-wrap: wrap;
-    margin: 16px 0 24px;
+    margin: 0 0 24px;
   }
 
   #details-header h1::after {
@@ -316,10 +316,17 @@
 
   /* Kontakte */
   #main-container.details-open #contact-details-container {
-    width: 100%;
-    left: auto;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 70px;
+    padding-bottom: 90px;
+    padding-top: 0;
   }
 
+  #details-back {
+    top: 60px;
+  }
   #main-container:has(#list-container) {
     flex-direction: column;
     height: auto;
@@ -338,7 +345,21 @@
 
   #details-header span::after {
     top: 35px;
-    left: 30%;
+    left: 40%;
+  }
+
+  #icon-name-and-details {
+    gap: 20px;
+  }
+
+  #icon-name-and-details .details-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  #name-and-button span {
+    font-size: 32px;
   }
 
   /* Add Task */
@@ -447,6 +468,10 @@
 
   .logo-wrapper {
     content: url("../assets/img/join_white.svg");
+  }
+
+  #priority-buttons {
+    font-size: 12px;
   }
 }
 
