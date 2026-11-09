@@ -120,10 +120,13 @@ h1 {
 
 #form-container {
   display: flex;
+  width: 422px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 #add-contact-form {
-  width: 422px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

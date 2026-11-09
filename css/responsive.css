@@ -40,7 +40,7 @@
   }
 
   #add-module {
-    width: 90%;
+    width: calc(100vw - 32px);
   }
 
   #main-container.details-open #contact-details-container {

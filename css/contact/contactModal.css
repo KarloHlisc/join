@@ -61,27 +61,18 @@ input {
 #add-contact-text {
   background-color: #2a3647;
   height: 100%;
-  width: 467px;
+  width: clamp(300px, 36vw, 467px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding: 40px;
   gap: 1px;
+  flex-shrink: 0;
 }
 
 #add-contact-text span {
   font-size: 27px;
-}
-
-#add-contact-text span::after {
-  content: "";
-  position: absolute;
-  bottom: 185px;
-  left: 80px;
-  transform: translateX(-50%);
-  width: 7%;
-  border-bottom: 3px solid #29abe2;
 }
 
 #add-contact-text img {
@@ -89,15 +80,32 @@ input {
   width: 55.6px;
 }
 
+#add-module #add-contact-text span::after,
+#add-module .edit-title::after {
+  content: "";
+  display: block;
+  position: static;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: 90px;
+  margin-top: 16px;
+  border-bottom: 3px solid #29abe2;
+}
+
 #add-contact {
   height: 100%;
   width: auto;
+  min-width: 0;
   flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: clamp(16px, 2.5vw, 50px);
+  padding: 0 24px;
 }
+
 #name,
 #email,
 #phone {
@@ -123,9 +131,17 @@ input {
 
 .button-container {
   display: flex;
-  gap: 20px;
-  margin-top: 17px;
+  flex-wrap: wrap;
+  gap: 12px 20px;
 }
+
+#cancel-contact-module,
+#create-contact,
+#edit-contact,
+.edit-delete {
+  flex-shrink: 0;
+}
+
 #cancel-contact-module {
   height: 56px;
   width: 126px;
@@ -198,15 +214,6 @@ input {
   width: 111px;
   height: 55px;
 }
-.edit-title::after {
-  content: "";
-  position: absolute;
-  top: 380px;
-  left: 85px;
-  transform: translateX(-50%);
-  width: 90px;
-  border-bottom: 3px solid #29abe2;
-}
 
 .edit-delete {
   font-size: 20px;
@@ -263,17 +270,6 @@ input {
 
   #add-contact-text span {
     font-size: 20px;
-  }
-
-  #add-contact-text span::after,
-  .edit-title::after {
-    content: "";
-    position: static;
-    display: block;
-    width: 90px;
-    margin-top: 16px;
-    transform: none;
-    border-bottom: 3px solid #29abe2;
   }
 
   #add-contact {
