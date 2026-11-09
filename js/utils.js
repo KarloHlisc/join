@@ -6,12 +6,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
 /**
- * Checks whether a string is a syntactically valid email address.
+ * Checks whether a string is a valid email address with a 2-4 letter ending.
  * @param {string} email - The email address to validate.
  * @returns {boolean} True if the format is valid.
  */
 export function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[^\s@]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,4}$/.test(email);
 }
 
 /**
