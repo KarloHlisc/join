@@ -351,7 +351,10 @@ function setEditLabels() {
   document.querySelector("#add-task-title h1").innerText = "Edit Task";
   document.getElementById("createTask").childNodes[0].textContent =
     "Save Task ";
-  document.getElementById("clear")?.remove();
+   document.getElementById("clear").innerHTML = `Cancel <img src="../assets/icons/vector.svg" alt="x-logo">`;
+   document.getElementById("clear").addEventListener("click", () => {
+     window.closeAddTaskModule();
+   });
 }
 
 /**
