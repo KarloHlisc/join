@@ -403,3 +403,7 @@ body:has(dialog[open]) {
   gap: 20px;
   width: 100%;
 }
+
+html:has(#add-task-container.active) {
+  overflow: hidden;
+}
