@@ -220,7 +220,8 @@
 
 .greeting-text,
 .greeting-text-mobile {
-  color: #666;
+  color: rgba(42, 54, 71, 1);
+  font-weight: 500;
   font-size: 47px;
   margin-bottom: 8px;
 }
@@ -234,7 +235,7 @@
 .greeting-name {
   font-size: 77px;
   font-weight: 700;
-  color: #2d3e50;
+  color: rgba(41, 171, 226, 1);
 }
 
 #summary-container {
