@@ -29,6 +29,8 @@ import {
   setupContactBlurValidation,
 } from "./contacts/contactsValidate.js";
 
+let activeUserId = null;
+
 /**
  * Opens the "Add contact" modal and wires up its form submit handler.
  * @returns {void}
@@ -119,6 +121,18 @@ function showDetails(user) {
   const initials = getInitials(user.name);
   if (container) container.innerHTML = userDetailTemplate(user, initials);
   document.getElementById("main-container")?.classList.add("details-open");
+  activeUserId = user.userId;
+  markActiveContact();
+}
+
+/**
+ * Highlights the contact whose details are shown.
+ * @returns {void}
+ */
+function markActiveContact() {
+  document.querySelectorAll("#list-container .user-btn").forEach((btn) => {
+    btn.classList.toggle("selected-contact", btn.dataset.id === activeUserId);
+  });
 }
 
 /**
@@ -156,6 +170,8 @@ function closeContactMenu() {
  */
 function createAndAppendButton(user, container) {
   const button = createEl("button", "user-btn");
+  button.dataset.id = user.userId;
+  button.classList.toggle("selected-contact", user.userId === activeUserId);
   const icon = createEl("div", "user-icon", getInitials(user.name));
   icon.style.backgroundColor = user.backgroundColor || "#000000";
   const textContainer = createTextContainer(user);
@@ -186,6 +202,9 @@ function renderUserList(users, container) {
   users.forEach((user) => {
     lastLetter = checkAndRenderHeader(user.name, lastLetter, container);
     createAndAppendButton(user, container);
+    container
+      .querySelector(".selected-contact")
+      ?.scrollIntoView({ block: "nearest" });
   });
 }
 
@@ -379,6 +398,7 @@ async function deleteUser(userId) {
     if (await isGuestId(userId)) return;
     await removeUserFromTasks(userId);
     await remove(ref(database, `users/${userId}`));
+    activeUserId = null;
     document.getElementById("contact-details-container").innerHTML = "";
     closeContactDetails();
     closeAddContactModule();

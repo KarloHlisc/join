@@ -491,3 +491,23 @@
     color: #2a3647;
   }
 }
+
+@media (max-width: 900px) {
+  html:has(#add-task-container.active),
+  html:has(#add-contact-container.active),
+  html:has(#main-container.details-open),
+  html:has(dialog[open]),
+  body:has(#add-task-container.active),
+  body:has(#add-contact-container.active),
+  body:has(#main-container.details-open),
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  #add-task-module,
+  #add-module,
+  #myDialog,
+  #main-container.details-open #contact-details-container {
+    overscroll-behavior: contain;
+  }
+}

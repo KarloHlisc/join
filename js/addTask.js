@@ -351,6 +351,7 @@ function setEditLabels() {
   document.querySelector("#add-task-title h1").innerText = "Edit Task";
   document.getElementById("createTask").childNodes[0].textContent =
     "Save Task ";
+  document.getElementById("clear")?.remove();
 }
 
 /**

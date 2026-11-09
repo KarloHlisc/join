@@ -37,12 +37,16 @@ h1 {
 .user-btn:hover {
   background-color: #dfdfdf;
 }
-.user-btn:focus {
+
+.user-btn.selected-contact,
+.user-btn.selected-contact:hover,
+.user-btn:focus-visible {
   background-color: #2a3647;
   border-radius: 10px;
 }
 
-.user-btn:focus .user-name {
+.user-btn.selected-contact .user-name,
+.user-btn:focus-visible .user-name {
   color: #ffffff !important;
 }
 
