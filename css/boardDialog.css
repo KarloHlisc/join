@@ -7,10 +7,6 @@
   font-size: 20px;
 }
 
-#add-task-btn2 {
-  font-size: 21px;
-}
-
 .align-imte-button {
   display: flex;
   justify-content: space-between;
@@ -84,6 +80,7 @@
 #add-task-btn2 {
   width: 160px;
   height: 48px;
+  font-size: 21px;
 }
 
 #add-task-container.active {
@@ -200,5 +197,14 @@
   .cards-container {
     flex-direction: row;
     overflow-x: auto;
+  }
+}
+@media (max-width: 940px) {
+  #add-task-btn2 > span {
+    display: none;
+  }
+  #add-task-btn2 {
+    height: 48px;
+    width: 48px;
   }
 }
